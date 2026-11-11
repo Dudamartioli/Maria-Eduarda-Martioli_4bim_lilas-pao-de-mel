@@ -1,0 +1,207 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <!-- Configurações da página -->
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Lila's - Início</title>
+
+    <!-- Arquivo CSS -->
+    <link rel="stylesheet" href="menu.css">
+</head>
+
+<body>
+
+    <!-- Cabeçalho da loja -->
+    <header>
+
+        <!-- Parte superior -->
+        <nav>
+            <button id="btnMenu">☰</button>
+
+            <a href="../login/login.html">
+                Login
+            </a>
+
+        <!-- Logo da Lila's -->
+        <h1>
+            <img src="logo-lilas.jpg" 
+                alt="Logo da Lila's"
+                id="logo">
+        </h1>
+
+        <!-- Link do Instagram -->
+        <a href="https://www.instagram.com/lilas.paodemel/"
+        id="linkInstagram"
+        target="_blank"
+        rel="noopener noreferrer">
+            Instagram
+        </a>
+
+        <!-- Link do WhatsApp -->
+        <a href="https://wa.me/5544998515032"
+        id="linkWhatsapp"
+        target="_blank"
+        rel="noopener noreferrer">
+            WhatsApp
+        </a>    
+        </nav>
+
+        <!-- Pesquisa e carrinho -->
+        <section>
+            <input type="text"
+                   id="inputPesquisa"
+                   placeholder="Pesquisar produtos...">
+
+            <button id="btnPesquisar">
+                Pesquisar
+            </button>
+
+            <a href="../carrinho/carrinho.html">
+                🛒
+            </a>
+        </section>
+
+    </header>
+
+
+        
+    <!-- Carrossel principal da Lila's -->
+    <section id="bannerInicial">
+
+        <!-- PRIMEIRO BANNER -->
+        <div class="slideBanner ativo"
+            style="background-image: url('../imagens/banner-pao-de-mel.jpg');">
+
+            <div class="conteudoBanner">
+
+                <!--<span class="subtituloBanner">
+                    LILA'S — PÃO DE MEL
+                </span>-->
+
+                <h2>
+                    Muito mais que pão de mel,
+                    <span>uma experiência de sabor.</span>
+                </h2>
+
+                <p>
+                    Pequenos momentos de carinho,
+                    preparados especialmente para adoçar o seu dia.
+                </p>
+
+                <a href="#catalogo" class="btnConhecer">
+                    CONHEÇA NOSSOS PÃES DE MEL
+                    <span>→</span>
+                </a>
+
+            </div>
+
+        </div>
+
+        <!-- SEGUNDO BANNER: NOVIDADE -->
+        <div class="slideBanner"
+            style="background-image: url('../imagens/banner-bolo-pao-de-mel.jpg');">
+
+            <div class="conteudoBanner">
+
+                <!--<span class="subtituloBanner">
+                    NOVIDADE NA LILA'S
+                </span>-->
+
+                <h2>
+                    Uma novidade deliciosa chegou!
+                    <span>Conheça o bolo de pão de mel.</span>
+                </h2>
+
+                <p>
+                    Todo o sabor do nosso pão de mel
+                    em uma versão especial para deixar
+                    seus momentos ainda mais doces.
+                </p>
+
+                <a href="#catalogo" class="btnConhecer">
+                    DESCUBRA A NOVIDADE
+                    <span>→</span>
+                </a>
+
+            </div>
+
+        </div>
+
+        <!-- SETA PARA VOLTAR -->
+        <button id="bannerAnterior"
+                class="setaBanner"
+                aria-label="Banner anterior">
+            ‹
+        </button>
+
+        <!-- SETA PARA AVANÇAR -->
+        <button id="bannerProximo"
+                class="setaBanner"
+                aria-label="Próximo banner">
+            ›
+        </button>
+
+        <!-- INDICADORES -->
+        <div class="indicadoresBanner">
+
+            <button class="indicadorBanner ativo"
+                    aria-label="Mostrar primeiro banner"></button>
+
+            <button class="indicadorBanner"
+                    aria-label="Mostrar segundo banner"></button>
+
+        </div>
+
+    </section>
+
+
+
+
+    <!-- Conteúdo principal -->
+    <main>
+
+        <!-- Catálogo de produtos -->
+        <section id="catalogo">
+
+            <h2>Nossos produtos</h2>
+
+            <!-- Botões para filtrar os produtos -->
+            <div class="filtros-produtos">
+
+            <button onclick="ftodos()">
+            Todos
+            </button>
+
+            <button onclick="fgrandes()">
+            Pães de mel grandes
+            </button>
+
+            <button onclick="fminis()">
+            Mini pães de mel
+            </button>
+
+            </div>
+
+            <!-- Produtos serão carregados aqui -->
+            <div id="resultado"></div>
+
+        </section>
+
+    </main>
+
+    <!-- Rodapé -->
+    <footer>
+        <p>Lila's - Todos os direitos reservados</p>
+    </footer>
+
+    <!-- Arquivo JavaScript -->
+    <script src="menu.js"></script>
+
+</body>
+
+</html>

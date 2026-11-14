@@ -1,4 +1,3 @@
-
 /* ========================================
    LILA'S PÃO DE MEL
    CADASTRO E LOGIN
@@ -140,6 +139,13 @@ if (formLogin) {
             if (resposta.ok && dados.sucesso) {
 
                 mensagem.textContent = "Login realizado com sucesso!";
+
+                // Retorna ao checkout se o login foi iniciado pelo carrinho.
+                if (sessionStorage.getItem("lilas_voltar_checkout") === "1") {
+                    sessionStorage.removeItem("lilas_voltar_checkout");
+                    window.location.href = "../checkout/checkout.html";
+                    return;
+                }
 
                 // Recupera o tipo do usuário
                 const tipo_usuario = dados.usuario.tipo_usuario;

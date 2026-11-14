@@ -1,4 +1,3 @@
-
 /* ========================================
    LILA'S PÃO DE MEL - SERVIDOR
    ======================================== */
@@ -41,9 +40,15 @@ const usuarioRoutes = require("./routes/usuarioRoutes");
 const administradorRoutes = require("./routes/administradorRoutes");
 const recuperacaoRoutes = require("./routes/recuperacaoRoutes");
 const bannerRoutes = require("./routes/bannerRoutes");
+const checkoutRoutes = require("./routes/checkoutRoutes");
+const pagamentosAdminRoutes = require("./routes/pagamentosAdminRoutes");
 
 // Listagem pública dos banners
 app.use("/banner", bannerRoutes);
+
+// Solicitações de encomenda (checkout)
+app.use("/checkout", checkoutRoutes);
+app.use("/pagamentos-admin", pagamentosAdminRoutes);
 
 // Rotas dos produtos
 app.use("/produto", produtoRoutes);

@@ -18,6 +18,7 @@ const campoPreco = document.getElementById("preco");
 const campoCategoria = document.getElementById("id_categoria");
 const campoSabor = document.getElementById("id_sabor");
 const campoDisponivel = document.getElementById("disponivel");
+const campoEstoque = document.getElementById("estoque_pronto");
 
 // ==========================================
 // ELEMENTOS DA PÁGINA
@@ -181,6 +182,7 @@ function limparCampos() {
     campoCategoria.value = "";
     campoSabor.value = "";
     campoDisponivel.value = "true";
+    campoEstoque.value = "0";
 
     produtoSelecionado = null;
     limparGaleria();
@@ -198,6 +200,7 @@ function preencherCampos(produto) {
     campoPreco.value = produto.preco;
     campoCategoria.value = produto.id_categoria;
     campoSabor.value = produto.id_sabor;
+    campoEstoque.value = produto.estoque_pronto ?? 0;
 
     campoDisponivel.value =
         produto.disponivel ? "true" : "false";
@@ -322,7 +325,7 @@ async function listar() {
             const linha = document.createElement("tr");
             const celula = document.createElement("td");
 
-            celula.colSpan = 6;
+            celula.colSpan = 7;
             celula.textContent = "Nenhum produto cadastrado.";
 
             linha.appendChild(celula);
@@ -350,6 +353,9 @@ async function listar() {
                         currency: "BRL"
                     }
                 ),
+                produto.nome_categoria?.toLowerCase().includes("mini")
+                    ? "Sob encomenda"
+                    : `${Number(produto.estoque_pronto ?? 0)} un.`,
                 produto.disponivel
                     ? "Disponível"
                     : "Indisponível"
@@ -362,7 +368,7 @@ async function listar() {
 
                 celula.textContent = valor;
 
-                if (indice === 5) {
+                if (indice === 6) {
 
                     celula.className = produto.disponivel
                         ? "status-disponivel"
@@ -533,7 +539,8 @@ async function salvar() {
         preco: campoPreco.value,
         id_categoria: campoCategoria.value,
         id_sabor: campoSabor.value,
-        disponivel: campoDisponivel.value === "true"
+        disponivel: campoDisponivel.value === "true",
+        estoque_pronto: Number(campoEstoque.value)
     };
 
     // Validação do formulário

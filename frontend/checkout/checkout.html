@@ -1,0 +1,436 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Lila's - Pagamento Pix</title>
+
+    <!-- CSS da página inicial -->
+    <link rel="stylesheet" href="../menu/menu.css">
+
+    <!-- CSS exclusivo do checkout -->
+    <link rel="stylesheet" href="checkout.css">
+</head>
+
+<body class="pagina-checkout">
+
+    <!-- ==========================================
+         CABEÇALHO
+         ========================================== -->
+
+    <header class="topo">
+
+        <!-- Logo à esquerda -->
+        <a href="../menu/menu.html" class="logo-checkout">
+            <img src="../menu/logo-lilas.jpg"
+                 alt="Logo da Lila's">
+        </a>
+
+        <!-- Botão voltar à direita -->
+        <a href="../carrinho/carrinho.html"
+           class="botao-voltar">
+            ← Voltar ao carrinho
+        </a>
+
+    </header>
+
+
+    <!-- ==========================================
+         CONTEÚDO PRINCIPAL
+         ========================================== -->
+
+    <main class="checkout">
+
+        <!-- Apresentação -->
+        <section class="apresentacao-checkout">
+
+            <p class="subtitulo">
+                LILA'S — PÃO DE MEL
+            </p>
+
+            <h1>Finalizar pedido 🍯</h1>
+
+            <p>
+                Escolha como e quando deseja receber
+                seus pães de mel.
+            </p>
+
+        </section>
+
+
+        <!-- Aviso sobre a confirmação -->
+        <section class="aviso-pedido">
+
+            <div class="icone-aviso">🍯</div>
+
+            <div>
+                <h2>Como funciona sua encomenda?</h2>
+
+                <p>
+                    Depois de conferir os dados, você poderá gerar o Pix com o valor final.
+                    O pedido só será confirmado quando a Lila's verificar o recebimento no banco.
+                </p>
+            </div>
+
+        </section>
+
+
+        <!-- ======================================
+             RESUMO DO CARRINHO
+             ====================================== -->
+
+        <section class="painel painel-resumo">
+
+            <div class="cabecalho-painel">
+                <h2>Resumo do carrinho</h2>
+                <span aria-hidden="true">🛒</span>
+            </div>
+
+            <!-- Produtos carregados pelo JavaScript -->
+            <div id="resumo"></div>
+
+            <!-- Subtotal -->
+            <div class="area-subtotal">
+                <span>Subtotal dos produtos</span>
+
+                <strong id="subtotal">
+                    R$ 0,00
+                </strong>
+            </div>
+
+        </section>
+
+
+        <!-- ======================================
+             FORMULÁRIO DE ENCOMENDA
+             ====================================== -->
+
+        <form id="formCheckout" class="painel">
+
+            <!-- Modalidade -->
+            <section class="secao-formulario">
+
+                <h2>Como deseja receber?</h2>
+
+                <p class="descricao-secao">
+                    Escolha a opção mais conveniente
+                    para receber sua encomenda.
+                </p>
+
+                <div class="opcoes-recebimento">
+
+                    <label class="opcao-recebimento">
+
+                        <input type="radio"
+                               name="modalidade"
+                               value="retirada"
+                               checked>
+
+                        <span class="conteudo-opcao">
+                            <span class="icone-opcao">🏪</span>
+                            <strong>Retirada agendada</strong>
+                        </span>
+
+                    </label>
+
+                    <label class="opcao-recebimento">
+
+                        <input type="radio"
+                               name="modalidade"
+                               value="entrega">
+
+                        <span class="conteudo-opcao">
+                            <span class="icone-opcao">🚚</span>
+                            <strong>Entrega agendada</strong>
+                        </span>
+
+                    </label>
+
+                </div>
+
+            </section>
+
+
+            <!-- ==================================
+                 ENDEREÇO DE ENTREGA
+                 ================================== -->
+
+            <section id="endereco"
+                     class="secao-formulario endereco-entrega"
+                     hidden>
+
+                <h3>Endereço de entrega</h3>
+
+                <p class="descricao-secao">
+                    Preencha os dados do local onde
+                    deseja receber seu pedido.
+                </p>
+
+                <div class="grade-campos">
+
+                    <label class="campo">
+                        Cidade
+
+                        <select id="cidade">
+                            <option value="">
+                                Selecione
+                            </option>
+                            <option>Goioerê</option>
+                            <option>Quarto Centenário</option>
+                            <option>Campo Mourão</option>
+                        </select>
+                    </label>
+
+                    <label class="campo">
+                        CEP
+
+                        <input id="cep"
+                               placeholder="00000-000"
+                               maxlength="9">
+                    </label>
+
+                    <label class="campo campo-largo">
+                        Rua
+
+                        <input id="rua"
+                               maxlength="150">
+                    </label>
+
+                    <label class="campo">
+                        Número
+
+                        <input id="numero"
+                               maxlength="30">
+                    </label>
+
+                    <label class="campo">
+                        Complemento (opcional)
+
+                        <input id="complemento"
+                               maxlength="300">
+                    </label>
+
+                    <label class="campo">
+                        Bairro
+
+                        <input id="bairro"
+                               maxlength="100">
+                    </label>
+
+                    <label class="campo">
+                        Referência (opcional)
+
+                        <input id="referencia"
+                               maxlength="300">
+                    </label>
+
+                </div>
+
+            </section>
+
+
+            <!-- ==================================
+                 AGENDAMENTO
+                 ================================== -->
+
+            <section class="secao-formulario">
+
+                <h2>Data e horário desejados</h2>
+
+                <p class="descricao-secao">
+                    Escolha quando gostaria de receber
+                    ou retirar sua encomenda.
+                </p>
+
+                <!-- Regra calculada pelo backend -->
+                <p id="regraPrazo">
+                    Calculando prazo conforme os produtos
+                    e o estoque...
+                </p>
+
+                <div class="grade-campos">
+
+                    <label class="campo">
+                        Data desejada
+
+                        <input id="data"
+                               type="date"
+                               required>
+                    </label>
+
+                    <label class="campo">
+                        Horário desejado
+
+                        <input id="horario"
+                               type="time"
+                               required>
+                    </label>
+
+                    <label class="campo campo-largo">
+                        Observações (opcional)
+
+                        <textarea id="observacao"
+                                  maxlength="300"
+                                  rows="3"
+                                  placeholder="Alguma informação importante sobre sua encomenda?"></textarea>
+                    </label>
+
+                </div>
+
+            </section>
+
+
+            <!-- ==================================
+                 FINALIZAÇÃO
+                 ================================== -->
+
+            <div class="finalizacao-checkout">
+
+                <p id="mensagem"
+                   role="status"
+                   aria-live="polite"></p>
+
+                <label class="campo">Cupom de desconto (opcional)
+                    <input id="cupom" maxlength="30" placeholder="Digite seu cupom">
+                </label>
+                <button id="enviar" type="submit">Continuar para pagamento</button>
+
+                <p class="aviso-final">
+                    O pedido será confirmado apenas após a conferência manual do Pix.
+                    Não faça transferências antes de visualizar o valor final.
+                </p>
+
+            </div>
+
+        </form>
+        <!-- Pagamento Pix: QR à esquerda e Copia e Cola à direita -->
+        <section id="pixArea" class="painel painel-pix" hidden>
+            <div class="pix-cabecalho">
+                <h2>Pagamento via Pix 🍯</h2>
+                <p>Escolha a maneira mais prática de pagar sua encomenda.</p>
+            </div>
+            <div class="pix-valores">
+                <div><span>Frete</span><strong id="pixFrete"></strong></div>
+                <div><span>Desconto</span><strong id="pixDesconto"></strong></div>
+                <div class="pix-total"><span>Total a pagar</span><strong id="pixTotal"></strong></div>
+            </div>
+            <div class="pix-metodos">
+                <div class="pix-metodo">
+                    <h3>Escaneie o QR Code</h3>
+                    <p>Abra o aplicativo do seu banco e escolha pagar com Pix.</p>
+                    <div class="pix-qr-moldura"><div id="pixQr"></div></div>
+                </div>
+                <div class="pix-metodo">
+                    <h3>Pix Copia e Cola</h3>
+                    <p>Copie o código e cole na área Pix do seu banco.</p>
+                    <label for="pixCodigo">Código do pagamento</label>
+                    <textarea id="pixCodigo" readonly rows="5"></textarea>
+                    <button type="button" id="btnCopiarPix">📋 Copiar código Pix</button>
+                    <p id="pixFeedback" role="status" aria-live="polite"></p>
+                </div>
+            </div>
+            <p class="pix-aviso">🔒 Após pagar, aguarde a Lila's conferir o recebimento no banco. O comprovante não confirma o pagamento automaticamente.</p>
+        
+
+<!-- ==========================================
+     COMPROVANTE E FINALIZAÇÃO DO PIX
+     ========================================== -->
+
+<div class="area-finalizacao-pix">
+
+    <div class="comprovante-cabecalho">
+        <span class="comprovante-icone">📄</span>
+
+        <div>
+            <h3>Comprovante de pagamento</h3>
+
+            <p>
+                Já realizou o Pix? Você pode anexar
+                o comprovante para facilitar a conferência.
+            </p>
+        </div>
+    </div>
+
+    <label for="comprovantePix" class="comprovante-seletor">
+        <span class="comprovante-upload-icone">☁️</span>
+
+        <strong>Selecionar comprovante</strong>
+
+        <span id="comprovanteNome">
+            Nenhum arquivo selecionado
+        </span>
+
+        <small>PDF, JPG ou PNG • Até 5 MB</small>
+    </label>
+
+    <input
+        type="file"
+        id="comprovantePix"
+        accept=".pdf,.jpg,.jpeg,.png"
+        hidden
+    >
+
+    <p id="comprovanteFeedback" role="status"></p>
+
+    <div class="finalizacao-aviso">
+        <strong>🍯 Tudo pronto?</strong>
+
+        <p>
+            Ao finalizar, você poderá acompanhar
+            sua encomenda. O pagamento ainda será
+            conferido pela Lila's.
+        </p>
+    </div>
+
+    <button
+        type="button"
+        id="btnFinalizarPagamento"
+        class="btn-finalizar-pix"
+        disabled
+    >
+        Finalizar pagamento →
+    </button>
+
+    <p class="finalizacao-legenda">
+        O comprovante é opcional.
+        A confirmação do Pix é feita pela administradora.
+    </p>
+
+</div>
+
+
+        </section>
+    </main>
+
+
+    <!-- ==========================================
+         RODAPÉ
+         ========================================== -->
+
+    <footer class="rodape-checkout">
+
+        <p>
+            © Lila's - Todos os direitos reservados
+        </p>
+
+        <p>
+            Desenvolvido por
+            <strong>
+                Maria Eduarda Brito Lucheti Martioli
+            </strong>
+        </p>
+
+    </footer>
+
+
+    <!-- JavaScript -->
+    <script src="../carrinho/carrinhoStorage.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="checkout.js"></script>
+
+</body>
+</html>

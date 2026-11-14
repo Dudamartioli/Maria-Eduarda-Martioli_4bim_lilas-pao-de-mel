@@ -1,0 +1,218 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Lila's - Gerenciamento de Cupons</title>
+
+    <!-- CSS exclusivo dos cupons -->
+    <link rel="stylesheet" href="cupons.css">
+</head>
+
+<body>
+
+    <!-- ==========================================
+         CABEÇALHO
+         ========================================== -->
+
+    <header class="cabecalho">
+
+        <!-- Logo da Lila's -->
+        <a href="../admin.html" class="logo">
+            <img src="../../menu/logo-lilas.jpg"
+                 alt="Logo da Lila's">
+        </a>
+
+        <!-- Voltar ao painel -->
+        <a href="../admin.html" class="botao-voltar">
+            Voltar à administração
+        </a>
+
+    </header>
+
+
+    <!-- ==========================================
+         CONTEÚDO PRINCIPAL
+         ========================================== -->
+
+    <main class="pagina-cupons">
+
+        <!-- Apresentação -->
+        <section class="apresentacao">
+
+            <p class="subtitulo">
+                ADMINISTRAÇÃO DA LILA'S
+            </p>
+
+            <h1>Gerenciamento de Cupons 🍯</h1>
+
+            <p class="descricao">
+                Cadastre e gerencie os cupons de desconto
+                disponíveis na loja.
+            </p>
+
+        </section>
+
+
+        <!-- ======================================
+             CADASTRO DE CUPONS
+             ====================================== -->
+
+        <section class="painel-cupons">
+
+            <!-- Cabeçalho marrom -->
+            <div class="titulo-painel">
+
+                <h2>Cadastrar cupom</h2>
+
+                <p>
+                    Configure o desconto e as condições
+                    de utilização.
+                </p>
+
+            </div>
+
+
+            <!-- Formulário original -->
+            <form id="f">
+
+                <div class="grade-campos">
+
+                    <!-- Código -->
+                    <label class="campo">
+                        Código do cupom
+
+                        <input id="codigo"
+                               type="text"
+                               placeholder="Ex: LILAS10"
+                               maxlength="30"
+                               required>
+                    </label>
+
+
+                    <!-- Tipo -->
+                    <label class="campo">
+                        Tipo de desconto
+
+                        <select id="tipo">
+
+                            <option value="percentual">
+                                Porcentagem (%)
+                            </option>
+
+                            <option value="fixo">
+                                Valor fixo (R$)
+                            </option>
+
+                        </select>
+                    </label>
+
+
+                    <!-- Valor -->
+                    <label class="campo">
+                        Valor do desconto
+
+                        <input id="valor"
+                               type="number"
+                               min="0.01"
+                               step="0.01"
+                               placeholder="Ex: 10,00"
+                               required>
+                    </label>
+
+
+                    <!-- Validade -->
+                    <label class="campo">
+                        Data de validade
+
+                        <input id="validade"
+                               type="date">
+                    </label>
+
+
+                    <!-- Limite de usos -->
+                    <label class="campo campo-largo">
+                        Limite de usos (opcional)
+
+                        <input id="limite"
+                               type="number"
+                               min="1"
+                               placeholder="Ex: 50">
+                    </label>
+
+                </div>
+
+
+                <!-- Botão salvar -->
+                <div class="acoes-formulario">
+
+                    <button type="submit">
+                        Salvar cupom
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+
+        <!-- Mensagens do JavaScript -->
+        <p id="msg" role="status"></p>
+
+
+        <!-- ======================================
+             LISTAGEM DE CUPONS
+             ====================================== -->
+
+        <section class="painel-cupons">
+
+            <div class="titulo-painel">
+
+                <h2>Cupons cadastrados</h2>
+
+                <p>
+                    Consulte os cupons disponíveis
+                    e suas condições de uso.
+                </p>
+
+            </div>
+
+            <!-- Lista preenchida pelo JavaScript -->
+            <div id="lista"></div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ==========================================
+         RODAPÉ
+         ========================================== -->
+
+    <footer>
+
+        <p>
+            © Lila's - Todos os direitos reservados
+        </p>
+
+        <p>
+            Desenvolvido por
+            <strong>
+                Maria Eduarda Brito Lucheti Martioli
+            </strong>
+        </p>
+
+    </footer>
+
+
+    <!-- JavaScript original -->
+    <script src="cupons.js"></script>
+
+</body>
+</html>

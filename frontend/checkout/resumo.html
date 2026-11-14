@@ -1,0 +1,135 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Resumo do Pedido | Lila's</title>
+
+    <link rel="stylesheet" href="resumo.css">
+</head>
+
+<body>
+
+    <header class="cabecalho">
+        <h1>Lila's – Pão de Mel 🍯</h1>
+        <p>Resumo da sua encomenda</p>
+    </header>
+
+    <main class="container">
+
+        <section class="cartao">
+
+            <div class="topo">
+                <div class="icone">✓</div>
+
+                <h2>Pedido registrado!</h2>
+
+                <p>
+                    Sua encomenda foi registrada.
+                    A Lila's ainda precisa conferir
+                    o recebimento do Pix.
+                </p>
+
+                <span id="status" class="status">
+                    Carregando...
+                </span>
+            </div>
+
+            <p id="mensagem" role="status"></p>
+
+            <div id="conteudo" hidden>
+
+                <h3>Dados do pedido</h3>
+
+                <div class="linha">
+                    <span>Número</span>
+                    <strong id="numeroPedido"></strong>
+                </div>
+
+                <div class="linha">
+                    <span>Cliente</span>
+                    <strong id="nomeCliente"></strong>
+                </div>
+
+                <h3>Produtos</h3>
+
+                <div id="listaProdutos"></div>
+
+                <h3>Entrega ou retirada</h3>
+
+                <div class="linha">
+                    <span>Modalidade</span>
+                    <strong id="modalidade"></strong>
+                </div>
+
+                <div class="linha">
+                    <span>Data</span>
+                    <strong id="dataPedido"></strong>
+                </div>
+
+                <div class="linha">
+                    <span>Horário</span>
+                    <strong id="horarioPedido"></strong>
+                </div>
+
+                <div id="areaEndereco" hidden>
+                    <div class="linha">
+                        <span>Endereço</span>
+                        <strong id="enderecoPedido"></strong>
+                    </div>
+                </div>
+
+                <h3>Valores</h3>
+
+                <div class="linha">
+                    <span>Subtotal</span>
+                    <strong id="subtotal"></strong>
+                </div>
+
+                <div class="linha">
+                    <span>Desconto</span>
+                    <strong id="desconto"></strong>
+                </div>
+
+                <div class="linha">
+                    <span>Frete</span>
+                    <strong id="frete"></strong>
+                </div>
+
+                <div class="linha total">
+                    <span>Total</span>
+                    <strong id="total"></strong>
+                </div>
+
+                <p id="comprovanteStatus"></p>
+
+                <div class="aviso">
+                    <strong>⏳ Aguardando conferência</strong>
+                    <p>
+                        A finalização não confirma
+                        automaticamente o Pix.
+                        A administradora verificará
+                        o recebimento antes de confirmar
+                        sua encomenda.
+                    </p>
+                </div>
+
+                <a href="../menu/menu.html"
+                   class="botao">
+                    Voltar para a loja
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="resumo.js"></script>
+
+</body>
+</html>

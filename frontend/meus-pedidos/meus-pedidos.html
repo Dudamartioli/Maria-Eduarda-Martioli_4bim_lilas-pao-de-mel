@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meus Pedidos | Lila's – Pão de Mel</title>
+<link rel="stylesheet" href="meus-pedidos.css">
+<script src="meus-pedidos.js" defer></script>
+</head>
+<body>
+<header class="cabecalho">
+<a href="../minha-conta/minha-conta.html" class="voltar">← Minha conta</a>
+<a href="../menu/menu.html"><img src="../menu/logo-lilas.jpg" alt="Logo da Lila's"></a>
+<a href="../menu/menu.html" class="voltar">Loja</a>
+</header>
+<main>
+<h1>🍯 Meus Pedidos</h1>
+<p class="subtitulo">Acompanhe suas encomendas e o andamento do pagamento.</p>
+
+
+<!-- Filtros dos pedidos -->
+<div class="filtros-pedidos">
+
+    <button type="button"
+            class="filtro ativo"
+            data-filtro="todos">
+        Todos
+    </button>
+
+    <button type="button"
+            class="filtro"
+            data-filtro="andamento">
+        Em andamento
+    </button>
+
+    <button type="button"
+            class="filtro"
+            data-filtro="confirmados">
+        Confirmados
+    </button>
+
+    <button type="button"
+            class="filtro"
+            data-filtro="finalizados">
+        Finalizados
+    </button>
+
+    <button type="button"
+            class="filtro"
+            data-filtro="cancelados">
+        Cancelados
+    </button>
+
+</div>
+
+<p id="mensagem" role="status">Carregando seus pedidos...</p>
+<section id="listaPedidos" aria-label="Seus pedidos"></section>
+</main>
+</body>
+</html>

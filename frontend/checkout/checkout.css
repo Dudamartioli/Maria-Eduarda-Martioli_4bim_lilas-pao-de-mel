@@ -1,0 +1,1206 @@
+
+/* =====================================================
+   LILA'S - CHECKOUT / SOLICITAR ENCOMENDA
+   Padrão visual amarelo, marrom e efeito 3D
+   ===================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&display=swap");
+
+
+/* =====================================================
+   CORES E EFEITOS
+   ===================================================== */
+
+:root {
+    --base: #FFE49A;
+    --mel: #E08A2E;
+    --doce-de-leite: #9A4F0E;
+    --chocolate: #5C3A2E;
+    --cafe: #3F2418;
+
+    --sombra: rgba(185, 115, 25, .32);
+    --luz: rgba(255, 251, 228, .95);
+
+    --relevo:
+        6px 6px 14px var(--sombra),
+        -6px -6px 14px var(--luz);
+
+    --afundado:
+        inset 5px 5px 11px var(--sombra),
+        inset -5px -5px 11px var(--luz);
+
+    --botao-fundo:
+        linear-gradient(150deg, #7b4f3d, #4a2d22);
+
+    --botao-sombra:
+        0 10px 18px -6px rgba(63,36,24,.55),
+        inset 0 1px 0 rgba(255,255,255,.28),
+        inset 0 -2px 0 rgba(0,0,0,.22);
+
+    --botao-brilho:
+        0 10px 22px -6px rgba(224,138,46,.75),
+        0 0 0 4px rgba(224,138,46,.28);
+
+    --fonte: "Jost", "Segoe UI", sans-serif;
+}
+
+
+/* =====================================================
+   CONFIGURAÇÕES GERAIS
+   ===================================================== */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    min-height: 100%;
+}
+
+body.pagina-checkout {
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    margin: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    background: var(--base);
+    color: var(--cafe);
+
+    font-family: var(--fonte);
+}
+
+[hidden] {
+    display: none !important;
+}
+
+
+/* =====================================================
+   CABEÇALHO
+   ===================================================== */
+
+.topo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    min-height: 95px;
+
+    padding: 10px clamp(20px, 4vw, 55px);
+
+    background: var(--base);
+}
+
+/* Logo */
+.logo-checkout {
+    display: flex;
+    align-items: center;
+
+    text-decoration: none;
+}
+
+.logo-checkout img {
+    display: block;
+
+    width: 165px;
+    max-width: 35vw;
+    height: auto;
+
+    object-fit: contain;
+}
+
+/* Botão voltar */
+.topo .botao-voltar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 12px 20px;
+
+    border: none;
+    border-radius: 999px;
+
+    background: var(--botao-fundo);
+    color: var(--base);
+
+    font-family: var(--fonte);
+    font-size: .9rem;
+    font-weight: 600;
+
+    text-decoration: none;
+
+    box-shadow: var(--botao-sombra);
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease;
+}
+
+.topo .botao-voltar:hover {
+    transform: translateY(-3px);
+    color: white;
+    box-shadow: var(--botao-brilho);
+}
+
+
+/* =====================================================
+   CONTEÚDO PRINCIPAL
+   ===================================================== */
+
+main.checkout {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+
+    width: min(1200px, 100%);
+
+    margin: 0 auto;
+
+    padding: 15px clamp(18px, 4vw, 50px) 45px;
+
+    gap: 25px;
+}
+
+
+/* =====================================================
+   APRESENTAÇÃO
+   ===================================================== */
+
+.apresentacao-checkout {
+    text-align: center;
+}
+
+.apresentacao-checkout .subtitulo {
+    margin: 0 0 7px;
+
+    color: var(--doce-de-leite);
+
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .2em;
+}
+
+.apresentacao-checkout h1 {
+    margin: 0 0 8px;
+
+    color: var(--chocolate);
+
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    font-weight: 700;
+}
+
+.apresentacao-checkout > p:last-child {
+    margin: 0;
+
+    color: #79553c;
+    font-size: .95rem;
+}
+
+
+/* =====================================================
+   AVISO SOBRE O PEDIDO
+   ===================================================== */
+
+.aviso-pedido {
+    display: flex;
+    align-items: center;
+
+    gap: 18px;
+
+    padding: 20px 25px;
+
+    border-radius: 22px;
+
+    background: var(--base);
+
+    box-shadow: var(--afundado);
+}
+
+.icone-aviso {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    width: 55px;
+    height: 55px;
+
+    border-radius: 50%;
+
+    background: var(--base);
+
+    font-size: 1.6rem;
+
+    box-shadow: var(--relevo);
+}
+
+.aviso-pedido h2 {
+    margin: 0 0 6px;
+
+    color: var(--chocolate);
+
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+.aviso-pedido p {
+    margin: 0;
+
+    color: #79553c;
+
+    font-size: .9rem;
+    line-height: 1.6;
+}
+
+
+/* =====================================================
+   CARTÕES PRINCIPAIS
+   ===================================================== */
+
+main.checkout > .painel {
+    width: 100%;
+    min-width: 0;
+
+    padding: 28px;
+
+    border-radius: 28px;
+
+    background: var(--base);
+
+    box-shadow: var(--relevo);
+}
+
+.painel h2 {
+    margin: 0;
+
+    color: var(--chocolate);
+
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+.painel h3 {
+    color: var(--chocolate);
+
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+
+/* =====================================================
+   RESUMO DO CARRINHO
+   ===================================================== */
+
+.cabecalho-painel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 20px;
+}
+
+.cabecalho-painel span {
+    font-size: 1.5rem;
+}
+
+#resumo {
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+
+    color: var(--chocolate);
+    font-size: .95rem;
+}
+
+/* Produtos renderizados pelo JavaScript */
+#resumo > * {
+    padding: 12px 15px;
+
+    border-radius: 15px;
+
+    background: var(--base);
+
+    box-shadow: var(--afundado);
+}
+
+.area-subtotal {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-top: 20px;
+    padding-top: 18px;
+
+    border-top: 1px solid rgba(154,79,14,.2);
+}
+
+.area-subtotal span {
+    color: var(--chocolate);
+    font-weight: 600;
+}
+
+#subtotal {
+    color: var(--chocolate);
+
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+
+/* =====================================================
+   SEÇÕES DO FORMULÁRIO
+   ===================================================== */
+
+.secao-formulario + .secao-formulario {
+    margin-top: 30px;
+    padding-top: 28px;
+
+    border-top: 1px solid rgba(154,79,14,.2);
+}
+
+.descricao-secao {
+    margin: 8px 0 20px;
+
+    color: #79553c;
+
+    font-size: .9rem;
+    line-height: 1.5;
+}
+
+
+/* =====================================================
+   OPÇÕES DE RETIRADA E ENTREGA
+   ===================================================== */
+
+.opcoes-recebimento {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    gap: 18px;
+}
+
+/* Cartão de cada opção */
+.opcao-recebimento {
+    position: relative;
+    display: block;
+
+    cursor: pointer;
+}
+
+/* Radio continua funcional */
+.opcao-recebimento input {
+    position: absolute;
+
+    width: 1px;
+    height: 1px;
+
+    opacity: 0;
+}
+
+/* Aparência do cartão */
+.conteudo-opcao {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    min-height: 110px;
+
+    padding: 20px;
+
+    border: 2px solid transparent;
+    border-radius: 20px;
+
+    background: var(--base);
+    color: var(--chocolate);
+
+    text-align: center;
+
+    box-shadow: var(--relevo);
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        border-color .2s ease;
+}
+
+.icone-opcao {
+    font-size: 1.8rem;
+}
+
+.conteudo-opcao strong {
+    font-size: .95rem;
+}
+
+/* Opção selecionada */
+.opcao-recebimento input:checked + .conteudo-opcao {
+    border-color: var(--mel);
+    box-shadow: var(--afundado);
+}
+
+/* Efeito hover */
+.opcao-recebimento:hover .conteudo-opcao {
+    transform: translateY(-2px);
+}
+
+/* Destaque ao navegar pelo teclado */
+.opcao-recebimento input:focus-visible + .conteudo-opcao {
+    outline: 2px solid var(--chocolate);
+    outline-offset: 3px;
+}
+
+
+/* =====================================================
+   ENDEREÇO DE ENTREGA
+   ===================================================== */
+
+.endereco-entrega h3 {
+    margin: 0 0 8px;
+}
+
+
+/* =====================================================
+   CAMPOS DO FORMULÁRIO
+   ===================================================== */
+
+.grade-campos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 20px;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+
+    gap: 9px;
+
+    min-width: 0;
+
+    color: var(--chocolate);
+
+    font-size: .95rem;
+    font-weight: 600;
+}
+
+.campo-largo {
+    grid-column: 1 / -1;
+}
+
+.campo input,
+.campo select,
+.campo textarea {
+    display: block;
+
+    width: 100%;
+    min-width: 0;
+
+    padding: 13px 16px;
+
+    border: none;
+    border-radius: 16px;
+
+    background: var(--base);
+    color: var(--cafe);
+
+    font-family: var(--fonte);
+    font-size: .95rem;
+    font-weight: 400;
+
+    box-shadow: var(--afundado);
+
+    outline: none;
+
+    transition: box-shadow .2s ease;
+}
+
+.campo textarea {
+    min-height: 105px;
+    resize: vertical;
+}
+
+.campo input::placeholder,
+.campo textarea::placeholder {
+    color: #a17a50;
+}
+
+/* Campos em foco */
+.campo input:focus,
+.campo select:focus,
+.campo textarea:focus {
+    outline: 2px solid var(--mel);
+    outline-offset: 2px;
+}
+
+.campo select {
+    cursor: pointer;
+}
+
+.campo select option {
+    background: #FFE49A;
+    color: #3F2418;
+}
+
+
+/* =====================================================
+   REGRA DE PRAZO
+   ===================================================== */
+
+#regraPrazo {
+    margin: 18px 0 22px;
+
+    padding: 16px 20px;
+
+    border-radius: 18px;
+
+    background: var(--base);
+
+    color: var(--doce-de-leite);
+
+    font-size: .9rem;
+    font-weight: 600;
+    line-height: 1.6;
+
+    box-shadow: var(--afundado);
+}
+
+
+/* =====================================================
+   FINALIZAÇÃO
+   ===================================================== */
+
+.finalizacao-checkout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 15px;
+
+    margin-top: 30px;
+    padding-top: 25px;
+
+    border-top: 1px solid rgba(154,79,14,.2);
+}
+
+#mensagem {
+    width: 100%;
+    margin: 0;
+
+    color: var(--doce-de-leite);
+
+    font-size: .95rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+#mensagem:empty {
+    display: none;
+}
+
+/* Botão enviar solicitação */
+#enviar {
+    width: min(460px, 100%);
+
+    padding: 15px 25px;
+
+    border: none;
+    border-radius: 999px;
+
+    background: var(--botao-fundo);
+    color: var(--base);
+
+    font-family: var(--fonte);
+    font-size: 1rem;
+    font-weight: 600;
+
+    box-shadow: var(--botao-sombra);
+
+    cursor: pointer;
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease;
+}
+
+#enviar:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: var(--botao-brilho);
+}
+
+#enviar:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+}
+
+.aviso-final {
+    max-width: 550px;
+    margin: 0;
+
+    color: #79553c;
+
+    font-size: .85rem;
+    line-height: 1.5;
+    text-align: center;
+}
+
+
+/* =====================================================
+   RODAPÉ
+   ===================================================== */
+
+body.pagina-checkout .rodape-checkout {
+    flex-shrink: 0;
+
+    padding: 15px 20px;
+
+    background: var(--base);
+    color: var(--chocolate);
+
+    text-align: center;
+    font-size: .85rem;
+
+    box-shadow:
+        0 -14px 26px -18px rgba(160,95,15,.5);
+}
+
+.rodape-checkout p {
+    margin: 3px 0;
+}
+
+
+/* =====================================================
+   NOTEBOOKS
+   ===================================================== */
+
+@media (min-width: 851px) and (max-height: 800px) {
+
+    .topo {
+        min-height: 75px;
+    }
+
+    .logo-checkout img {
+        width: 135px;
+    }
+
+    main.checkout {
+        gap: 18px;
+        padding-top: 10px;
+    }
+
+    main.checkout > .painel {
+        padding: 22px 25px;
+    }
+}
+
+
+/* =====================================================
+   TABLETS
+   ===================================================== */
+
+@media (max-width: 850px) {
+
+    main.checkout {
+        gap: 22px;
+    }
+
+    .opcoes-recebimento {
+        gap: 12px;
+    }
+}
+
+
+/* =====================================================
+   CELULARES
+   ===================================================== */
+
+@media (max-width: 550px) {
+
+    .topo {
+        min-height: 75px;
+
+        padding: 12px 15px;
+        gap: 12px;
+    }
+
+    .logo-checkout img {
+        width: 125px;
+        max-width: 40vw;
+    }
+
+    .topo .botao-voltar {
+        padding: 10px 12px;
+        font-size: .78rem;
+    }
+
+    main.checkout {
+        padding: 15px 15px 35px;
+        gap: 20px;
+    }
+
+    main.checkout > .painel {
+        padding: 20px 16px;
+        border-radius: 22px;
+    }
+
+    .aviso-pedido {
+        padding: 18px;
+        gap: 12px;
+    }
+
+    .icone-aviso {
+        width: 42px;
+        height: 42px;
+        font-size: 1.3rem;
+    }
+
+    .opcoes-recebimento {
+        grid-template-columns: 1fr;
+    }
+
+    .conteudo-opcao {
+        min-height: 85px;
+        padding: 15px;
+    }
+
+    .grade-campos {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .campo-largo {
+        grid-column: 1;
+    }
+
+    .area-subtotal {
+        flex-wrap: wrap;
+    }
+
+    #enviar {
+        width: 100%;
+    }
+}
+
+
+/* =====================================================
+   ACESSIBILIDADE
+   ===================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        transition: none !important;
+    }
+}
+
+
+/* =====================================================
+   LILA'S - DETALHES EM MARROM
+   Mantém o amarelo e os efeitos 3D originais
+   ===================================================== */
+
+
+/* =====================================================
+   1. TÍTULO PRINCIPAL
+   ===================================================== */
+
+.apresentacao-checkout h1 {
+    color: var(--chocolate);
+    text-shadow: 2px 3px 5px rgba(92, 58, 46, .12);
+}
+
+
+/* =====================================================
+   2. AVISO DE CONFIRMAÇÃO
+   Fundo marrom para destacar a informação
+   ===================================================== */
+
+.aviso-pedido {
+    background: linear-gradient(
+        145deg,
+        #754A35,
+        #4A2D22
+    );
+
+    box-shadow:
+        6px 8px 18px rgba(63, 36, 24, .25),
+        inset 0 1px 0 rgba(255, 255, 255, .15);
+}
+
+.aviso-pedido h2 {
+    color: var(--base);
+}
+
+.aviso-pedido p {
+    color: #FFF1CF;
+}
+
+.aviso-pedido strong {
+    color: #FFFFFF;
+}
+
+.icone-aviso {
+    background: #FFE49A;
+    box-shadow:
+        3px 4px 10px rgba(0, 0, 0, .2);
+}
+
+
+/* =====================================================
+   3. TÍTULOS DOS CARTÕES
+   Detalhe marrom abaixo dos títulos
+   ===================================================== */
+
+.painel h2 {
+    color: var(--chocolate);
+}
+
+.cabecalho-painel {
+    padding-bottom: 15px;
+    border-bottom: 2px solid rgba(92, 58, 46, .25);
+}
+
+.secao-formulario > h2 {
+    padding-left: 14px;
+    border-left: 5px solid var(--chocolate);
+}
+
+
+/* =====================================================
+   4. RESUMO DO CARRINHO
+   Subtotal destacado em marrom
+   ===================================================== */
+
+.area-subtotal {
+    padding: 18px 20px;
+    margin-top: 20px;
+
+    border: none;
+    border-radius: 18px;
+
+    background: var(--chocolate);
+
+    box-shadow:
+        4px 5px 12px rgba(63, 36, 24, .2);
+}
+
+.area-subtotal span {
+    color: #FFF1CF;
+}
+
+#subtotal {
+    color: var(--base);
+}
+
+
+/* =====================================================
+   5. OPÇÕES DE RETIRADA E ENTREGA
+   Opção selecionada fica marrom
+   ===================================================== */
+
+.opcao-recebimento input:checked + .conteudo-opcao {
+    background: linear-gradient(
+        145deg,
+        #754A35,
+        #4A2D22
+    );
+
+    border-color: var(--chocolate);
+
+    color: var(--base);
+
+    box-shadow:
+        4px 6px 14px rgba(63, 36, 24, .25);
+}
+
+.opcao-recebimento input:checked
++ .conteudo-opcao strong {
+    color: var(--base);
+}
+
+
+/* =====================================================
+   6. ENDEREÇO DE ENTREGA
+   ===================================================== */
+
+.endereco-entrega h3 {
+    color: var(--chocolate);
+    padding-left: 12px;
+    border-left: 4px solid var(--doce-de-leite);
+}
+
+
+/* =====================================================
+   7. REGRA DE PRAZO
+   Destaque discreto em doce de leite
+   ===================================================== */
+
+#regraPrazo {
+    border-left: 5px solid var(--doce-de-leite);
+    color: var(--chocolate);
+}
+
+
+/* =====================================================
+   8. BOTÃO DE FINALIZAÇÃO
+   Um pouco mais de destaque
+   ===================================================== */
+
+#enviar {
+    background: linear-gradient(
+        145deg,
+        #754A35,
+        #3F2418
+    );
+
+    color: #FFE49A;
+}
+
+#enviar:hover:not(:disabled) {
+    transform: translateY(-4px);
+    box-shadow:
+        0 12px 22px rgba(63, 36, 24, .35),
+        0 0 0 4px rgba(224, 138, 46, .18);
+}
+
+
+/* =====================================================
+   9. RODAPÉ
+   Marrom suave para finalizar a página
+   ===================================================== */
+
+body.pagina-checkout .rodape-checkout {
+    background: var(--chocolate);
+    color: #FFE49A;
+
+    box-shadow:
+        0 -6px 18px rgba(63, 36, 24, .15);
+}
+
+.rodape-checkout p,
+.rodape-checkout strong {
+    color: #FFE49A;
+}
+
+
+/* =====================================================
+   10. AJUSTES PARA CELULAR
+   ===================================================== */
+
+@media (max-width: 550px) {
+
+    .area-subtotal {
+        padding: 15px;
+    }
+
+    .aviso-pedido {
+        padding: 18px;
+    }
+
+    .secao-formulario > h2 {
+        padding-left: 10px;
+        border-left-width: 4px;
+    }
+}
+
+
+/* ===== PAGAMENTO PIX - LILA'S ===== */
+#pixArea.painel-pix {width:100%;max-width:none;margin:0;padding:0;overflow:hidden;text-align:left;border-radius:26px;background:#FFE49A;box-shadow:var(--relevo)}
+.painel-pix .pix-cabecalho {padding:24px 28px;text-align:center;background:linear-gradient(145deg,#754A35,#4A2D22)}
+.painel-pix .pix-cabecalho h2 {margin:0;color:#FFE49A;font-size:1.6rem}
+.painel-pix .pix-cabecalho p {margin:7px 0 0;color:#FFF1CF}
+.pix-valores {display:grid;grid-template-columns:1fr 1fr 1.2fr;gap:15px;padding:24px 26px 8px}
+.pix-valores>div {display:flex;flex-direction:column;gap:8px;align-items:center;justify-content:center;padding:18px 12px;border-radius:18px;background:#F5D88E;color:#5C3A2E;box-shadow:var(--afundado)}
+.pix-valores span {font-size:.88rem}.pix-valores strong {font-size:1.3rem}
+.pix-valores .pix-total {background:#5C3A2E;color:#FFE49A;box-shadow:0 6px 15px rgba(63,36,24,.22)}
+.pix-valores .pix-total strong {font-size:1.6rem}
+.pix-metodos {display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:20px 26px 24px;align-items:stretch}
+.pix-metodo {min-width:0;display:flex;flex-direction:column;align-items:center;gap:12px;padding:24px 18px;border-radius:22px;background:#FFF2CF;box-shadow:0 5px 15px rgba(92,58,46,.13);text-align:center}
+.pix-metodo h3 {margin:0;color:#5C3A2E;font-size:1.25rem}
+.pix-metodo p {margin:0;color:#79553C;line-height:1.5;font-size:.9rem}
+.pix-qr-moldura {margin:auto 0;display:flex;align-items:center;justify-content:center;padding:16px;background:white;border-radius:16px;box-shadow:0 5px 15px rgba(63,36,24,.12)}
+#pixQr {display:flex;justify-content:center;align-items:center;max-width:100%}
+#pixQr img,#pixQr canvas {display:block;max-width:100%;height:auto!important;image-rendering:pixelated}
+.pix-metodo label {align-self:stretch;text-align:left;font-weight:600;color:#5C3A2E;margin-top:auto}
+#pixCodigo {display:block;width:100%;min-height:126px;resize:vertical;overflow-wrap:anywhere;padding:14px;border:0;border-radius:14px;background:#FFE49A;color:#3F2418;box-shadow:var(--afundado);font-size:.83rem;line-height:1.5}
+#btnCopiarPix {width:100%;padding:14px 18px;border:0;border-radius:999px;background:linear-gradient(145deg,#754A35,#3F2418);color:#FFE49A;font:600 1rem var(--fonte);box-shadow:var(--botao-sombra);cursor:pointer;transition:transform .2s,box-shadow .2s}
+#btnCopiarPix:hover {transform:translateY(-3px);box-shadow:var(--botao-brilho)}
+#pixFeedback {min-height:1.3em;font-weight:600;color:#5C3A2E}
+.pix-aviso {margin:0 26px 26px;padding:16px 20px;border-radius:16px;background:#5C3A2E;color:#FFF1CF;text-align:center;line-height:1.5}
+@media(max-width:700px){.pix-metodos{grid-template-columns:1fr}.pix-valores{grid-template-columns:1fr 1fr}.pix-valores .pix-total{grid-column:1/-1}.pix-metodos{padding:15px}.pix-valores{padding:15px 15px 0}.pix-aviso{margin:0 15px 15px}.painel-pix .pix-cabecalho{padding:20px}}
+
+
+/* ==========================================
+   COMPROVANTE E FINALIZAÇÃO DO PIX
+   ========================================== */
+
+.area-finalizacao-pix {
+    margin: 0 26px 26px;
+    padding: 28px;
+    border-radius: 24px;
+
+    background: linear-gradient(
+        145deg,
+        #fff0c4,
+        #f4d99d
+    );
+
+    box-shadow:
+        8px 8px 18px rgba(92, 58, 46, 0.14),
+        -5px -5px 14px rgba(255, 255, 255, 0.7);
+}
+
+.comprovante-cabecalho {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 22px;
+}
+
+.comprovante-icone {
+    font-size: 2rem;
+}
+
+.comprovante-cabecalho h3 {
+    margin: 0 0 6px;
+    color: #5C3A2E;
+}
+
+.comprovante-cabecalho p {
+    margin: 0;
+    color: #79553C;
+    line-height: 1.5;
+}
+
+.comprovante-seletor {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 9px;
+
+    padding: 28px 15px;
+
+    border: 2px dashed #A87948;
+    border-radius: 20px;
+
+    background: #FFF6DF;
+
+    color: #5C3A2E;
+    text-align: center;
+
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.comprovante-seletor:hover {
+    transform: translateY(-3px);
+    background: #FFE8AD;
+    border-color: #5C3A2E;
+}
+
+.comprovante-upload-icone {
+    font-size: 2.3rem;
+}
+
+.comprovante-seletor small {
+    color: #886C52;
+}
+
+#comprovanteNome {
+    overflow-wrap: anywhere;
+}
+
+#comprovanteFeedback {
+    color: #5C3A2E;
+    font-weight: 600;
+    text-align: center;
+}
+
+.finalizacao-aviso {
+    margin-top: 22px;
+    padding: 18px;
+
+    border-radius: 16px;
+    background: #5C3A2E;
+    color: #FFF1CF;
+}
+
+.finalizacao-aviso strong {
+    display: block;
+    margin-bottom: 7px;
+}
+
+.finalizacao-aviso p {
+    margin: 0;
+    line-height: 1.6;
+}
+
+.btn-finalizar-pix {
+    display: block;
+    width: 100%;
+    margin-top: 22px;
+    padding: 17px 20px;
+
+    border: none;
+    border-radius: 30px;
+
+    background: linear-gradient(
+        135deg,
+        #805139,
+        #3F2418
+    );
+
+    color: #FFF1CF;
+    font-size: 1.05rem;
+    font-weight: 700;
+
+    box-shadow: 5px 7px 14px rgba(92, 58, 46, 0.25);
+
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.btn-finalizar-pix:not(:disabled):hover {
+    transform: translateY(-4px);
+    box-shadow: 7px 10px 20px rgba(92, 58, 46, 0.3);
+}
+
+.btn-finalizar-pix:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.finalizacao-legenda {
+    margin: 14px 0 0;
+    color: #79553C;
+    text-align: center;
+    font-size: 0.85rem;
+}
+
+@media (max-width: 700px) {
+    .area-finalizacao-pix {
+        margin: 0 15px 15px;
+        padding: 18px;
+    }
+
+    .comprovante-cabecalho {
+        align-items: flex-start;
+    }
+}

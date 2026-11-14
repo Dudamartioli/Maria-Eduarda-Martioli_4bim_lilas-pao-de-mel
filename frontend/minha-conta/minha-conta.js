@@ -106,7 +106,7 @@ function configurarBotoes() {
     // Configura o histórico de pedidos
     btnPedidos.onclick = function() {
 
-        LilaAvisos.alerta("Em breve você poderá consultar seus pedidos!");
+        window.location.href = "../meus-pedidos/meus-pedidos.html";
     };
 
     // Configura a entrada na administração

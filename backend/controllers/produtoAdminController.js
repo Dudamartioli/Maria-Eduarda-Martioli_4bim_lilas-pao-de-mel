@@ -90,7 +90,8 @@ function validarProduto(dados) {
         descricao,
         preco,
         id_categoria,
-        id_sabor
+        id_sabor,
+        estoque_pronto
     } = dados;
 
     if (typeof nome_produto !== "string" ||
@@ -126,6 +127,9 @@ function validarProduto(dados) {
         return "Selecione um sabor válido.";
     }
 
+    if (!Number.isSafeInteger(Number(estoque_pronto)) || Number(estoque_pronto) < 0) {
+        return "Informe uma quantidade de estoque válida (zero ou maior).";
+    }
     return null;
 }
 
@@ -151,8 +155,8 @@ const inserir = async (req, res) => {
         const resultado = await pool.query(
             `INSERT INTO produto
              (nome_produto, descricao, preco,
-              disponivel, id_categoria, id_sabor)
-             VALUES ($1, $2, $3, $4, $5, $6)
+              disponivel, id_categoria, id_sabor, estoque_pronto)
+             VALUES ($1, $2, $3, $4, $5, $6, $7)
              RETURNING *`,
             [
                 dados.nome_produto.trim(),
@@ -160,7 +164,8 @@ const inserir = async (req, res) => {
                 Number(dados.preco),
                 dados.disponivel === true,
                 Number(dados.id_categoria),
-                Number(dados.id_sabor)
+                Number(dados.id_sabor),
+                Number(dados.estoque_pronto)
             ]
         );
 
@@ -202,7 +207,8 @@ const alterar = async (req, res) => {
                  preco = $3,
                  disponivel = $4,
                  id_categoria = $5,
-                 id_sabor = $6
+                 id_sabor = $6,
+                 estoque_pronto = $8
              WHERE id_produto = $7
              RETURNING *`,
             [
@@ -212,7 +218,8 @@ const alterar = async (req, res) => {
                 dados.disponivel === true,
                 Number(dados.id_categoria),
                 Number(dados.id_sabor),
-                req.params.id
+                req.params.id,
+                Number(dados.estoque_pronto)
             ]
         );
 

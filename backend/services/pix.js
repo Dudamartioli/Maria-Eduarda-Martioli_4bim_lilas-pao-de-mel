@@ -1,0 +1,6 @@
+// Pix BR Code estático, com valor e identificador do pedido (sem confirmação automática).
+function campo(id, valor){return id+String(valor.length).padStart(2,'0')+valor;}
+function crc16(texto){let crc=0xFFFF;for(let i=0;i<texto.length;i++){crc^=texto.charCodeAt(i)<<8;for(let j=0;j<8;j++)crc=(crc&0x8000)?((crc<<1)^0x1021)&0xFFFF:(crc<<1)&0xFFFF;}return crc.toString(16).toUpperCase().padStart(4,'0');}
+function ascii(s,max){return String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^A-Za-z0-9 .-]/g,'').trim().toUpperCase().slice(0,max);}
+function gerarPix(valor,id){const chave=String(process.env.PIX_CHAVE||'').trim();const nome=ascii(process.env.PIX_NOME,25);const cidade=ascii(process.env.PIX_CIDADE,15);if(!chave||!nome||!cidade)throw Error('Configure PIX_CHAVE, PIX_NOME e PIX_CIDADE no .env');if(!Number.isFinite(valor)||valor<=0)throw Error('Valor Pix inválido');const gui=campo('00','br.gov.bcb.pix')+campo('01',chave);const txid='LILAS'+String(id).padStart(8,'0');const payload=campo('00','01')+campo('26',gui)+campo('52','0000')+campo('53','986')+campo('54',valor.toFixed(2))+campo('58','BR')+campo('59',nome)+campo('60',cidade)+campo('62',campo('05',txid))+'6304';return payload+crc16(payload);}
+module.exports={gerarPix};

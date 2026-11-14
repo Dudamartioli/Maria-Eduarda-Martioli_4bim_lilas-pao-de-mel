@@ -1,4 +1,3 @@
-
 // =============================================
 // LILA'S - CARRINHO DE COMPRAS
 // =============================================
@@ -364,11 +363,8 @@ function renderizar() {
 // =============================================
 
 finalizar.addEventListener("click", () => {
-
-    mostrarAviso(
-        "Seu carrinho está pronto! 🍯",
-        "O checkout com login e registro de pedidos será implementado na próxima etapa. Nenhum pedido foi realizado."
-    );
+    // O checkout verifica o login e mantém os produtos no carrinho.
+    window.location.href = "../checkout/checkout.html";
 });
 
 // Carrega os dados ao abrir a página.

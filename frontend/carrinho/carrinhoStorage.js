@@ -28,5 +28,6 @@ const LilaCarrinho = (() => {
         if (item) {item.quantidade = quantidade; salvar(itens);}
     }
     function remover(id) { salvar(listar().filter(x => x.id_produto !== Number(id))); }
-    return {listar, adicionar, alterar, remover};
+    function limpar() { salvar([]); }
+    return {listar, adicionar, alterar, remover, limpar};
 })();

@@ -1,0 +1,153 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Lila's - Gerenciamento de Pedidos</title>
+
+    <!-- CSS exclusivo dos pedidos -->
+    <link rel="stylesheet" href="pedidos.css">
+</head>
+
+<body>
+
+    <!-- ==========================================
+         CABEÇALHO
+         ========================================== -->
+
+    <header class="cabecalho">
+
+        <!-- Logo da Lila's -->
+        <a href="../admin.html" class="logo">
+            <img src="../../menu/logo-lilas.jpg"
+                 alt="Logo da Lila's">
+        </a>
+
+        <!-- Botão voltar -->
+        <a href="../admin.html" class="botao-voltar">
+            Voltar à administração
+        </a>
+
+    </header>
+
+
+    <!-- ==========================================
+         CONTEÚDO PRINCIPAL
+         ========================================== -->
+
+    <main class="pagina-pedidos">
+
+        <!-- Apresentação -->
+        <section class="apresentacao">
+
+            <p class="subtitulo">
+                ADMINISTRAÇÃO DA LILA'S
+            </p>
+
+            <h1>Gerenciamento de Pedidos 🍯</h1>
+
+            <p class="descricao">
+                Acompanhe as encomendas, confira os
+                pagamentos e gerencie os pedidos da loja.
+            </p>
+
+        </section>
+
+
+        <!-- ======================================
+             AVISO SOBRE PAGAMENTOS
+             ====================================== -->
+
+        <section class="aviso-pagamento">
+
+            <div class="icone-aviso">
+                💳
+            </div>
+
+            <div class="texto-aviso">
+
+                <h2>Atenção aos pagamentos</h2>
+
+                <p>
+                    Confirme o pagamento de um pedido
+                    somente depois de verificar se o
+                    valor do Pix foi realmente creditado
+                    na conta bancária da Lila's.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- ======================================
+             LISTAGEM DE PEDIDOS
+             ====================================== -->
+
+        <section class="painel-pedidos">
+
+            <!-- Faixa marrom -->
+            
+            <div class="titulo-painel">
+
+                <div class="cabecalho-listagem">
+
+                    <div>
+                        <h2>Pedidos cadastrados</h2>
+
+                        <p>
+                            Consulte as encomendas recebidas
+                            e atualize suas informações.
+                        </p>
+                    </div>
+
+                    <!-- Botão para atualizar os pedidos -->
+                    <button type="button" id="btnAtualizarPedidos">
+                        ↻ Atualizar lista
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- Pedidos carregados pelo JavaScript -->
+            <div id="lista">
+                Carregando pedidos...
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ==========================================
+         RODAPÉ
+         ========================================== -->
+
+    <footer>
+
+        <p>
+            © Lila's - Todos os direitos reservados
+        </p>
+
+        <p>
+            Desenvolvido por
+            <strong>
+                Maria Eduarda Brito Lucheti Martioli
+            </strong>
+        </p>
+
+    </footer>
+
+
+    <!-- JavaScript original -->
+    <script src="pedidos.js"></script>
+
+</body>
+</html>

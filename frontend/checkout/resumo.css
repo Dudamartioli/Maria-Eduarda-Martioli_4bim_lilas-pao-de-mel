@@ -1,0 +1,610 @@
+
+/* =====================================================
+   LILA'S - RESUMO DO PEDIDO
+   Amarelo mel + marrom chocolate + efeitos 3D
+   ===================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&display=swap");
+
+
+/* =====================================================
+   CORES E EFEITOS DA LILA'S
+   ===================================================== */
+
+:root {
+    --base: #FFE49A;
+    --mel: #E08A2E;
+    --doce-de-leite: #9A4F0E;
+    --chocolate: #5C3A2E;
+    --cafe: #3F2418;
+
+    --creme: #FFF3D1;
+    --marrom-claro: #79553C;
+
+    --sombra: rgba(185, 115, 25, .32);
+    --luz: rgba(255, 251, 228, .95);
+
+    --relevo:
+        6px 6px 14px var(--sombra),
+        -6px -6px 14px var(--luz);
+
+    --afundado:
+        inset 5px 5px 11px var(--sombra),
+        inset -5px -5px 11px var(--luz);
+
+    --botao-fundo:
+        linear-gradient(150deg, #7B4F3D, #4A2D22);
+
+    --botao-sombra:
+        0 10px 18px -6px rgba(63, 36, 24, .55),
+        inset 0 1px 0 rgba(255, 255, 255, .28),
+        inset 0 -2px 0 rgba(0, 0, 0, .22);
+
+    --botao-brilho:
+        0 10px 22px -6px rgba(224, 138, 46, .75),
+        0 0 0 4px rgba(224, 138, 46, .28);
+
+    --fonte: "Jost", "Segoe UI", sans-serif;
+}
+
+
+/* =====================================================
+   CONFIGURAÇÕES GERAIS
+   ===================================================== */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    min-height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    margin: 0;
+
+    background: var(--base);
+    color: var(--cafe);
+
+    font-family: var(--fonte);
+    line-height: 1.5;
+}
+
+/* Mantém ocultos os elementos controlados pelo JS */
+[hidden] {
+    display: none !important;
+}
+
+
+/* =====================================================
+   CABEÇALHO
+   ===================================================== */
+
+.cabecalho {
+    padding: 35px 20px 20px;
+
+    text-align: center;
+}
+
+.cabecalho h1 {
+    margin: 0 0 5px;
+
+    color: var(--chocolate);
+
+    font-size: clamp(1.7rem, 3vw, 2.3rem);
+    font-weight: 700;
+}
+
+.cabecalho p {
+    margin: 0;
+
+    color: var(--doce-de-leite);
+
+    font-size: .95rem;
+    font-weight: 600;
+    letter-spacing: .04em;
+}
+
+
+/* =====================================================
+   CONTAINER PRINCIPAL
+   ===================================================== */
+
+.container {
+    width: min(850px, 100%);
+
+    margin: 0 auto;
+    padding: 15px 20px 55px;
+}
+
+
+/* =====================================================
+   CARTÃO PRINCIPAL
+   ===================================================== */
+
+.cartao {
+    overflow: hidden;
+
+    border-radius: 30px;
+
+    background: var(--base);
+
+    box-shadow: var(--relevo);
+}
+
+
+/* =====================================================
+   TOPO - PEDIDO REGISTRADO
+   ===================================================== */
+
+.topo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 35px 30px;
+
+    background: linear-gradient(
+        145deg,
+        #754A35,
+        #4A2D22
+    );
+
+    color: var(--creme);
+
+    text-align: center;
+}
+
+.icone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 68px;
+    height: 68px;
+
+    margin-bottom: 5px;
+
+    border-radius: 50%;
+
+    background: var(--base);
+    color: var(--chocolate);
+
+    font-size: 2rem;
+    font-weight: 700;
+
+    box-shadow:
+        4px 6px 14px rgba(0, 0, 0, .22),
+        inset 0 1px 0 rgba(255, 255, 255, .5);
+}
+
+.topo h2 {
+    margin: 0;
+
+    color: var(--base);
+
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 700;
+}
+
+.topo p {
+    max-width: 550px;
+
+    margin: 0;
+
+    color: var(--creme);
+
+    font-size: .95rem;
+    line-height: 1.7;
+}
+
+
+/* =====================================================
+   STATUS DO PEDIDO
+   ===================================================== */
+
+.status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    max-width: 100%;
+
+    margin-top: 10px;
+    padding: 10px 22px;
+
+    border-radius: 999px;
+
+    background: var(--base);
+    color: var(--chocolate);
+
+    font-size: .9rem;
+    font-weight: 700;
+
+    text-align: center;
+
+    box-shadow:
+        3px 4px 10px rgba(0, 0, 0, .18);
+}
+
+
+/* =====================================================
+   MENSAGENS DO JAVASCRIPT
+   ===================================================== */
+
+#mensagem {
+    margin: 0;
+    padding: 0 30px;
+
+    color: var(--doce-de-leite);
+
+    font-size: .95rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+#mensagem:not(:empty) {
+    padding-top: 20px;
+}
+
+#mensagem:empty {
+    display: none;
+}
+
+
+/* =====================================================
+   CONTEÚDO DO PEDIDO
+   ===================================================== */
+
+#conteudo {
+    padding: 30px 35px 35px;
+}
+
+/* Títulos das seções */
+#conteudo h3 {
+    margin: 28px 0 16px;
+
+    padding-left: 14px;
+
+    border-left: 5px solid var(--chocolate);
+
+    color: var(--chocolate);
+
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+#conteudo h3:first-child {
+    margin-top: 0;
+}
+
+
+/* =====================================================
+   LINHAS DE INFORMAÇÕES
+   ===================================================== */
+
+.linha {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 13px 16px;
+    margin-bottom: 10px;
+
+    border-radius: 14px;
+
+    background: var(--base);
+
+    box-shadow: var(--afundado);
+}
+
+.linha span {
+    flex-shrink: 0;
+
+    color: var(--marrom-claro);
+
+    font-size: .92rem;
+}
+
+.linha strong {
+    color: var(--chocolate);
+
+    font-size: .95rem;
+    font-weight: 700;
+
+    text-align: right;
+    overflow-wrap: anywhere;
+}
+
+
+/* =====================================================
+   LISTA DE PRODUTOS
+   ===================================================== */
+
+#listaProdutos {
+    display: flex;
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+/* Cada produto renderizado pelo resumo.js */
+#listaProdutos > * {
+    padding: 15px 18px;
+
+    border: 1px solid rgba(92, 58, 46, .12);
+    border-radius: 17px;
+
+    background: var(--creme);
+
+    color: var(--chocolate);
+
+    box-shadow:
+        3px 4px 10px rgba(185, 115, 25, .12);
+}
+
+#listaProdutos strong {
+    color: var(--chocolate);
+}
+
+
+/* =====================================================
+   TOTAL DO PEDIDO
+   ===================================================== */
+
+.linha.total {
+    align-items: center;
+
+    margin-top: 18px;
+    padding: 18px 22px;
+
+    border-radius: 18px;
+
+    background: linear-gradient(
+        145deg,
+        #754A35,
+        #4A2D22
+    );
+
+    box-shadow:
+        4px 6px 14px rgba(63, 36, 24, .25);
+}
+
+.linha.total span {
+    color: var(--creme);
+
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+.linha.total strong {
+    color: var(--base);
+
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+
+/* =====================================================
+   STATUS DO COMPROVANTE
+   ===================================================== */
+
+#comprovanteStatus {
+    margin: 20px 0;
+
+    padding: 14px 18px;
+
+    border-radius: 16px;
+
+    background: var(--creme);
+    color: var(--chocolate);
+
+    font-size: .9rem;
+    font-weight: 600;
+    line-height: 1.6;
+
+    text-align: center;
+
+    box-shadow: var(--relevo);
+}
+
+#comprovanteStatus:empty {
+    display: none;
+}
+
+
+/* =====================================================
+   AVISO DE CONFERÊNCIA DO PIX
+   ===================================================== */
+
+.aviso {
+    margin-top: 25px;
+    padding: 22px 25px;
+
+    border-left: 5px solid var(--mel);
+    border-radius: 18px;
+
+    background: #F3D68E;
+
+    box-shadow:
+        4px 5px 12px rgba(185, 115, 25, .16);
+}
+
+.aviso strong {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: var(--chocolate);
+
+    font-size: 1.05rem;
+}
+
+.aviso p {
+    margin: 0;
+
+    color: var(--marrom-claro);
+
+    font-size: .9rem;
+    line-height: 1.7;
+}
+
+
+/* =====================================================
+   BOTÃO VOLTAR PARA A LOJA
+   ===================================================== */
+
+.botao {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: min(380px, 100%);
+
+    margin: 30px auto 0;
+    padding: 15px 25px;
+
+    border: none;
+    border-radius: 999px;
+
+    background: var(--botao-fundo);
+    color: var(--base);
+
+    font-family: var(--fonte);
+    font-size: 1rem;
+    font-weight: 600;
+
+    text-align: center;
+    text-decoration: none;
+
+    box-shadow: var(--botao-sombra);
+
+    cursor: pointer;
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease;
+}
+
+.botao:hover {
+    transform: translateY(-3px);
+
+    color: #FFFFFF;
+
+    box-shadow: var(--botao-brilho);
+}
+
+.botao:focus-visible {
+    outline: 3px solid var(--mel);
+    outline-offset: 4px;
+}
+
+
+/* =====================================================
+   RESPONSIVIDADE - TABLETS
+   ===================================================== */
+
+@media (max-width: 768px) {
+
+    .container {
+        padding: 15px 18px 40px;
+    }
+
+    #conteudo {
+        padding: 25px;
+    }
+
+    .topo {
+        padding: 30px 22px;
+    }
+}
+
+
+/* =====================================================
+   RESPONSIVIDADE - CELULARES
+   ===================================================== */
+
+@media (max-width: 550px) {
+
+    .cabecalho {
+        padding: 25px 15px 15px;
+    }
+
+    .container {
+        padding: 10px 12px 35px;
+    }
+
+    .cartao {
+        border-radius: 23px;
+    }
+
+    .topo {
+        padding: 28px 18px;
+    }
+
+    .icone {
+        width: 58px;
+        height: 58px;
+
+        font-size: 1.7rem;
+    }
+
+    .topo h2 {
+        font-size: 1.55rem;
+    }
+
+    #conteudo {
+        padding: 22px 16px;
+    }
+
+    #conteudo h3 {
+        font-size: 1.05rem;
+    }
+
+    .linha {
+        gap: 12px;
+        padding: 12px;
+    }
+
+    .linha span,
+    .linha strong {
+        font-size: .85rem;
+    }
+
+    .linha.total {
+        padding: 16px;
+    }
+
+    .linha.total strong {
+        font-size: 1.25rem;
+    }
+
+    .aviso {
+        padding: 18px;
+    }
+
+    .botao {
+        width: 100%;
+    }
+}
+
+
+/* =====================================================
+   ACESSIBILIDADE
+   ===================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        transition: none !important;
+    }
+}

@@ -1,0 +1,745 @@
+
+/* =====================================================
+   LILA'S PÃO DE MEL - PAINEL ADMINISTRATIVO
+   Visual 3D original do menu
+   ===================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&display=swap");
+
+
+/* ---------- Cores e sombras do menu ---------- */
+
+:root {
+    --base: #FFE49A;
+    --mel: #E08A2E;
+    --doce-de-leite: #9A4F0E;
+    --chocolate: #5C3A2E;
+    --cafe: #3F2418;
+
+    --sombra: rgba(185, 115, 25, 0.32);
+    --luz: rgba(255, 251, 228, 0.95);
+
+    --relevo:
+        6px 6px 14px var(--sombra),
+        -6px -6px 14px var(--luz);
+
+    --relevo-pequeno:
+        4px 4px 10px var(--sombra),
+        -4px -4px 10px var(--luz);
+
+    --afundado:
+        inset 5px 5px 11px var(--sombra),
+        inset -5px -5px 11px var(--luz);
+
+    --botao-fundo:
+        linear-gradient(150deg, #7b4f3d 0%, #4a2d22 100%);
+
+    --botao-sombra:
+        0 10px 18px -6px rgba(63, 36, 24, 0.55),
+        inset 0 1px 0 rgba(255, 255, 255, 0.28),
+        inset 0 -2px 0 rgba(0, 0, 0, 0.22);
+
+    --botao-brilho:
+        0 10px 22px -6px rgba(224, 138, 46, 0.75),
+        0 0 0 4px rgba(224, 138, 46, 0.28),
+        inset 0 1px 0 rgba(255, 255, 255, 0.35),
+        inset 0 -2px 0 rgba(0, 0, 0, 0.22);
+
+    --fonte: "Jost", "Segoe UI", system-ui, sans-serif;
+}
+
+
+/* ---------- Configurações gerais ---------- */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+
+    background: var(--base);
+    color: var(--cafe);
+
+    font-family: var(--fonte);
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+button {
+    font-family: var(--fonte);
+}
+
+[hidden] {
+    display: none !important;
+}
+
+
+/* =====================================================
+   CABEÇALHO
+   ===================================================== */
+
+.cabecalho {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+    padding: 15px clamp(20px, 5vw, 65px);
+
+    background: var(--base);
+}
+
+
+/* Logo e identificação */
+
+.marca {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.link-logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.logoAdmin {
+    display: block;
+    width: 170px;
+    max-width: 35vw;
+    height: auto;
+    object-fit: contain;
+}
+
+.texto-admin {
+    margin: 0;
+    padding-left: 18px;
+
+    border-left: 2px solid rgba(154, 79, 14, 0.3);
+
+    color: var(--chocolate);
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+
+/* Botões superiores */
+
+.menu-superior {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.menu-superior button {
+    padding: 0.75rem 1.4rem;
+
+    border: none;
+    border-radius: 999px;
+
+    background: var(--botao-fundo);
+    color: var(--base);
+
+    font-size: 0.95rem;
+    font-weight: 500;
+
+    cursor: pointer;
+    box-shadow: var(--botao-sombra);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.menu-superior button:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--botao-brilho);
+}
+
+.menu-superior button:active {
+    transform: translateY(1px);
+}
+
+
+/* =====================================================
+   CONTEÚDO PRINCIPAL
+   ===================================================== */
+
+main {
+    flex: 1;
+
+    width: min(1200px, 100%);
+    margin: 0 auto;
+
+    padding: 35px clamp(20px, 4vw, 45px) 65px;
+}
+
+
+/* =====================================================
+   QUADRADO DE BOAS-VINDAS
+   ===================================================== */
+
+.boas-vindas {
+    position: relative;
+
+    padding: 35px 40px;
+    margin-bottom: 55px;
+
+    border-radius: 30px;
+
+    background: var(--base);
+    box-shadow: var(--relevo);
+
+    text-align: left;
+}
+
+
+/* Reflexo suave */
+
+.boas-vindas::before {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    border-radius: inherit;
+
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.45),
+        transparent 50%
+    );
+
+    pointer-events: none;
+}
+
+
+/* Texto pequeno */
+
+.subtitulo {
+    margin: 0 0 10px;
+
+    color: var(--doce-de-leite);
+
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+}
+
+
+/* Título */
+
+.boas-vindas h2 {
+    margin: 0 0 10px;
+
+    color: var(--chocolate);
+
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-weight: 400;
+}
+
+
+/* Descrição */
+
+#nomeAdministrador {
+    margin: 0;
+
+    color: #6b4a2a;
+    font-size: 1rem;
+}
+
+
+/* =====================================================
+   ÁREA DE GERENCIAMENTO
+   ===================================================== */
+
+.area-modulos > h2 {
+    margin: 0 0 30px;
+
+    color: var(--chocolate);
+
+    font-size: 1.7rem;
+    font-weight: 400;
+}
+
+
+/* Grade dos cards */
+
+.grade-modulos {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    gap: 30px;
+}
+
+
+/* =====================================================
+   CARDS DE GERENCIAMENTO
+   ===================================================== */
+
+.cartao-modulo {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    min-height: 275px;
+    padding: 30px 25px;
+
+    border-radius: 28px;
+
+    background: var(--base);
+
+    box-shadow:
+        10px 10px 22px var(--sombra),
+        -10px -10px 22px var(--luz);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+/* Reflexo de luz */
+
+.cartao-modulo::before {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    border-radius: inherit;
+
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.4),
+        transparent 40%
+    );
+
+    pointer-events: none;
+}
+
+
+/* Flutuação */
+
+.cartao-modulo:hover {
+    transform: translateY(-5px);
+
+    box-shadow:
+        14px 16px 30px var(--sombra),
+        -10px -10px 22px var(--luz);
+}
+
+
+/* Ícone */
+
+.cartao-modulo .icone {
+    margin-bottom: 12px;
+    font-size: 2.5rem;
+    line-height: 1;
+}
+
+
+/* Nome do módulo */
+
+.cartao-modulo h3 {
+    margin: 0 0 10px;
+
+    color: var(--chocolate);
+
+    font-size: 1.3rem;
+    font-weight: 500;
+}
+
+
+/* Descrição */
+
+.cartao-modulo p {
+    flex: 1;
+
+    margin: 0 0 25px;
+
+    color: #6b4a2a;
+    font-size: 0.95rem;
+}
+
+
+/* Botão */
+
+.botao-modulo {
+    width: 100%;
+
+    padding: 0.85rem 1rem;
+
+    border: none;
+    border-radius: 999px;
+
+    background: var(--botao-fundo);
+    color: var(--base);
+
+    font-size: 0.9rem;
+    font-weight: 600;
+
+    cursor: pointer;
+    box-shadow: var(--botao-sombra);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.botao-modulo:not(:disabled):hover {
+    transform: translateY(-3px);
+    box-shadow: var(--botao-brilho);
+}
+
+.botao-modulo:not(:disabled):active {
+    transform: translateY(1px);
+}
+
+
+/* Botões ainda não liberados */
+
+.botao-modulo:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+
+/* =====================================================
+   AVISO INFERIOR
+   ===================================================== */
+
+.aviso-painel {
+    margin-top: 45px;
+    padding: 25px 30px;
+
+    border-radius: 25px;
+
+    background: var(--base);
+    box-shadow: var(--afundado);
+}
+
+.aviso-painel h3 {
+    margin: 0 0 8px;
+
+    color: var(--chocolate);
+
+    font-size: 1.15rem;
+    font-weight: 500;
+}
+
+.aviso-painel p {
+    margin: 0;
+
+    color: #6b4a2a;
+    font-size: 0.95rem;
+}
+
+
+/* =====================================================
+   MENSAGENS
+   ===================================================== */
+
+#aviso {
+    margin: 0;
+
+    color: var(--doce-de-leite);
+    text-align: center;
+}
+
+#aviso:not(:empty) {
+    padding: 15px;
+}
+
+
+/* =====================================================
+   RODAPÉ
+   ===================================================== */
+
+footer {
+    padding: 25px 20px;
+
+    background: var(--base);
+    color: var(--chocolate);
+
+    text-align: center;
+
+    box-shadow:
+        0 -14px 26px -18px rgba(160, 95, 15, 0.5),
+        0 -1px 0 var(--luz);
+}
+
+footer p {
+    margin: 5px 0;
+    font-size: 0.9rem;
+}
+
+
+/* =====================================================
+   TABLETS
+   ===================================================== */
+
+@media (max-width: 900px) {
+
+    .grade-modulos {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .boas-vindas {
+        padding: 30px;
+    }
+}
+
+
+/* =====================================================
+   CELULARES
+   ===================================================== */
+
+@media (max-width: 600px) {
+
+    .cabecalho {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .logoAdmin {
+        width: 145px;
+    }
+
+    .texto-admin {
+        font-size: 0.85rem;
+    }
+
+    main {
+        padding: 25px 18px 45px;
+    }
+
+    .boas-vindas {
+        padding: 25px;
+        margin-bottom: 35px;
+    }
+
+    .grade-modulos {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+
+    .cartao-modulo {
+        min-height: 250px;
+    }
+
+    .area-modulos > h2 {
+        font-size: 1.5rem;
+    }
+
+    .aviso-painel {
+        margin-top: 35px;
+    }
+}
+
+
+/* ---------- Redução de movimento ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+
+    * {
+        transition: none !important;
+    }
+}
+
+
+/* =====================================================
+   ACABAMENTO FINAL - ADMINISTRAÇÃO DA LILA'S
+   Mantém o layout e o efeito 3D do menu
+   ===================================================== */
+
+
+/* ---------- Título Gerenciamento da loja ---------- */
+
+.area-modulos > h2 {
+    margin-bottom: 35px;
+
+    color: var(--chocolate);
+
+    font-size: 1.8rem;
+    font-weight: 700;
+
+    letter-spacing: 0.01em;
+}
+
+
+/* Barrinha decorativa de mel */
+
+.area-modulos > h2::after {
+    content: "";
+
+    display: block;
+
+    width: 75px;
+    height: 6px;
+
+    margin-top: 12px;
+
+    border-radius: 10px;
+
+    background: linear-gradient(
+        90deg,
+        #F2B24A,
+        var(--mel)
+    );
+
+    box-shadow:
+        0 3px 6px rgba(185, 115, 25, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.55);
+}
+
+
+/* =====================================================
+   BOTÕES GERENCIAR - IGUAIS AOS BOTÕES SUPERIORES
+   ===================================================== */
+
+.botao-modulo {
+    position: relative;
+    z-index: 1;
+
+    width: 100%;
+
+    padding: 0.85rem 1.2rem;
+
+    border: none;
+    border-radius: 999px;
+
+    background: var(--botao-fundo);
+    color: var(--base);
+
+    font-family: var(--fonte);
+    font-size: 0.95rem;
+    font-weight: 500;
+
+    box-shadow: var(--botao-sombra);
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        color 0.2s ease;
+}
+
+
+/* Efeito ao passar o mouse */
+
+.botao-modulo:not(:disabled):hover {
+    transform: translateY(-3px);
+
+    color: #fff;
+    box-shadow: var(--botao-brilho);
+}
+
+
+/* Efeito ao clicar */
+
+.botao-modulo:not(:disabled):active {
+    transform: translateY(1px);
+}
+
+
+/* Botões ainda não liberados */
+
+.botao-modulo:disabled {
+    opacity: 1;
+
+    background: var(--botao-fundo);
+    color: var(--base);
+
+    box-shadow: var(--botao-sombra);
+
+    cursor: not-allowed;
+}
+
+
+/* =====================================================
+   CARDS - DETALHES MAIS ELEGANTES
+   ===================================================== */
+
+.cartao-modulo {
+    border: 1px solid rgba(255, 251, 228, 0.35);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+/* Efeito de flutuar */
+
+.cartao-modulo:hover {
+    transform: translateY(-5px);
+
+    box-shadow:
+        14px 16px 30px var(--sombra),
+        -10px -10px 22px var(--luz);
+}
+
+
+/* Títulos dos cards */
+
+.cartao-modulo h3 {
+    font-weight: 600;
+}
+
+
+/* =====================================================
+   ACABAMENTO DO QUADRADO DE BOAS-VINDAS
+   ===================================================== */
+
+.boas-vindas {
+    border: 1px solid rgba(255, 251, 228, 0.4);
+}
+
+
+/* Linha de destaque na parte inferior */
+
+.boas-vindas::after {
+    content: "";
+
+    position: absolute;
+
+    bottom: 0;
+    left: 35px;
+
+    width: 85px;
+    height: 5px;
+
+    border-radius: 10px 10px 0 0;
+
+    background: linear-gradient(
+        90deg,
+        #F2B24A,
+        var(--mel)
+    );
+}
+
+
+/* =====================================================
+   ACESSIBILIDADE
+   ===================================================== */
+
+.botao-modulo:focus-visible {
+    outline: 3px solid var(--mel);
+    outline-offset: 4px;
+}

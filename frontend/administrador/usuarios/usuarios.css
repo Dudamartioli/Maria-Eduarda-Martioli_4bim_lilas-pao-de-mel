@@ -1,0 +1,903 @@
+
+/* =====================================================
+   LILA'S PÃO DE MEL - GERENCIAMENTO DE USUÁRIOS
+   Mesmo estilo dos outros CRUDs administrativos
+   ===================================================== */
+
+/* Importa as cores e os efeitos das categorias */
+@import url("../categorias/categorias.css");
+
+
+/* =====================================================
+   CONFIGURAÇÕES GERAIS
+   ===================================================== */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    min-height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    margin: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    background: var(--base, #FFE49A);
+    color: var(--cafe, #3F2418);
+
+    font-family: var(--fonte, "Jost", sans-serif);
+}
+
+[hidden] {
+    display: none !important;
+}
+
+
+/* =====================================================
+   CABEÇALHO
+   ===================================================== */
+
+.cabecalho {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+
+    gap: 20px;
+
+    min-height: 95px;
+
+    padding: 12px clamp(20px, 4vw, 55px);
+}
+
+/* Botão voltar */
+.voltar {
+    justify-self: start;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 12px 20px;
+
+    border-radius: 999px;
+
+    background: var(--botao-fundo);
+    color: var(--base);
+
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+
+    box-shadow: var(--botao-sombra);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.voltar:hover {
+    transform: translateY(-3px);
+
+    color: white;
+    box-shadow: var(--botao-brilho);
+}
+
+/* Logo centralizada */
+.cabecalho a:has(.logo) {
+    grid-column: 2;
+    display: flex;
+    justify-content: center;
+}
+
+.cabecalho img.logo {
+    display: block;
+
+    width: 155px;
+    max-width: 30vw;
+    height: auto;
+
+    object-fit: contain;
+}
+
+/* Identificação da administração */
+.cabecalho .area {
+    justify-self: end;
+
+    color: var(--chocolate);
+
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+
+/* =====================================================
+   CONTEÚDO PRINCIPAL
+   ===================================================== */
+
+main#conteudo {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    width: min(1400px, 100%);
+
+    margin: 0 auto;
+
+    padding: 15px clamp(20px, 4vw, 55px) 30px;
+}
+
+/* Título centralizado */
+main#conteudo > h1 {
+    margin: 0 0 6px;
+
+    color: var(--chocolate);
+
+    font-size: clamp(1.7rem, 2.7vw, 2.2rem);
+    font-weight: 700;
+
+    text-align: center;
+}
+
+/* Descrição abaixo do título */
+.introducao {
+    margin: 0 0 25px;
+
+    color: #79553c;
+
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+
+/* =====================================================
+   ORGANIZAÇÃO DOS DOIS CARTÕES
+   ===================================================== */
+
+.layout {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        minmax(0, 1fr);
+
+    align-items: stretch;
+
+    gap: 30px;
+
+    width: 100%;
+}
+
+/* Cartões com efeito 3D */
+.painel {
+    display: flex;
+    flex-direction: column;
+
+    min-width: 0;
+
+    padding: 28px;
+
+    border-radius: 28px;
+
+    background: var(--base);
+    box-shadow: var(--relevo);
+}
+
+/* Mantém os dois cartões com a mesma altura */
+.layout > .painel {
+    height: 100%;
+}
+
+/* Título do formulário */
+.painel:first-child::before {
+    content: "Dados do usuário";
+
+    display: block;
+
+    margin-bottom: 22px;
+
+    color: var(--chocolate);
+
+    font-size: 1.35rem;
+    font-weight: 700;
+}
+
+
+/* =====================================================
+   FORMULÁRIO
+   ===================================================== */
+
+.campos {
+    display: flex;
+    flex-direction: column;
+
+    gap: 15px;
+
+    margin-top: 18px;
+}
+
+/* Labels */
+.linha-busca label,
+.campos label {
+    display: flex;
+    flex-direction: column;
+
+    gap: 8px;
+
+    min-width: 0;
+
+    color: var(--chocolate);
+
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+/* Campo de procura */
+.linha-busca {
+    display: flex;
+    align-items: end;
+
+    gap: 12px;
+}
+
+.linha-busca label {
+    flex: 1;
+    min-width: 0;
+}
+
+/* Inputs e selects */
+.linha-busca input,
+.campos input,
+.campos select {
+    display: block;
+
+    width: 100%;
+    min-width: 0;
+
+    padding: 12px 15px;
+
+    border: none;
+    border-radius: 15px;
+
+    background: var(--base);
+    color: var(--cafe);
+
+    font: inherit;
+    font-weight: 400;
+
+    box-shadow: var(--afundado);
+
+    outline: none;
+
+    transition: box-shadow 0.2s ease;
+}
+
+/* Textos de exemplo */
+.linha-busca input::placeholder,
+.campos input::placeholder {
+    color: #a17a50;
+}
+
+/* Destaque ao selecionar */
+.linha-busca input:focus,
+.campos input:focus,
+.campos select:focus {
+    outline: 2px solid var(--mel);
+    outline-offset: 2px;
+}
+
+/* Campos bloqueados */
+.campos input:disabled,
+.campos select:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* Select */
+.campos select {
+    cursor: pointer;
+}
+
+.campos select option {
+    background: #FFE49A;
+    color: #3F2418;
+}
+
+
+/* =====================================================
+   BOTÕES 3D DA LILA'S
+   ===================================================== */
+
+.linha-busca button,
+.acoes button,
+.titulo-lista button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 12px 20px;
+
+    border: none;
+    border-radius: 999px;
+
+    background: var(--botao-fundo);
+    color: var(--base);
+
+    font-family: var(--fonte);
+    font-size: 0.9rem;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    box-shadow: var(--botao-sombra);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        color 0.2s ease;
+}
+
+/* Efeito flutuar */
+.linha-busca button:hover:not(:disabled),
+.acoes button:hover:not(:disabled),
+.titulo-lista button:hover:not(:disabled) {
+    transform: translateY(-3px);
+
+    color: white;
+    box-shadow: var(--botao-brilho);
+}
+
+/* Efeito ao clicar */
+.linha-busca button:active,
+.acoes button:active,
+.titulo-lista button:active {
+    transform: translateY(1px);
+}
+
+/* Botões desativados */
+button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+/* Botões principais */
+.acoes {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 12px;
+
+    margin-top: 22px;
+}
+
+.acoes button {
+    flex: 1;
+    min-width: 95px;
+}
+
+/* Botão excluir */
+#btnExcluir {
+    background: linear-gradient(
+        150deg,
+        #925043,
+        #65342c
+    );
+}
+
+
+/* =====================================================
+   MENSAGENS DO FORMULÁRIO
+   ===================================================== */
+
+#mensagem {
+    margin: 0;
+
+    color: var(--doce-de-leite);
+
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+#mensagem:not(:empty) {
+    margin-top: 15px;
+}
+
+
+/* =====================================================
+   CARTÃO DE USUÁRIOS CADASTRADOS
+   ===================================================== */
+
+.painel.lista {
+    min-width: 0;
+}
+
+/* Cabeçalho da tabela */
+.titulo-lista {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 12px;
+}
+
+.titulo-lista h2 {
+    margin: 0;
+
+    color: var(--chocolate);
+
+    font-size: 1.35rem;
+    font-weight: 700;
+}
+
+/* Instrução */
+.dica {
+    margin: 0 0 18px;
+
+    color: #79553c;
+
+    font-size: 0.9rem;
+}
+
+
+/* =====================================================
+   TABELA COM ROLAGEM INTERNA
+   ===================================================== */
+
+.tabela-rolagem {
+    flex: 1;
+
+    min-height: 200px;
+    max-height: 450px;
+
+    overflow: auto;
+
+    border-radius: 20px;
+
+    background: var(--base);
+
+    box-shadow: var(--afundado);
+}
+
+table {
+    width: 100%;
+    min-width: 530px;
+
+    border-collapse: separate;
+    border-spacing: 0;
+
+    color: var(--chocolate);
+
+    font-size: 0.9rem;
+}
+
+/* Cabeçalho fixo */
+thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+
+    padding: 14px 12px;
+
+    background: #f3d88d;
+    color: var(--chocolate);
+
+    font-weight: 700;
+    text-align: left;
+}
+
+/* Dados */
+tbody td {
+    padding: 13px 12px;
+
+    border-bottom:
+        1px solid rgba(154, 79, 14, 0.15);
+
+    overflow-wrap: anywhere;
+}
+
+/* Linhas clicáveis */
+tbody tr {
+    cursor: pointer;
+
+    transition: background 0.2s ease;
+}
+
+tbody tr:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+/* Última linha */
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* =====================================================
+   AVISO DE ACESSO
+   ===================================================== */
+
+#avisoAcesso {
+    margin: 0;
+
+    padding: 10px;
+
+    color: var(--doce-de-leite);
+
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+
+/* =====================================================
+   RODAPÉ
+   ===================================================== */
+
+footer {
+    flex-shrink: 0;
+
+    padding: 12px 20px;
+
+    background: var(--base);
+    color: var(--chocolate);
+
+    text-align: center;
+
+    font-size: 0.8rem;
+    line-height: 1.6;
+
+    box-shadow:
+        0 -14px 26px -18px rgba(160, 95, 15, 0.5),
+        0 -1px 0 var(--luz);
+}
+
+
+/* =====================================================
+   NOTEBOOKS COM ALTURA MENOR
+   ===================================================== */
+
+@media (min-width: 901px) and (max-height: 800px) {
+
+    .cabecalho {
+        min-height: 75px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+
+    .cabecalho img.logo {
+        width: 135px;
+    }
+
+    main#conteudo {
+        justify-content: center;
+
+        padding-top: 10px;
+        padding-bottom: 15px;
+    }
+
+    .introducao {
+        margin-bottom: 15px;
+    }
+
+    .painel {
+        padding: 20px 24px;
+    }
+
+    .painel:first-child::before {
+        margin-bottom: 12px;
+    }
+
+    .campos {
+        gap: 10px;
+        margin-top: 12px;
+    }
+
+    .acoes {
+        margin-top: 15px;
+    }
+
+    .tabela-rolagem {
+        max-height: 330px;
+    }
+
+    footer {
+        padding: 8px 15px;
+    }
+}
+
+
+/* =====================================================
+   TELAS MÉDIAS
+   ===================================================== */
+
+@media (max-width: 900px) {
+
+    main#conteudo {
+        justify-content: flex-start;
+
+        padding-top: 25px;
+        padding-bottom: 35px;
+    }
+
+    .layout {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+
+    .layout > .painel {
+        height: auto;
+    }
+
+    .tabela-rolagem {
+        min-height: 230px;
+        max-height: 380px;
+    }
+}
+
+
+/* =====================================================
+   CELULARES
+   ===================================================== */
+
+@media (max-width: 550px) {
+
+    .cabecalho {
+        grid-template-columns: 1fr auto;
+        gap: 12px;
+        padding: 15px;
+    }
+
+    .cabecalho a:has(.logo) {
+        grid-column: 1;
+        grid-row: 1;
+        justify-content: flex-start;
+    }
+
+    .cabecalho img.logo {
+        width: 125px;
+        max-width: 100%;
+    }
+
+    .voltar {
+        grid-column: 2;
+        grid-row: 1;
+
+        padding: 10px 13px;
+
+        font-size: 0.78rem;
+    }
+
+    .cabecalho .area {
+        display: none;
+    }
+
+    main#conteudo {
+        padding: 20px 15px 30px;
+    }
+
+    main#conteudo > h1 {
+        font-size: 1.55rem;
+    }
+
+    .painel {
+        padding: 20px 16px;
+        border-radius: 22px;
+    }
+
+    .linha-busca {
+        gap: 8px;
+    }
+
+    .linha-busca button {
+        padding: 12px;
+    }
+
+    .acoes {
+        gap: 8px;
+    }
+
+    .acoes button {
+        min-width: 80px;
+        padding: 11px 10px;
+    }
+
+    .titulo-lista {
+        flex-wrap: wrap;
+    }
+
+    .titulo-lista h2 {
+        font-size: 1.2rem;
+    }
+}
+
+
+/* =====================================================
+   ACESSIBILIDADE
+   ===================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        transition: none !important;
+    }
+}
+
+
+/* =====================================================
+   LILA'S - PADRONIZAÇÃO DO CRUD DE USUÁRIOS
+   Mesmo estilo dos CRUDs de Categorias e Sabores
+   ===================================================== */
+
+
+/* =====================================================
+   CABEÇALHO
+   ===================================================== */
+
+/* Logo à esquerda e botão à direita */
+.cabecalho {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    min-height: 85px;
+
+    padding: 10px clamp(20px, 4vw, 55px);
+}
+
+/* Link que contém a logo */
+.cabecalho a.logo {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    text-decoration: none;
+}
+
+/* Imagem da logo */
+.cabecalho a.logo img {
+    display: block;
+
+    width: 165px;
+    max-width: 35vw;
+    height: auto;
+
+    object-fit: contain;
+}
+
+/* Botão voltar à administração */
+.cabecalho .botao-voltar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0.75rem 1.4rem;
+
+    border: none;
+    border-radius: 999px;
+
+    background: var(--botao-fundo);
+    color: var(--base);
+
+    font-family: var(--fonte);
+    font-size: 0.9rem;
+    font-weight: 600;
+
+    text-decoration: none;
+
+    box-shadow: var(--botao-sombra);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+/* Efeito 3D ao passar o mouse */
+.cabecalho .botao-voltar:hover {
+    transform: translateY(-3px);
+
+    color: white;
+    box-shadow: var(--botao-brilho);
+}
+
+
+/* =====================================================
+   TÍTULO CENTRALIZADO
+   ===================================================== */
+
+main#conteudo > h1 {
+    text-align: center;
+
+    color: var(--chocolate);
+
+    font-weight: 700;
+}
+
+main#conteudo > .introducao {
+    text-align: center;
+}
+
+
+/* =====================================================
+   TÍTULOS DOS CARTÕES
+   ===================================================== */
+
+.painel:first-child::before,
+.titulo-lista h2 {
+    font-weight: 700;
+}
+
+
+/* =====================================================
+   BOTÕES IGUAIS AOS OUTROS CRUDs
+   ===================================================== */
+
+.linha-busca button,
+.acoes button,
+.titulo-lista button {
+    background: var(--botao-fundo);
+    color: var(--base);
+
+    box-shadow: var(--botao-sombra);
+}
+
+.linha-busca button:hover:not(:disabled),
+.acoes button:hover:not(:disabled),
+.titulo-lista button:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: var(--botao-brilho);
+}
+
+
+/* =====================================================
+   RESPONSIVIDADE
+   ===================================================== */
+
+@media (max-width: 550px) {
+
+    .cabecalho {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+
+        gap: 12px;
+    }
+
+    .cabecalho a.logo img {
+        width: 130px;
+        max-width: 40vw;
+    }
+
+    .cabecalho .botao-voltar {
+        padding: 10px 13px;
+        font-size: 0.8rem;
+    }
+}
+
+
+/* Centraliza o subtítulo da página */
+.subtitulo {
+    width: 100%;
+    margin: 0 0 5px;
+
+    text-align: center;
+
+    color: var(--doce-de-leite);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+}

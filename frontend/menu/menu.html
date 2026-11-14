@@ -23,9 +23,36 @@
         <nav>
             <button id="btnMenu">☰</button>
 
-            <a href="../login/login.html">
-                Login
-            </a>
+            
+    <!-- Área do usuário -->
+    <div id="areaUsuario">
+
+        <!-- Link mostrado quando não estiver logado -->
+        <a href="../login/login.html" id="linkLogin">
+            Login
+        </a>
+
+        <!-- Opções mostradas quando estiver logado -->
+        <div id="opcoesUsuario" hidden>
+
+            <!-- Botão da conta -->
+            <button type="button" id="btnMinhaConta">
+                Minha conta
+            </button>
+
+            <!-- Menu para sair da conta -->
+            <div id="menuUsuario" hidden>
+
+                <button type="button" id="btnSair">
+                    Sair da conta
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
 
         <!-- Logo da Lila's -->
         <h1>
@@ -171,7 +198,7 @@
             <h2>Nossos produtos</h2>
 
             <!-- Botões para filtrar os produtos -->
-            <div class="filtros-produtos">
+            <!--<!<div class="filtros-produtos">
 
             <button onclick="ftodos()">
             Todos
@@ -185,7 +212,7 @@
             Mini pães de mel
             </button>
 
-            </div>
+            </div>-->
 
             <!-- Produtos serão carregados aqui -->
             <div id="resultado"></div>
@@ -196,7 +223,8 @@
 
     <!-- Rodapé -->
     <footer>
-        <p>Lila's - Todos os direitos reservados</p>
+        <p>© 2026 Lila's - Todos os direitos reservados.</p>
+        <p>Desenvolvido por <strong>Maria Eduarda Brito Lucheti Martioli</strong></p>
     </footer>
 
     <!-- Arquivo JavaScript -->

@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <!-- Configurações da página -->
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Lila's - Redefinir senha</title>
+
+    <!-- Estilo da loja -->
+    <link rel="stylesheet" href="login.css">
+</head>
+
+<body>
+
+    <main class="containerLogin">
+
+        <section class="cartaoLogin">
+
+            <!-- Logo da Lila's -->
+            <img src="imagens/logo.png"
+            alt="Logo da Lila's Pão de Mel"
+            class="logoLogin">
+
+            <h2>Crie uma nova senha</h2>
+
+            <p>
+                Digite sua nova senha para recuperar
+                o acesso à sua conta.
+            </p>
+
+            <!-- Formulário de redefinição -->
+            <form id="formRedefinir">
+
+                <label for="novaSenha">
+                    Nova senha
+                </label>
+
+                <input type="password"
+                       id="novaSenha"
+                       placeholder="Digite a nova senha"
+                       minlength="6"
+                       autocomplete="new-password"
+                       required>
+
+                <label for="confirmarSenha">
+                    Confirmar nova senha
+                </label>
+
+                <input type="password"
+                       id="confirmarSenha"
+                       placeholder="Repita a nova senha"
+                       minlength="6"
+                       autocomplete="new-password"
+                       required>
+
+                <button type="submit">
+                    Salvar nova senha
+                </button>
+
+            </form>
+
+            <!-- Mensagem do sistema -->
+            <p id="mensagem"></p>
+
+            <a href="login.html">
+                Voltar para o login
+            </a>
+
+        </section>
+
+    </main>
+
+    <!-- JavaScript da redefinição -->
+    <script src="redefinirSenha.js"></script>
+
+</body>
+
+</html>

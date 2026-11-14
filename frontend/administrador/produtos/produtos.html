@@ -1,0 +1,396 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Lila's - Gerenciar Produtos</title>
+
+    <link rel="stylesheet" href="produtos.css">
+    <script src="produtos.js" defer></script>
+</head>
+
+<body>
+
+    <!-- Cabeçalho -->
+    <header class="cabecalho">
+
+        <!-- Logo da Lila's -->
+        <a href="../admin.html" class="logo">
+            <img src="../../menu/logo-lilas.jpeg"
+                 alt="Logo da Lila's">
+        </a>
+
+        <!-- Voltar para o painel -->
+        <a href="../admin.html" class="botao-voltar">
+            Voltar à administração
+        </a>
+
+    </header>
+
+
+    <!-- Área protegida -->
+    <main id="conteudo" hidden>
+
+        <!-- Apresentação da página -->
+        <section class="apresentacao">
+
+            <p class="subtitulo">
+                ADMINISTRAÇÃO DA LILA'S
+            </p>
+
+            <h1>Gerenciar produtos</h1>
+
+            <p>
+                Cadastre e organize os produtos,
+                preços, categorias e sabores.
+            </p>
+
+        </section>
+
+
+        <!-- ==========================================
+             ÁREA COM OS TRÊS QUADRADOS
+             ========================================== -->
+
+        <div class="area-gerenciamento">
+
+
+            <!-- ======================================
+                 QUADRADO 1 - DADOS DO PRODUTO
+                 ====================================== -->
+
+            <section class="cartao cartao-dados">
+
+                <h2>Dados do produto</h2>
+
+
+                <!-- Código -->
+                <div class="campo">
+
+                    <label for="id_produto">
+                        Código do produto
+                    </label>
+
+                    <div class="linha-procura">
+
+                        <input type="number"
+                               id="id_produto"
+                               min="1"
+                               placeholder="Digite o código">
+
+                        <button type="button" id="btnProcurar">
+                            Procurar
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Nome -->
+                <div class="campo">
+
+                    <label for="nome_produto">
+                        Nome do produto
+                    </label>
+
+                    <input type="text"
+                           id="nome_produto"
+                           maxlength="100"
+                           placeholder="Ex.: Mini clássico">
+
+                </div>
+
+
+                <!-- Descrição -->
+                <div class="campo">
+
+                    <label for="descricao">
+                        Descrição
+                    </label>
+
+                    <textarea id="descricao"
+                              rows="3"
+                              maxlength="200"
+                              placeholder="Descrição do produto"></textarea>
+
+                </div>
+
+
+                <!-- Preço -->
+                <div class="campo">
+
+                    <label for="preco">
+                        Preço (R$)
+                    </label>
+
+                    <input type="number"
+                           id="preco"
+                           min="0.01"
+                           step="0.01"
+                           placeholder="Ex.: 8.00">
+
+                </div>
+
+
+                <!-- Categoria -->
+                <div class="campo">
+
+                    <label for="id_categoria">
+                        Categoria
+                    </label>
+
+                    <select id="id_categoria">
+
+                        <option value="">
+                            Selecione uma categoria
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- Sabor -->
+                <div class="campo">
+
+                    <label for="id_sabor">
+                        Sabor
+                    </label>
+
+                    <select id="id_sabor">
+
+                        <option value="">
+                            Selecione um sabor
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- Disponibilidade -->
+                <div class="campo">
+
+                    <label for="disponivel">
+                        Disponibilidade
+                    </label>
+
+                    <select id="disponivel">
+
+                        <option value="true">
+                            Disponível
+                        </option>
+
+                        <option value="false">
+                            Indisponível
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- Botões principais -->
+                <div class="botoes" id="botoesPrincipais">
+
+                    <button type="button" id="btnInserir">
+                        Inserir
+                    </button>
+
+                    <button type="button" id="btnAlterar">
+                        Alterar
+                    </button>
+
+                    <button type="button" id="btnExcluir">
+                        Excluir
+                    </button>
+
+                </div>
+
+
+                <!-- Botões de confirmação -->
+                <div class="botoes"
+                     id="botoesConfirmacao"
+                     hidden>
+
+                    <button type="button" id="btnSalvar">
+                        Salvar
+                    </button>
+
+                    <button type="button" id="btnCancelar">
+                        Cancelar
+                    </button>
+
+                </div>
+
+
+                <!-- Mensagens -->
+                <p id="mensagem" role="status"></p>
+
+            </section>
+
+
+
+            <!-- ======================================
+                 QUADRADO 2 - PRÉVIA DO PRODUTO
+                 ====================================== -->
+
+            <section class="cartao cartao-previa">
+
+                <h2>Prévia do produto</h2>
+
+                <p class="dica">
+                    Consulte as informações e gerencie
+                    as imagens do produto selecionado.
+                </p>
+
+
+                <!-- Informações visuais -->
+                <div class="resumo-produto">
+
+                    <h3>Informações do produto</h3>
+
+                    <p>
+                        <strong>Nome:</strong>
+                        <span id="previaNome">Nenhum produto selecionado</span>
+                    </p>
+
+                    <p>
+                        <strong>Preço:</strong>
+                        <span id="previaPreco">—</span>
+                    </p>
+
+                    <p>
+                        <strong>Categoria:</strong>
+                        <span id="previaCategoria">—</span>
+                    </p>
+
+                    <p>
+                        <strong>Sabor:</strong>
+                        <span id="previaSabor">—</span>
+                    </p>
+
+                    <p>
+                        <strong>Disponibilidade:</strong>
+                        <span id="previaDisponibilidade">—</span>
+                    </p>
+
+                </div>
+
+
+                <!-- Imagens do produto selecionado -->
+                <section class="area-imagens"
+                         id="areaImagens"
+                         hidden>
+
+                    <h2>Imagens do produto</h2>
+
+                    <p class="dica">
+                        Selecione até 10 imagens JPG, JPEG
+                        ou PNG (máximo 5 MB cada).
+                    </p>
+
+                    <label for="arquivosImagens"
+                           class="rotulo-imagens">
+                        Escolher fotos do computador
+                    </label>
+
+                    <input type="file"
+                           id="arquivosImagens"
+                           accept=".jpg,.jpeg,.png,image/jpeg,image/png"
+                           multiple>
+
+                    <button type="button"
+                            id="btnEnviarImagens">
+                        Enviar imagens
+                    </button>
+
+                    <p id="mensagemImagens"
+                       role="status"></p>
+
+                    <div id="galeriaImagens"
+                         class="galeria-imagens"></div>
+
+                </section>
+
+
+                <!-- Mensagem antes de selecionar -->
+                <p class="dica" id="avisoPrevia">
+                    Selecione um produto na tabela ou procure
+                    pelo código para visualizar suas imagens.
+                </p>
+
+            </section>
+
+
+
+            <!-- ======================================
+                 QUADRADO 3 - TABELA DE PRODUTOS
+                 ====================================== -->
+
+            <section class="cartao cartao-listagem">
+
+                <div class="cabecalho-listagem">
+
+                    <h2>Produtos cadastrados</h2>
+
+                    <button type="button" id="btnAtualizar">
+                        Atualizar
+                    </button>
+
+                </div>
+
+
+                <p class="dica">
+                    Clique em um produto para preencher
+                    o formulário.
+                </p>
+
+
+                <!-- Tabela com rolagem interna -->
+                <div class="tabela-rolagem">
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Produto</th>
+                                <th>Sabor</th>
+                                <th>Categoria</th>
+                                <th>Preço</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="listaProdutos"></tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+
+    <!-- Mensagem de verificação de acesso -->
+    <p id="avisoAcesso" role="status">
+        Verificando acesso...
+    </p>
+
+
+    <!-- Rodapé -->
+    <footer>
+        <p>© Lila's - Todos os direitos reservados</p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Lila's - Produto</title>
+
+    <!-- Reutiliza o CSS da página inicial para manter o mesmo visual -->
+    <link rel="stylesheet" href="../menu/menu.css">
+
+    <!-- CSS exclusivo dos detalhes do produto -->
+    <link rel="stylesheet" href="produto.css">
+</head>
+
+<body>
+
+    <!-- Cabeçalho da página de detalhes -->
+    <header class="cabecalho-produto">
+
+        <nav>
+
+            <!-- Botão para voltar à página inicial -->
+            <a href="../menu/menu.html" class="botao-voltar">
+                ← Voltar
+            </a>
+
+            <!-- Logo centralizada -->
+            <h1>
+                <img src="../menu/logo-lilas.jpg" alt="Logo da Lila's" id="logo">
+            </h1>
+
+            <!-- Links e carrinho -->
+            <div class="links-produto">
+
+                <a href="https://www.instagram.com/lilas.paodemel/"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    Instagram
+                </a>
+
+                <a href="https://wa.me/5544998515032"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    WhatsApp
+                </a>
+
+                <!-- Carrinho no canto direito -->
+                <a href="../carrinho/carrinho.html" class="link-carrinho">
+                    🛒
+                </a>
+
+            </div>
+
+        </nav>
+
+    </header>
+
+
+    <!-- Conteúdo principal -->
+    <main class="pagina-produto">
+
+        <section class="detalhes-produto">
+
+            <!-- Galeria de imagens -->
+            <div class="area-galeria">
+
+                <h2 id="nomeProduto">Carregando produto...</h2>
+
+                <div class="galeria">
+
+                    <!-- Botão para voltar as imagens -->
+                    <button id="imagemAnterior" class="seta-galeria">
+                        ❮
+                    </button>
+
+                    <!-- Imagem principal -->
+                    <div class="imagem-principal">
+                        <img id="imagemProduto" src="" alt="Imagem do produto">
+                    </div>
+
+                    <!-- Botão para avançar as imagens -->
+                    <button id="imagemProxima" class="seta-galeria">
+                        ❯
+                    </button>
+
+                </div>
+
+                <!-- Indicadores das imagens -->
+                <div id="indicadoresImagens" class="indicadores-imagens"></div>
+
+            </div>
+
+
+            <!-- Informações e opções do produto -->
+            <div class="informacoes-produto">
+
+                <h3 id="tituloProduto">Pão de Mel</h3>
+
+                <p id="descricaoProduto">
+                    Um delicioso pão de mel preparado com carinho!
+                </p>
+
+                <p id="precoProduto" class="preco-produto">
+                    R$ 0,00
+                </p>
+
+                <!-- Escolha do sabor -->
+                <label for="selectSabor">Escolha o sabor:</label>
+
+                <select id="selectSabor">
+                    <option value="">Selecione um sabor</option>
+                </select>
+
+                <!-- Escolha da quantidade -->
+                <label for="quantidadeProduto">Quantidade:</label>
+
+                <input
+                    type="number"
+                    id="quantidadeProduto"
+                    min="1"
+                    value="1"
+                >
+
+                <!-- Botão de adicionar ao carrinho -->
+                <button id="btnAdicionarCarrinho">
+                    Adicionar ao carrinho
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- Rodapé -->
+    <footer>
+        <p>Lila's - Todos os direitos reservados</p>
+    </footer>
+
+    <!-- JavaScript da página -->
+    <script src="produto.js"></script>
+
+</body>
+</html>

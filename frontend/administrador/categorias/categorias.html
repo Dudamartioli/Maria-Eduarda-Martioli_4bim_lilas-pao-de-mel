@@ -1,0 +1,187 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Lila's - Gerenciar Categorias</title>
+
+    <link rel="stylesheet" href="categorias.css">
+    <script src="categorias.js" defer></script>
+</head>
+
+<body>
+
+    <!-- Cabeçalho -->
+    <header class="cabecalho">
+
+        <a href="../admin.html" class="logo">
+            <img src="../../menu/logo-lilas.jpeg"
+                 alt="Logo da Lila's">
+        </a>
+
+        <a href="../admin.html" class="botao-voltar">
+            Voltar à administração
+        </a>
+
+    </header>
+
+    <!-- Conteúdo protegido -->
+    <main id="conteudo" hidden>
+
+        <section class="apresentacao">
+
+            <p class="subtitulo">ADMINISTRAÇÃO DA LILA'S</p>
+
+            <h1>Gerenciar categorias</h1>
+
+            <p>
+                Cadastre, consulte, altere e exclua
+                as categorias dos produtos.
+            </p>
+
+        </section>
+
+        <div class="area-gerenciamento">
+
+            <!-- Formulário -->
+            <section class="cartao">
+
+                <h2>Dados da categoria</h2>
+
+                <div class="campo">
+
+                    <label for="id_categoria">
+                        Código da categoria
+                    </label>
+
+                    <div class="linha-procura">
+
+                        <input type="number"
+                               id="id_categoria"
+                               min="1"
+                               placeholder="Digite o código">
+
+                        <button type="button"
+                                id="btnProcurar">
+                            Procurar
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <div class="campo">
+
+                    <label for="nome_categoria">
+                        Nome da categoria
+                    </label>
+
+                    <input type="text"
+                           id="nome_categoria"
+                           maxlength="60"
+                           placeholder="Ex.: Mini">
+
+                </div>
+
+                <div class="campo">
+
+                    <label for="descricao">
+                        Descrição
+                    </label>
+
+                    <textarea id="descricao"
+                              maxlength="200"
+                              rows="3"
+                              placeholder="Descrição da categoria"></textarea>
+
+                </div>
+
+                <!-- Botões principais -->
+                <div class="botoes" id="botoesPrincipais">
+
+                    <button type="button" id="btnInserir">
+                        Inserir
+                    </button>
+
+                    <button type="button" id="btnAlterar">
+                        Alterar
+                    </button>
+
+                    <button type="button" id="btnExcluir">
+                        Excluir
+                    </button>
+
+                </div>
+
+                <!-- Botões de confirmação -->
+                <div class="botoes" id="botoesConfirmacao" hidden>
+
+                    <button type="button" id="btnSalvar">
+                        Salvar
+                    </button>
+
+                    <button type="button" id="btnCancelar">
+                        Cancelar
+                    </button>
+
+                </div>
+
+                <p id="mensagem" role="status"></p>
+
+            </section>
+
+            <!-- Listagem -->
+            <section class="cartao">
+
+                <div class="cabecalho-listagem">
+
+                    <h2>Categorias cadastradas</h2>
+
+                    <button type="button" id="btnAtualizar">
+                        Atualizar
+                    </button>
+
+                </div>
+
+                <p class="dica">
+                    Clique em uma categoria para preencher o formulário.
+                </p>
+
+                <div class="tabela-rolagem">
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Nome</th>
+                                <th>Descrição</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="listaCategorias"></tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+    <p id="avisoAcesso" role="status">
+        Verificando acesso...
+    </p>
+
+    <footer>
+        <p>© Lila's - Todos os direitos reservados</p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,728 @@
+
+/* =====================================================
+   LILA'S PÃO DE MEL - GERENCIAR CATEGORIAS
+   Mesmo estilo 3D do menu e da administração
+   ===================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&display=swap");
+
+
+/* =====================================================
+   CORES E EFEITOS ORIGINAIS DA LILA'S
+   ===================================================== */
+
+:root {
+    --base: #FFE49A;
+    --mel: #E08A2E;
+    --doce-de-leite: #9A4F0E;
+    --chocolate: #5C3A2E;
+    --cafe: #3F2418;
+
+    --sombra: rgba(185, 115, 25, 0.32);
+    --luz: rgba(255, 251, 228, 0.95);
+
+    --relevo:
+        6px 6px 14px var(--sombra),
+        -6px -6px 14px var(--luz);
+
+    --relevo-pequeno:
+        4px 4px 10px var(--sombra),
+        -4px -4px 10px var(--luz);
+
+    --afundado:
+        inset 5px 5px 11px var(--sombra),
+        inset -5px -5px 11px var(--luz);
+
+    --botao-fundo:
+        linear-gradient(150deg, #7b4f3d 0%, #4a2d22 100%);
+
+    --botao-sombra:
+        0 10px 18px -6px rgba(63, 36, 24, 0.55),
+        inset 0 1px 0 rgba(255, 255, 255, 0.28),
+        inset 0 -2px 0 rgba(0, 0, 0, 0.22);
+
+    --botao-brilho:
+        0 10px 22px -6px rgba(224, 138, 46, 0.75),
+        0 0 0 4px rgba(224, 138, 46, 0.28),
+        inset 0 1px 0 rgba(255, 255, 255, 0.35),
+        inset 0 -2px 0 rgba(0, 0, 0, 0.22);
+
+    --fonte: "Jost", "Segoe UI", system-ui, sans-serif;
+}
+
+
+/* =====================================================
+   CONFIGURAÇÕES GERAIS
+   ===================================================== */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    display: flex;
+    flex-direction: column;
+
+    background: var(--base);
+    color: var(--cafe);
+
+    font-family: var(--fonte);
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+button,
+input,
+textarea {
+    font: inherit;
+}
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+a:focus-visible {
+    outline: 2px solid var(--mel);
+    outline-offset: 3px;
+}
+
+
+/* =====================================================
+   CABEÇALHO
+   ===================================================== */
+
+.cabecalho {
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+    min-height: 85px;
+
+    padding: 10px clamp(20px, 4vw, 55px);
+}
+
+
+/* Logo */
+
+.logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.logo img {
+    display: block;
+
+    width: 165px;
+    max-width: 35vw;
+    height: auto;
+
+    object-fit: contain;
+}
+
+
+/* Botão voltar */
+
+.botao-voltar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0.75rem 1.4rem;
+
+    border-radius: 999px;
+
+    background: var(--botao-fundo);
+    color: var(--base);
+
+    font-weight: 600;
+    text-decoration: none;
+
+    box-shadow: var(--botao-sombra);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.botao-voltar:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--botao-brilho);
+    color: white;
+}
+
+
+/* =====================================================
+   CONTEÚDO PRINCIPAL
+   ===================================================== */
+
+main {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    width: min(1450px, 100%);
+
+    min-height: 0;
+
+    margin: 0 auto;
+
+    padding: 10px clamp(20px, 4vw, 55px) 20px;
+}
+
+
+/* =====================================================
+   APRESENTAÇÃO
+   ===================================================== */
+
+.apresentacao {
+    flex-shrink: 0;
+
+    text-align: center;
+
+    margin-bottom: 22px;
+}
+
+.subtitulo {
+    margin: 0 0 5px;
+
+    color: var(--doce-de-leite);
+
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+}
+
+.apresentacao h1 {
+    margin: 0 0 5px;
+
+    color: var(--chocolate);
+
+    font-size: clamp(1.6rem, 2.5vw, 2.1rem);
+    font-weight: 600;
+}
+
+.apresentacao > p:last-child {
+    margin: 0;
+
+    color: #6b4a2a;
+
+    font-size: 0.95rem;
+}
+
+
+/* =====================================================
+   ÁREA DE GERENCIAMENTO
+   ===================================================== */
+
+.area-gerenciamento {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 0.9fr)
+        minmax(0, 1.1fr);
+
+    align-items: stretch;
+
+    gap: 28px;
+
+    width: 100%;
+}
+
+
+/* =====================================================
+   CARTÕES 3D
+   ===================================================== */
+
+.cartao {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 24px 28px;
+
+    border-radius: 28px;
+
+    background: var(--base);
+    box-shadow: var(--relevo);
+}
+
+.cartao h2 {
+    margin: 0 0 20px;
+
+    color: var(--chocolate);
+
+    font-size: 1.35rem;
+    font-weight: 600;
+}
+
+
+/* =====================================================
+   CAMPOS DO FORMULÁRIO
+   ===================================================== */
+
+.campo {
+    margin-bottom: 16px;
+}
+
+.campo label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: var(--chocolate);
+
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+
+/* Campos com efeito afundado */
+
+.campo input,
+.campo textarea {
+    display: block;
+
+    width: 100%;
+
+    padding: 0.75rem 1rem;
+
+    border: none;
+    border-radius: 15px;
+
+    background: var(--base);
+    color: var(--chocolate);
+
+    box-shadow: var(--afundado);
+
+    outline: none;
+}
+
+.campo input::placeholder,
+.campo textarea::placeholder {
+    color: #a17a50;
+}
+
+.campo input:focus,
+.campo textarea:focus {
+    outline: 2px solid var(--mel);
+}
+
+
+/* Descrição */
+
+.campo textarea {
+    min-height: 72px;
+    max-height: 110px;
+
+    resize: vertical;
+}
+
+
+/* =====================================================
+   CAMPO DE PROCURA
+   ===================================================== */
+
+.linha-procura {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+}
+
+.linha-procura input {
+    flex: 1;
+    min-width: 0;
+}
+
+
+/* =====================================================
+   BOTÕES 3D
+   ===================================================== */
+
+.linha-procura button,
+.botoes button,
+.cabecalho-listagem button {
+    padding: 0.75rem 1.2rem;
+
+    border: none;
+    border-radius: 999px;
+
+    background: var(--botao-fundo);
+    color: var(--base);
+
+    font-size: 0.9rem;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    box-shadow: var(--botao-sombra);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        color 0.2s ease;
+}
+
+.linha-procura button:hover,
+.botoes button:hover,
+.cabecalho-listagem button:hover {
+    transform: translateY(-3px);
+
+    color: white;
+    box-shadow: var(--botao-brilho);
+}
+
+.linha-procura button:active,
+.botoes button:active,
+.cabecalho-listagem button:active {
+    transform: translateY(1px);
+}
+
+
+/* =====================================================
+   BOTÕES PRINCIPAIS E DE CONFIRMAÇÃO
+   ===================================================== */
+
+.botoes {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 12px;
+
+    margin-top: 5px;
+}
+
+.botoes button {
+    flex: 1;
+    min-width: 90px;
+}
+
+
+/* =====================================================
+   MENSAGENS DO FORMULÁRIO
+   ===================================================== */
+
+#mensagem {
+    margin: 0;
+
+    color: var(--doce-de-leite);
+
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+#mensagem:not(:empty) {
+    margin-top: 12px;
+}
+
+
+/* =====================================================
+   LISTAGEM DE CATEGORIAS
+   ===================================================== */
+
+.cabecalho-listagem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 12px;
+}
+
+.cabecalho-listagem h2 {
+    margin: 0;
+}
+
+.dica {
+    margin: 0 0 15px;
+
+    color: #79553c;
+
+    font-size: 0.88rem;
+}
+
+
+/* =====================================================
+   TABELA COM ROLAGEM INTERNA
+   ===================================================== */
+
+.tabela-rolagem {
+    flex: 1;
+
+    min-height: 0;
+    max-height: 360px;
+
+    overflow: auto;
+
+    border-radius: 18px;
+
+    background: var(--base);
+
+    box-shadow: var(--afundado);
+}
+
+table {
+    width: 100%;
+
+    border-collapse: separate;
+    border-spacing: 0;
+
+    color: var(--chocolate);
+
+    font-size: 0.9rem;
+}
+
+thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+
+    padding: 14px 12px;
+
+    background: #f3d88d;
+
+    color: var(--chocolate);
+
+    text-align: left;
+    font-weight: 600;
+}
+
+tbody td {
+    padding: 12px;
+
+    border-bottom: 1px solid
+        rgba(154, 79, 14, 0.15);
+}
+
+tbody tr {
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+tbody tr:hover {
+    background: rgba(255, 255, 255, 0.35);
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* =====================================================
+   AVISO DE ACESSO
+   ===================================================== */
+
+#avisoAcesso {
+    margin: 0;
+
+    color: var(--doce-de-leite);
+
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+#avisoAcesso:not(:empty) {
+    padding: 10px;
+}
+
+
+/* =====================================================
+   RODAPÉ
+   ===================================================== */
+
+footer {
+    flex-shrink: 0;
+
+    padding: 12px 20px;
+
+    background: var(--base);
+
+    color: var(--chocolate);
+
+    text-align: center;
+
+    box-shadow:
+        0 -14px 26px -18px rgba(160, 95, 15, 0.5),
+        0 -1px 0 var(--luz);
+}
+
+footer p {
+    margin: 0;
+    font-size: 0.8rem;
+}
+
+
+/* =====================================================
+   NOTEBOOKS COM ALTURA MENOR
+   ===================================================== */
+
+@media (min-width: 901px) and (max-height: 800px) {
+
+    .cabecalho {
+        min-height: 70px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+
+    .logo img {
+        width: 140px;
+    }
+
+    main {
+        padding-top: 5px;
+        padding-bottom: 10px;
+    }
+
+    .apresentacao {
+        margin-bottom: 12px;
+    }
+
+    .cartao {
+        padding: 18px 22px;
+    }
+
+    .cartao h2 {
+        margin-bottom: 12px;
+    }
+
+    .campo {
+        margin-bottom: 10px;
+    }
+
+    .campo label {
+        margin-bottom: 5px;
+    }
+
+    .campo input,
+    .campo textarea {
+        padding: 0.6rem 0.85rem;
+    }
+
+    .campo textarea {
+        min-height: 60px;
+    }
+
+    .tabela-rolagem {
+        max-height: 290px;
+    }
+
+    footer {
+        padding: 8px 15px;
+    }
+}
+
+
+/* =====================================================
+   TELAS MÉDIAS
+   ===================================================== */
+
+@media (max-width: 900px) {
+
+    main {
+        justify-content: flex-start;
+        padding-top: 25px;
+        padding-bottom: 35px;
+    }
+
+    .area-gerenciamento {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+
+    .tabela-rolagem {
+        min-height: 200px;
+        max-height: 350px;
+    }
+}
+
+
+/* =====================================================
+   CELULARES
+   ===================================================== */
+
+@media (max-width: 550px) {
+
+    .cabecalho {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .logo img {
+        width: 145px;
+        max-width: 60vw;
+    }
+
+    .botao-voltar {
+        font-size: 0.85rem;
+        padding: 0.65rem 1rem;
+    }
+
+    main {
+        padding: 20px 15px 30px;
+    }
+
+    .apresentacao h1 {
+        font-size: 1.6rem;
+    }
+
+    .cartao {
+        padding: 20px 16px;
+        border-radius: 22px;
+    }
+
+    .cartao h2 {
+        font-size: 1.2rem;
+    }
+
+    .linha-procura {
+        gap: 8px;
+    }
+
+    .linha-procura button {
+        padding: 0.7rem 0.9rem;
+    }
+
+    .botoes {
+        gap: 8px;
+    }
+
+    .botoes button {
+        min-width: 75px;
+        padding: 0.7rem;
+    }
+}
+
+
+/* =====================================================
+   ACESSIBILIDADE
+   ===================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    * {
+        transition: none !important;
+    }
+}

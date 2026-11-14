@@ -1,0 +1,85 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <!-- Configurações da página -->
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Lila's - Login</title>
+
+    <!-- Arquivo CSS -->
+    <link rel="stylesheet" href="login.css">
+</head>
+
+<body>
+
+    <!-- Conteúdo principal -->
+    <main class="containerLogin">
+
+        <!-- Área de login -->
+        <section class="cartaoLogin">
+
+        <!-- Logo da Lila's -->
+        <img src="imagens/logo.png"
+        alt="Logo da Lila's Pão de Mel"
+        class="logoLogin">
+
+            <h2>Bem-vindo de volta!</h2>
+
+            <p>Entre na sua conta para continuar.</p>
+
+            <!-- Formulário de login -->
+            <form id="formLogin">
+
+                <label for="email">E-mail</label>
+
+                <input type="email"
+                       id="email"
+                       placeholder="Digite seu e-mail"
+                       required>
+
+                <label for="senha">Senha</label>
+
+                <input type="password"
+                       id="senha"
+                       placeholder="Digite sua senha"
+                       required>
+
+
+                <!-- Link para recuperar a senha -->
+                <a href="esqueci-senha.html" class="esqueciSenha">
+                    Esqueceu sua senha?
+                </a>
+
+
+                <button type="submit">
+                    Entrar
+                </button>
+
+            </form>
+
+            <!-- Mensagem de retorno -->
+            <p id="mensagem"></p>
+
+            <p>
+                Ainda não tem uma conta?
+                <a href="cadastro.html">Cadastre-se</a>
+            </p>
+
+            <a href="../menu/menu.html">
+                Voltar para a loja
+            </a>
+
+        </section>
+
+    </main>
+
+    <!-- Arquivo JavaScript -->
+    <script src="login.js"></script>
+
+</body>
+
+</html>

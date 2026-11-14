@@ -1,0 +1,1 @@
+//para guardar temporariamente os itens. Isso permite manter o carrinho mesmo depois de atualizar a página, sem exigir login.

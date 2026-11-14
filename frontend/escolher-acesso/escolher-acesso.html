@@ -1,0 +1,87 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <!-- Configurações da página -->
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Lila's - Escolher acesso</title>
+
+    <!-- CSS da página -->
+    <link rel="stylesheet" href="escolher-acesso.css">
+</head>
+
+<body>
+
+    <!-- Conteúdo principal -->
+    <main>
+
+        <section class="area-escolha">
+
+            <div class="cartao-escolha">
+
+                <p class="subtitulo">BEM-VINDO À LILA'S</p>
+
+                <h1>Como deseja acessar?</h1>
+
+                <p class="descricao">
+                    Escolha como você deseja utilizar
+                    a Lila's Pão de Mel.
+                </p>
+
+                <!-- Opções de acesso -->
+                <div class="opcoes-acesso">
+
+                    <!-- Acesso de cliente -->
+                    <button type="button"
+                            id="btnCliente"
+                            class="botao-acesso">
+
+                        <span class="icone">🛍️</span>
+
+                        <span class="titulo-botao">
+                            Entrar como cliente
+                        </span>
+
+                        <span class="descricao-botao">
+                            Visualizar produtos e realizar pedidos
+                        </span>
+
+                    </button>
+
+                    <!-- Acesso administrativo -->
+                    <button type="button"
+                            id="btnAdministrador"
+                            class="botao-acesso">
+
+                        <span class="icone">🐝</span>
+
+                        <span class="titulo-botao">
+                            Entrar como administrador
+                        </span>
+
+                        <span class="descricao-botao">
+                            Gerenciar a loja e acompanhar pedidos
+                        </span>
+
+                    </button>
+
+                </div>
+
+                <!-- Mensagens -->
+                <p id="aviso" role="status"></p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- JavaScript -->
+    <script src="escolher-acesso.js"></script>
+
+</body>
+</html>

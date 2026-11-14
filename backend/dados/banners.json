@@ -1,0 +1,24 @@
+[
+  {
+    "id": 1,
+    "titulo": "Muito mais que pão de mel,",
+    "destaque": "uma experiência de sabor.",
+    "descricao": "Pequenos momentos de carinho, preparados especialmente para adoçar o seu dia.",
+    "texto_botao": "CONHEÇA NOSSOS PÃES DE MEL",
+    "link_botao": "#catalogo",
+    "imagem": "/imagens-banners/banner-pao-de-mel.jpg",
+    "ordem": 1,
+    "ativo": true
+  },
+  {
+    "id": 2,
+    "titulo": "Uma novidade deliciosa chegou!",
+    "destaque": "Conheça o bolo de pão de mel.",
+    "descricao": "Todo o sabor do nosso pão de mel em uma versão especial para deixar seus momentos ainda mais doces.",
+    "texto_botao": "DESCUBRA A NOVIDADE",
+    "link_botao": "#catalogo",
+    "imagem": "/imagens-banners/banner-bolo-pao-de-mel.jpg",
+    "ordem": 2,
+    "ativo": true
+  }
+]

@@ -1,0 +1,222 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <!-- Configurações da página -->
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Lila's - Gerenciar Sabores</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="sabores.css">
+
+    <!-- JavaScript -->
+    <script src="sabores.js" defer></script>
+</head>
+
+<body>
+
+    <!-- Cabeçalho -->
+    <header class="cabecalho">
+
+        <!-- Logo -->
+        <a href="../admin.html" class="logo">
+
+            <img src="../../menu/logo-lilas.jpeg"
+                 alt="Logo da Lila's">
+
+        </a>
+
+        <!-- Voltar -->
+        <a href="../admin.html" class="botao-voltar">
+            Voltar à administração
+        </a>
+
+    </header>
+
+    <!-- Conteúdo protegido -->
+    <main id="conteudo" hidden>
+
+        <!-- Apresentação -->
+        <section class="apresentacao">
+
+            <p class="subtitulo">
+                ADMINISTRAÇÃO DA LILA'S
+            </p>
+
+            <h1>Gerenciar sabores</h1>
+
+            <p>
+                Cadastre, consulte, altere e exclua
+                os sabores dos nossos pães de mel.
+            </p>
+
+        </section>
+
+        <!-- Área de gerenciamento -->
+        <div class="area-gerenciamento">
+
+            <!-- Formulário -->
+            <section class="cartao">
+
+                <h2>Dados do sabor</h2>
+
+                <!-- Código -->
+                <div class="campo">
+
+                    <label for="id_sabor">
+                        Código do sabor
+                    </label>
+
+                    <div class="linha-procura">
+
+                        <input type="number"
+                               id="id_sabor"
+                               min="1"
+                               placeholder="Digite o código">
+
+                        <button type="button"
+                                id="btnProcurar">
+                            Procurar
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <!-- Nome -->
+                <div class="campo">
+
+                    <label for="nome_sabor">
+                        Nome do sabor
+                    </label>
+
+                    <input type="text"
+                           id="nome_sabor"
+                           maxlength="80"
+                           placeholder="Ex.: Brigadeiro">
+
+                </div>
+
+                <!-- Descrição -->
+                <div class="campo">
+
+                    <label for="descricao">
+                        Descrição
+                    </label>
+
+                    <textarea id="descricao"
+                              maxlength="200"
+                              rows="3"
+                              placeholder="Descrição do sabor"></textarea>
+
+                </div>
+
+                <!-- Botões principais -->
+                <div class="botoes"
+                     id="botoesPrincipais">
+
+                    <button type="button"
+                            id="btnInserir">
+                        Inserir
+                    </button>
+
+                    <button type="button"
+                            id="btnAlterar">
+                        Alterar
+                    </button>
+
+                    <button type="button"
+                            id="btnExcluir">
+                        Excluir
+                    </button>
+
+                </div>
+
+                <!-- Botões de confirmação -->
+                <div class="botoes"
+                     id="botoesConfirmacao"
+                     hidden>
+
+                    <button type="button"
+                            id="btnSalvar">
+                        Salvar
+                    </button>
+
+                    <button type="button"
+                            id="btnCancelar">
+                        Cancelar
+                    </button>
+
+                </div>
+
+                <!-- Mensagens -->
+                <p id="mensagem" role="status"></p>
+
+            </section>
+
+            <!-- Listagem -->
+            <section class="cartao">
+
+                <div class="cabecalho-listagem">
+
+                    <h2>Sabores cadastrados</h2>
+
+                    <button type="button"
+                            id="btnAtualizar">
+                        Atualizar
+                    </button>
+
+                </div>
+
+                <p class="dica">
+                    Clique em um sabor para preencher
+                    o formulário.
+                </p>
+
+                <!-- Tabela com rolagem -->
+                <div class="tabela-rolagem">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+                                <th>Código</th>
+                                <th>Nome</th>
+                                <th>Descrição</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="listaSabores"></tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+    <!-- Mensagem durante a verificação -->
+    <p id="avisoAcesso" role="status">
+        Verificando acesso...
+    </p>
+
+    <!-- Rodapé -->
+    <footer>
+
+        <p>
+            © Lila's - Todos os direitos reservados
+        </p>
+
+    </footer>
+
+</body>
+</html>

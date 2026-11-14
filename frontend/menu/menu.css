@@ -139,21 +139,94 @@ nav > a:active {
     box-shadow: var(--afundado);
 }
 
-/* Login: botão principal, marrom */
-nav > a:first-of-type {
-    background: var(--botao-fundo);
-    color: var(--base);
-    box-shadow: var(--botao-sombra);
+
+/* ==========================================================
+   LOGIN E MINHA CONTA - ESTILO ORIGINAL 3D
+   ========================================================== */
+
+/* Organiza a área do usuário */
+#areaUsuario {
+    position: relative;
+    display: flex;
+    align-items: center;
 }
 
-nav > a:first-of-type:hover {
+/* Botões Login e Minha conta */
+#linkLogin,
+#btnMinhaConta {
+    display: inline-block;
+    padding: 0.6rem 1.3rem;
+    border: none;
+    border-radius: 999px;
+
+    background: var(--botao-fundo);
+    color: var(--base);
+
+    font-family: var(--fonte);
+    font-size: inherit;
+    font-weight: 500;
+    text-decoration: none;
+    white-space: nowrap;
+
+    cursor: pointer;
+    box-shadow: var(--botao-sombra);
+
+    transition: box-shadow 0.2s ease,
+                color 0.2s ease,
+                transform 0.2s ease;
+}
+
+/* Efeito ao passar o mouse */
+#linkLogin:hover,
+#btnMinhaConta:hover {
     color: #fff;
     box-shadow: var(--botao-brilho);
 }
 
-nav > a:first-of-type:active {
+/* Efeito ao clicar */
+#linkLogin:active,
+#btnMinhaConta:active {
     transform: translateY(1px);
 }
+
+/* Posiciona o menu de sair abaixo do botão */
+#menuUsuario {
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 0;
+    z-index: 100;
+}
+
+/* Botão Sair da conta */
+#btnSair {
+    padding: 0.7rem 1.2rem;
+    border: none;
+    border-radius: 999px;
+
+    background: var(--botao-fundo);
+    color: var(--base);
+
+    font-family: var(--fonte);
+    font-size: 0.9rem;
+    cursor: pointer;
+    white-space: nowrap;
+
+    box-shadow: var(--botao-sombra);
+}
+
+/* Efeito ao passar o mouse */
+#btnSair:hover {
+    color: #fff;
+    box-shadow: var(--botao-brilho);
+}
+
+/* Mantém os elementos ocultos pelo JavaScript */
+#linkLogin[hidden],
+#opcoesUsuario[hidden],
+#menuUsuario[hidden] {
+    display: none !important;
+}
+
 
 /* Logo exibida pela tag <img> dentro do h1 no HTML */
 nav h1 {
@@ -1204,4 +1277,16 @@ header {
     z-index: 11;
 }
 
+footer p {
+    margin: 5px 0;
+}
+
+footer p:last-child {
+    font-size: 13px;
+}
+
+/* Esconde os botões de filtro dos produtos, SE QUISER DE VOLTA: muda none para flex */
+.filtros {
+    display: none;
+}
 

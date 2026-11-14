@@ -1,0 +1,541 @@
+
+/* ==========================================================
+   LILA'S PÃO DE MEL - LOGIN E CADASTRO
+   Estilo 3D compacto, nas cores da loja
+   ========================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap");
+
+/* ---------- Cores e sombras ---------- */
+
+:root {
+    --base: #FFE49A;
+    --mel: #E08A2E;
+    --doce-de-leite: #9A4F0E;
+    --chocolate: #5C3A2E;
+    --cafe: #3F2418;
+
+    --sombra: rgba(185, 115, 25, 0.32);
+    --luz: rgba(255, 251, 228, 0.95);
+
+    --relevo: 6px 6px 14px var(--sombra),
+              -6px -6px 14px var(--luz);
+
+    --afundado: inset 5px 5px 11px var(--sombra),
+                inset -5px -5px 11px var(--luz);
+
+    --botao-fundo: linear-gradient(
+        150deg,
+        #7b4f3d 0%,
+        #4a2d22 100%
+    );
+
+    --botao-sombra:
+        0 8px 15px -5px rgba(63, 36, 24, 0.55),
+        inset 0 1px 0 rgba(255, 255, 255, 0.28),
+        inset 0 -2px 0 rgba(0, 0, 0, 0.22);
+
+    --botao-brilho:
+        0 10px 22px -6px rgba(224, 138, 46, 0.75),
+        0 0 0 4px rgba(224, 138, 46, 0.28),
+        inset 0 1px 0 rgba(255, 255, 255, 0.35);
+
+    --fonte: "Jost", "Segoe UI", sans-serif;
+}
+
+/* ---------- Configurações gerais ---------- */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+    font-family: var(--fonte);
+    color: var(--cafe);
+    background: var(--base);
+}
+
+/* ---------- Fundo da página ---------- */
+
+.containerLogin {
+    position: relative;
+    isolation: isolate;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    padding: 18px 20px;
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle at 15% 20%,
+            rgba(255, 251, 228, 0.75),
+            transparent 40%
+        ),
+        radial-gradient(
+            circle at 85% 85%,
+            rgba(224, 138, 46, 0.16),
+            transparent 45%
+        ),
+        var(--base);
+}
+
+/* ---------- Decoração superior ---------- */
+
+.containerLogin::before {
+    content: "";
+
+    position: absolute;
+    z-index: -1;
+
+    width: 175px;
+    height: 175px;
+
+    top: -75px;
+    left: -65px;
+
+    border-radius: 50%;
+    background: var(--base);
+    box-shadow: var(--relevo);
+
+    pointer-events: none;
+}
+
+/* ---------- Decoração inferior ---------- */
+
+.containerLogin::after {
+    content: "";
+
+    position: absolute;
+    z-index: -1;
+
+    width: 145px;
+    height: 145px;
+
+    bottom: -65px;
+    right: -55px;
+
+    border-radius: 50%;
+    background: var(--base);
+    box-shadow: var(--relevo);
+
+    pointer-events: none;
+}
+
+/* ---------- Cartão principal 3D ---------- */
+
+.cartaoLogin {
+    position: relative;
+
+    width: 100%;
+    max-width: 440px;
+
+    padding: 24px 36px;
+
+    border: 1px solid rgba(255, 251, 228, 0.65);
+    border-radius: 30px;
+
+    background: var(--base);
+
+    box-shadow:
+        12px 12px 27px var(--sombra),
+        -12px -12px 27px var(--luz);
+
+    text-align: center;
+
+    animation: entradaCartao 0.7s ease both;
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+/* Iluminação do cartão */
+
+.cartaoLogin::before {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    border-radius: inherit;
+
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.35),
+        transparent 45%
+    );
+
+    pointer-events: none;
+}
+
+/* Efeito de flutuação */
+
+.cartaoLogin:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        16px 18px 30px var(--sombra),
+        -12px -12px 27px var(--luz);
+}
+
+/* ---------- Logo da Lila's ---------- */
+
+.logoLogin {
+    display: block;
+
+    width: 125px;
+    max-width: 100%;
+    height: auto;
+
+    max-height: 100px;
+    object-fit: contain;
+
+    margin: 0 auto 12px;
+}
+
+/* Caso ainda exista um h1 no HTML */
+
+.cartaoLogin h1 {
+    margin-bottom: 10px;
+
+    color: var(--chocolate);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 30px;
+    font-weight: 400;
+}
+
+/* ---------- Título ---------- */
+
+.cartaoLogin h2 {
+    margin-bottom: 4px;
+
+    color: var(--chocolate);
+
+    font-size: 23px;
+    font-weight: 500;
+    letter-spacing: -0.5px;
+}
+
+/* ---------- Textos ---------- */
+
+.cartaoLogin p {
+    margin-bottom: 10px;
+
+    color: var(--doce-de-leite);
+
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* ---------- Formulário ---------- */
+
+.cartaoLogin form {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+
+    text-align: left;
+}
+
+/* ---------- Etiquetas ---------- */
+
+.cartaoLogin label {
+    margin-top: 10px;
+    margin-bottom: 5px;
+
+    color: var(--chocolate);
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* ---------- Campos afundados 3D ---------- */
+
+.cartaoLogin input {
+    width: 100%;
+    height: 45px;
+
+    padding: 0 18px;
+
+    border: none;
+    border-radius: 14px;
+
+    outline: none;
+
+    background: var(--base);
+    color: var(--cafe);
+
+    font-family: var(--fonte);
+    font-size: 14px;
+
+    box-shadow: var(--afundado);
+
+    transition: box-shadow 0.25s ease;
+}
+
+/* Texto dentro dos campos */
+
+.cartaoLogin input::placeholder {
+    color: #9b7a4c;
+    font-weight: 300;
+}
+
+/* Campo selecionado */
+
+.cartaoLogin input:focus {
+    box-shadow:
+        var(--afundado),
+        0 0 0 3px rgba(224, 138, 46, 0.45);
+}
+
+/* ---------- Botão principal 3D ---------- */
+
+.cartaoLogin button {
+    position: relative;
+
+    width: 100%;
+    min-height: 47px;
+
+    margin-top: 19px;
+    padding: 10px 20px;
+
+    border: none;
+    border-radius: 999px;
+
+    background: var(--botao-fundo);
+    color: var(--base);
+
+    font-family: var(--fonte);
+    font-size: 15px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    box-shadow: var(--botao-sombra);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        color 0.25s ease;
+}
+
+/* Botão flutuando */
+
+.cartaoLogin button:hover {
+    transform: translateY(-4px);
+
+    color: #ffffff;
+
+    box-shadow: var(--botao-brilho);
+}
+
+/* Botão pressionado */
+
+.cartaoLogin button:active {
+    transform: translateY(1px);
+
+    box-shadow:
+        inset 4px 4px 9px rgba(0, 0, 0, 0.3),
+        inset -2px -2px 6px rgba(255, 255, 255, 0.12);
+}
+
+/* ---------- Mensagens ---------- */
+
+#mensagem {
+    margin-top: 12px;
+    margin-bottom: 8px;
+
+    color: var(--doce-de-leite);
+
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+}
+
+#mensagem:empty {
+    display: none;
+}
+
+/* ---------- Links ---------- */
+
+.cartaoLogin a {
+    display: inline-block;
+
+    padding: 3px 6px;
+
+    border-radius: 12px;
+
+    color: var(--chocolate);
+
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+
+    transition:
+        color 0.25s ease,
+        transform 0.25s ease;
+}
+
+/* Efeito nos links */
+
+.cartaoLogin a:hover {
+    color: var(--doce-de-leite);
+    transform: translateY(-2px);
+    text-decoration: underline;
+}
+
+/* Espaçamento do cadastro */
+
+.cartaoLogin form + #mensagem + p {
+    margin-top: 13px;
+    margin-bottom: 5px;
+}
+
+/* ---------- Animação de entrada ---------- */
+
+@keyframes entradaCartao {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ---------- Telas menores ---------- */
+
+@media (max-width: 600px) {
+
+    .containerLogin {
+        padding: 15px;
+    }
+
+    .cartaoLogin {
+        max-width: 400px;
+        padding: 22px 24px;
+        border-radius: 25px;
+    }
+
+    .logoLogin {
+        width: 105px;
+        max-height: 85px;
+    }
+
+    .cartaoLogin h2 {
+        font-size: 21px;
+    }
+
+    .cartaoLogin input {
+        height: 44px;
+    }
+
+    .containerLogin::before {
+        width: 120px;
+        height: 120px;
+    }
+
+    .containerLogin::after {
+        width: 110px;
+        height: 110px;
+    }
+}
+
+/* ---------- Telas com pouca altura ---------- */
+
+@media (max-height: 750px) {
+
+    .containerLogin {
+        padding: 12px 16px;
+    }
+
+    .cartaoLogin {
+        padding-top: 15px;
+        padding-bottom: 15px;
+    }
+
+    .logoLogin {
+        width: 95px;
+        max-height: 75px;
+        margin-bottom: 7px;
+    }
+
+    .cartaoLogin h2 {
+        font-size: 20px;
+    }
+
+    .cartaoLogin p {
+        margin-bottom: 6px;
+    }
+
+    .cartaoLogin label {
+        margin-top: 7px;
+    }
+
+    .cartaoLogin input {
+        height: 40px;
+    }
+
+    .cartaoLogin button {
+        min-height: 42px;
+        margin-top: 13px;
+    }
+
+    .cartaoLogin form + #mensagem + p {
+        margin-top: 8px;
+    }
+}
+
+/* ---------- Movimento reduzido ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+/* ==========================================
+   AUTOFILL SEM PERDER O EFEITO 3D
+   ========================================== */
+
+/* Mantém a cor original dos campos preenchidos */
+.cartaoLogin input:-webkit-autofill,
+.cartaoLogin input:-webkit-autofill:hover,
+.cartaoLogin input:-webkit-autofill:focus,
+.cartaoLogin input:-webkit-autofill:active {
+
+    /* Cor de fundo original */
+    -webkit-box-shadow:
+        0 0 0 1000px #FFE49A inset !important;
+
+    /* Cor original do texto */
+    -webkit-text-fill-color: #3F2418 !important;
+
+    /* Mantém a aparência */
+    caret-color: #3F2418;
+}
+
+/* Sombra 3D aplicada por fora da camada de autofill */
+.cartaoLogin input {
+    filter: drop-shadow(2px 2px 3px rgba(185, 115, 25, 0.15));
+}

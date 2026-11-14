@@ -198,9 +198,9 @@ VALUES
 INSERT INTO produto
 (nome_produto, descricao, preco, id_categoria, id_sabor)
 VALUES
-('Pao de mel normal', 'Pao de mel normal tradicional', 8.00, 1, 1),
-('Pao de mel normal', 'Pao de mel normal de prestigio', 8.00, 1, 2),
-('Pao de mel normal', 'Pao de mel normal de leite Ninho', 8.00, 1, 3);
+('Pão de mel normal', 'Pao de mel normal tradicional', 8.00, 1, 1),
+('Pão de mel normal', 'Pao de mel normal de prestigio', 8.00, 1, 2),
+('Pão de mel normal', 'Pao de mel normal de leite Ninho', 8.00, 1, 3);
 
 
 -- MINI CLASSICO - R$ 6,00
@@ -208,9 +208,9 @@ VALUES
 INSERT INTO produto
 (nome_produto, descricao, preco, id_categoria, id_sabor)
 VALUES
-('Mini classico', 'Mini classico tradicional', 6.00, 2, 1),
-('Mini classico', 'Mini classico de prestigio', 6.00, 2, 2),
-('Mini classico', 'Mini classico de leite Ninho', 6.00, 2, 3);
+('Mini clássico', 'Mini classico tradicional', 6.00, 2, 1),
+('Mini clássico', 'Mini classico de prestigio', 6.00, 2, 2),
+('Mini clássico', 'Mini classico de leite Ninho', 6.00, 2, 3);
 
 
 -- MINI REFINADO - R$ 7,00
@@ -266,3 +266,48 @@ INNER JOIN categoria
 INNER JOIN sabor
     ON produto.id_sabor = sabor.id_sabor
 ORDER BY produto.id_produto;
+
+
+
+
+CREATE TABLE recuperacao_senha (
+
+    id_recuperacao SERIAL PRIMARY KEY,
+
+    id_usuario INTEGER NOT NULL,
+
+    token_hash VARCHAR(64) NOT NULL UNIQUE,
+
+    data_expiracao TIMESTAMP NOT NULL,
+
+    utilizado BOOLEAN DEFAULT FALSE,
+
+    FOREIGN KEY (id_usuario)
+        REFERENCES usuario(id_usuario)
+        ON DELETE CASCADE
+
+);
+
+SELECT id_usuario, nome, email, tipo_usuario
+FROM usuario;
+
+UPDATE usuario
+SET tipo_usuario = 'admin'
+WHERE email = 'lilas.paodemel@exemplo.com';
+
+-- Remove a restrição antiga dos tipos de usuário,
+-- caso ela tenha o nome padrão do PostgreSQL.
+ALTER TABLE usuario
+DROP CONSTRAINT IF EXISTS usuario_tipo_usuario_check;
+
+-- Cria a nova restrição com os três tipos permitidos.
+ALTER TABLE usuario
+ADD CONSTRAINT usuario_tipo_usuario_check
+CHECK (tipo_usuario IN ('cliente', 'admin', 'ambos'));
+
+UPDATE usuario
+SET tipo_usuario = 'ambos'
+WHERE email = 'corinthiansdudaduda@gmail.com';
+
+SELECT id_usuario, nome, email, tipo_usuario
+FROM usuario;

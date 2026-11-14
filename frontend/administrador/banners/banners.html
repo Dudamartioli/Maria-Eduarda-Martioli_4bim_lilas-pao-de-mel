@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lila's - Gerenciar Banners</title>
+    <link rel="stylesheet" href="banners.css">
+    <script src="banners.js" defer></script>
+</head>
+<body>
+    <header class="cabecalho">
+        <a href="../admin.html" class="logo"><img src="../../menu/logo-lilas.jpeg" alt="Logo da Lila's"></a>
+        <a href="../admin.html" class="botao-voltar">Voltar à administração</a>
+    </header>
+
+    <main id="conteudo" hidden>
+        <section class="apresentacao">
+            <p class="subtitulo">ADMINISTRAÇÃO DA LILA'S</p>
+            <h1>Gerenciar banners</h1>
+            <p>Escolha as imagens, textos e a ordem do carrossel da página inicial.</p>
+        </section>
+
+        <div class="area-gerenciamento">
+            <section class="cartao">
+                <h2>Dados do banner</h2>
+                <form id="formBanner">
+                    <div class="campo"><label for="idBanner">Código</label><input id="idBanner" type="number" readonly placeholder="Automático"></div>
+                    <div class="campo"><label for="titulo">Título *</label><input id="titulo" maxlength="300" required placeholder="Ex.: Muito mais que pão de mel,"></div>
+                    <div class="campo"><label for="destaque">Destaque</label><input id="destaque" maxlength="300" placeholder="Ex.: uma experiência de sabor."></div>
+                    <div class="campo"><label for="descricao">Descrição</label><textarea id="descricao" rows="3" maxlength="1000"></textarea></div>
+                    <div class="campo"><label for="textoBotao">Texto do botão</label><input id="textoBotao" maxlength="100" placeholder="Ex.: CONHEÇA NOSSOS PRODUTOS"></div>
+                    
+                    <!-- Escolhe para onde o botão do banner vai levar -->
+                    <div class="campo">
+                        <label for="linkBotao">Link do botão</label>
+
+                        <select id="linkBotao">
+                            <option value="#catalogo">Nossos Produtos</option>
+                            <option value="/">Página Inicial</option>
+                            <option value="">Sem botão</option>
+                        </select>
+                    </div>
+                    
+                    <div class="linha-campos">
+                        <div class="campo"><label for="ordem">Ordem *</label><input id="ordem" type="number" min="1" step="1" value="1" required></div>
+                        <div class="campo"><label for="ativo">Disponibilidade</label><select id="ativo"><option value="true">Ativo</option><option value="false">Inativo</option></select></div>
+                    </div>
+                    <div class="campo"><label for="imagem">Imagem (JPG, JPEG, PNG, WebP ou GIF, até 10 MB)</label><input id="imagem" type="file" accept=".jpg,.jpeg,.png,.webp,.gif,image/jpeg,image/png,image/webp,image/gif"><p class="dica">Obrigatória ao cadastrar. Para alterar, escolha outra foto apenas se quiser substituí-la.</p></div>
+                    
+                    
+
+                    <!-- Aviso sobre o recorte da imagem -->
+                    <p class="aviso-recorte">
+                        ⚠️ Atenção: o recorte da imagem é definitivo após salvar.
+                        Guarde a foto original no seu dispositivo caso queira
+                        fazer outro enquadramento futuramente.
+                    </p>
+
+                    <div class="botoes">
+                        <button type="button" id="btnNovo" class="botao-claro">Novo</button>
+                        <button type="submit" id="btnSalvar">Cadastrar banner</button>
+                        <button type="button" id="btnExcluir" class="botao-excluir" hidden>Excluir</button>
+                    </div>
+                </form>
+                <p id="mensagem" role="status" aria-live="polite"></p>
+            </section>
+
+            <section class="cartao">
+                <h2>Prévia do banner</h2>
+                <p class="dica">A prévia aparece antes de salvar. A aparência final seguirá o carrossel do site.</p>
+                <div class="previa-banner">
+                    <img id="imagemPrevia" alt="Prévia da imagem do banner" hidden>
+                    <div class="sem-imagem" id="semImagem">Escolha uma imagem ou selecione um banner.</div>
+                    <div class="texto-previa">
+                        <h3 id="tituloPrevia">Título do banner</h3>
+                        <strong id="destaquePrevia"></strong>
+                        <p id="descricaoPrevia"></p>
+                        <span id="botaoPrevia" hidden></span>
+                    </div>
+                </div>
+
+                <!-- Estado da prévia -->
+                <p class="dica" id="estadoPrevia">
+                    Nenhum banner selecionado.
+                </p>
+
+                <!-- Controles de enquadramento abaixo da imagem -->
+                <div class="campo controles-recorte" id="controlesRecorte" hidden>
+
+                    <h3>Ajustar enquadramento da imagem</h3>
+
+                    <p class="dica">
+                        Ajuste o zoom e a posição da foto enquanto
+                        acompanha o resultado na imagem acima.
+                        O recorte será aplicado ao salvar.
+                        GIF ficará estático.
+                    </p>
+
+                    <!-- Zoom -->
+                    <label for="zoomImagem">
+                        Zoom
+                    </label>
+
+                    <input id="zoomImagem"
+                        type="range"
+                        min="100"
+                        max="250"
+                        value="100">
+
+                    <!-- Posição horizontal -->
+                    <label for="posicaoHorizontal">
+                        Mover para esquerda/direita
+                    </label>
+
+                    <input id="posicaoHorizontal"
+                        type="range"
+                        min="0"
+                        max="100"
+                        value="50">
+
+                    <!-- Posição vertical -->
+                    <label for="posicaoVertical">
+                        Mover para cima/baixo
+                    </label>
+
+                    <input id="posicaoVertical"
+                        type="range"
+                        min="0"
+                        max="100"
+                        value="50">
+
+                    <!-- Restaurar -->
+                    <button type="button"
+                            id="btnResetarRecorte"
+                            class="botao-ajuste">
+                        Restaurar enquadramento
+                    </button>
+
+                    <!-- Aviso sobre o recorte -->
+                    <p class="aviso-recorte">
+                        ⚠️ Atenção: o recorte é definitivo após salvar.
+                        Guarde a imagem original para fazer outros
+                        enquadramentos futuramente.
+                    </p>
+
+                </div>
+
+            </section>
+
+            <section class="cartao cartao-lista">
+                <div class="cabecalho-lista"><h2>Banners cadastrados</h2><button type="button" id="btnAtualizar" class="botao-claro">Atualizar</button></div>
+                <p class="dica">Clique em um banner para editar. Banners inativos não aparecem na listagem pública.</p>
+                <div id="listaBanners" class="lista-banners"></div>
+            </section>
+        </div>
+    </main>
+    <p id="aviso" role="status">Verificando acesso administrativo...</p>
+    <footer><p>© Lila's - Todos os direitos reservados</p><p>Desenvolvido por <strong>Maria Eduarda Brito Lucheti Martioli</strong></p></footer>
+</body>
+</html>

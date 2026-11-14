@@ -1,0 +1,55 @@
+
+/* ==========================================
+   LILA'S - GERENCIAMENTO DE SABORES
+   ========================================== */
+
+/* Aproveita o visual do CRUD de Categorias */
+@import url("../categorias/categorias.css");
+
+/* ==========================================
+   AJUSTES EXCLUSIVOS DE SABORES
+   ========================================== */
+
+/* Destaca o título da página */
+.apresentacao h1 {
+    font-weight: 700;
+}
+
+/* Mantém os títulos dos cartões em negrito */
+.cartao h2 {
+    font-weight: 700;
+}
+
+/* Destaca os nomes dos sabores na tabela */
+#listaSabores td:nth-child(2) {
+    font-weight: 600;
+    color: var(--chocolate);
+}
+
+/* Mantém os botões com o mesmo relevo 3D */
+.botoes button,
+.linha-procura button,
+.cabecalho-listagem button {
+    background: var(--botao-fundo);
+    color: var(--base);
+    box-shadow: var(--botao-sombra);
+}
+
+/* Efeito ao passar o mouse */
+.botoes button:hover,
+.linha-procura button:hover,
+.cabecalho-listagem button:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--botao-brilho);
+}
+
+/* Não aplica o efeito aos botões desativados */
+button:disabled:hover {
+    transform: none;
+    box-shadow: var(--botao-sombra);
+}
+
+/* Impede que elementos ocultos apareçam */
+[hidden] {
+    display: none !important;
+}

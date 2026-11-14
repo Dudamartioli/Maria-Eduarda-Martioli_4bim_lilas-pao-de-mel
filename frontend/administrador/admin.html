@@ -1,0 +1,215 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <!-- Configurações da página -->
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Lila's - Administração</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+
+    <!-- Cabeçalho -->
+    <header class="cabecalho">
+
+        <!-- Logo da Lila's -->
+        <div class="marca">
+
+            <a href="../menu/menu.html" class="link-logo">
+                <img src="../menu/logo-lilas.jpeg"
+                    alt="Logo da Lila's Pão de Mel"
+                    class="logoAdmin">
+            </a>
+
+            <p class="texto-admin">Painel administrativo</p>
+
+        </div>
+
+        <!-- Opções do administrador -->
+        <nav class="menu-superior">
+
+            <button type="button"
+                    id="btnLoja"
+                    hidden>
+                Ir para a loja
+            </button>
+
+            <button type="button"
+                    id="btnSair">
+                Sair da conta
+            </button>
+
+        </nav>
+
+    </header>
+
+    <!-- Conteúdo principal -->
+    <main id="conteudo" hidden>
+
+        <!-- Apresentação -->
+        <section class="boas-vindas">
+
+            <p class="subtitulo">ÁREA ADMINISTRATIVA</p>
+
+            <h2>Bem-vindo à administração!</h2>
+
+            <p id="nomeAdministrador">
+                Gerencie sua loja em um só lugar.
+            </p>
+
+        </section>
+
+        <!-- Módulos administrativos -->
+        <section class="area-modulos">
+
+            <h2>Gerenciamento da loja</h2>
+
+            <div class="grade-modulos">
+
+                <article class="cartao-modulo">
+
+                    <span class="icone">📂</span>
+                    <h3>Categorias</h3>
+
+                    <p>
+                        Cadastre e organize as categorias
+                        dos produtos.
+                    </p>
+
+                    <button type="button"
+                            class="botao-modulo"
+                            onclick="window.location.href='categorias/categorias.html'">
+                        Gerenciar categorias
+                    </button>
+
+                </article>
+
+                <article class="cartao-modulo">
+
+                    <span class="icone">🍫</span>
+                    <h3>Sabores</h3>
+
+                    <p>
+                        Cadastre e atualize os sabores
+                        disponíveis.
+                    </p>
+
+                    <button type="button"
+                            class="botao-modulo"
+                            onclick="window.location.href='sabores/sabores.html'">
+                        Gerenciar sabores
+                    </button>
+
+                </article>
+
+                <article class="cartao-modulo">
+
+                    <span class="icone">🍯</span>
+                    <h3>Produtos</h3>
+
+                    <p>
+                        Gerencie produtos, preços,
+                        categorias e imagens.
+                    </p>
+
+                    <button type="button"
+                            class="botao-modulo"
+                            onclick="window.location.href='produtos/produtos.html'">
+                        Gerenciar produtos
+                    </button>
+
+                </article>
+
+                <article class="cartao-modulo">
+                    <span class="icone">🖼️</span>
+                    <h3>Banners</h3>
+                    <p>Altere as imagens, textos e a ordem dos banners da página inicial.</p>
+                    <button type="button" class="botao-modulo"
+                            onclick="window.location.href='banners/banners.html'">
+                        Gerenciar banners
+                    </button>
+                </article>
+
+                <article class="cartao-modulo">
+
+                    <span class="icone">👥</span>
+                    <h3>Usuários</h3>
+
+                    <p>
+                        Consulte clientes e gerencie
+                        permissões administrativas.
+                    </p>
+
+                    <button type="button"
+                            class="botao-modulo"
+                            onclick="window.location.href='usuarios/usuarios.html'">
+                        Gerenciar usuários
+                    </button>
+
+                </article>
+
+                <article class="cartao-modulo">
+
+                    <span class="icone">🛍️</span>
+                    <h3>Pedidos</h3>
+
+                    <p>
+                        Acompanhe pedidos, pagamentos
+                        e vendas da loja.
+                    </p>
+
+                    <button type="button"
+                            class="botao-modulo"
+                            disabled>
+                        Gerenciar pedidos
+                    </button>
+
+                </article>
+
+            </div>
+
+        </section>
+
+        <!-- Informações -->
+        <aside class="aviso-painel">
+
+            <h3>🍯 Administração da Lila's</h3>
+
+            <p>
+                Os módulos serão liberados conforme
+                desenvolvermos os CRUDs da loja.
+            </p>
+
+        </aside>
+
+    </main>
+
+    <!-- Mensagens -->
+    <p id="aviso" role="status">
+        Verificando acesso administrativo...
+    </p>
+
+    <!-- Rodapé -->
+    <footer>
+
+        <p>© Lila's - Todos os direitos reservados</p>
+
+        <p>
+            Desenvolvido por
+            <strong>Maria Eduarda Brito Lucheti Martioli</strong>
+        </p>
+
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="admin.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,137 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <!-- Configurações da página -->
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Lila's - Minha Conta</title>
+
+    <!-- CSS da página -->
+    <link rel="stylesheet" href="minha-conta.css">
+
+    <!-- JavaScript da página -->
+    <script src="minha-conta.js" defer></script>
+</head>
+
+<body>
+
+    <!-- Cabeçalho -->
+    <header>
+
+        <!-- Menu de navegação -->
+        <nav class="menu-conta">
+
+            <!-- Voltar para a página inicial -->
+            <a href="../menu/menu.html" class="btn-voltar">
+                &#8592; Voltar à loja
+            </a>
+
+            <!-- Logo da Lila's -->
+            <a href="../menu/menu.html" class="logo-conta">
+
+                <img src="../menu/logo-lilas.jpg"
+                     alt="Logo da Lila's">
+
+            </a>
+
+        </nav>
+
+    </header>
+
+    <!-- Conteúdo principal -->
+    <main>
+
+        <section class="secao-conta">
+
+            <!-- Título da página -->
+            <h1>Minha conta</h1>
+
+            <p class="subtitulo">
+                Gerencie suas informações e acompanhe seus pedidos.
+            </p>
+
+            <!-- Cartão com as informações do usuário -->
+            <article class="cartao-conta">
+
+                <!-- Informações pessoais -->
+                <div class="informacoes-usuario">
+
+                    <!-- Foto padrão do usuário -->
+                    <div class="foto-perfil">
+                        <span>&#128100;</span>
+                    </div>
+
+                    <!-- Nome e e-mail do usuário -->
+                    <div class="dados-usuario">
+
+                        <h2 id="nomeUsuario">
+                            Carregando...
+                        </h2>
+
+                        <p id="emailUsuario">
+                            Aguarde...
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <!-- Opções da conta -->
+                <div class="opcoes-conta">
+
+                    <!-- Alteração de senha -->
+                    <button type="button"
+                            id="btnAlterarSenha"
+                            class="opcao-conta">
+
+                        <span>Alterar senha</span>
+                        <span>&#8250;</span>
+
+                    </button>
+
+                    <!-- Histórico de pedidos -->
+                    <button type="button"
+                            id="btnPedidos"
+                            class="opcao-conta">
+
+                        <span>Pedidos feitos</span>
+                        <span>&#8250;</span>
+
+                    </button>
+
+                    <!-- Acesso administrativo -->
+                    <!-- Aparece somente para usuários ambos -->
+                    <button type="button"
+                            id="btnAdministracao"
+                            class="opcao-conta opcao-administracao"
+                            hidden>
+
+                        <span>Ir para a administração</span>
+                        <span>&#8250;</span>
+
+                    </button>
+
+                    <!-- Logout -->
+                    <button type="button"
+                            id="btnSair"
+                            class="opcao-conta opcao-sair">
+
+                        <span>Sair da conta</span>
+                        <span>&#8250;</span>
+
+                    </button>
+
+                </div>
+
+            </article>
+
+        </section>
+
+    </main>
+
+</body>
+</html>

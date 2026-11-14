@@ -1,7 +1,7 @@
 
 const pool = require("../database");
 const { gerarPix } = require("../services/pix");
-const { frete: calcularFrete } = require("../services/valores");
+
 
 // =====================================================
 // DATA MÍNIMA - HORÁRIO DO PARANÁ
@@ -130,7 +130,7 @@ exports.solicitar = async (req, res) => {
             !/^\d{5}-?\d{3}$/.test(cep || "") ||
             !String(rua || "").trim() ||
             !String(numero || "").trim() ||
-            !String(bairro || "").trim()
+            (cidade !== "Quarto Centenário" && !String(bairro || "").trim())
         )
     ) {
         return res.status(400).json({
@@ -347,22 +347,24 @@ exports.solicitar = async (req, res) => {
         // CALCULAR FRETE
         // =================================================
 
-        let freteCentavos;
-
-        try {
-
-            freteCentavos = Math.round(
-                calcularFrete(modalidade, cidade) * 100
-            );
-
-        } catch (erro) {
-
-            await conexao.query("ROLLBACK");
-
-            return res.status(400).json({
-                sucesso: false,
-                mensagem: erro.message
-            });
+        let freteCentavos = 0;
+        if (modalidade === "entrega" && cidade !== "Quarto Centenário") {
+            // Preço validado no banco dentro da transação, nunca pelo navegador.
+            const consultaFrete = await conexao.query(`
+                SELECT valor FROM frete_bairro
+                WHERE cidade = $1
+                  AND LOWER(TRIM(bairro)) = LOWER(TRIM($2))
+                  AND disponivel = TRUE
+                LIMIT 1
+            `, [cidade, bairro]);
+            if (!consultaFrete.rowCount) {
+                await conexao.query("ROLLBACK");
+                return res.status(400).json({
+                    sucesso: false,
+                    mensagem: "Bairro sem entrega cadastrada. Escolha um bairro disponível."
+                });
+            }
+            freteCentavos = Math.round(Number(consultaFrete.rows[0].valor) * 100);
         }
 
         // =================================================

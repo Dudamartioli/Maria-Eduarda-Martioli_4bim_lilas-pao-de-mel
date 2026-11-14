@@ -30,10 +30,38 @@ definirMinimo(7);
 function atualizarModalidade() {
     const entrega = form.elements.modalidade.value === "entrega";
     endereco.hidden = !entrega;
-    for (const id of ["cidade","cep","rua","numero","bairro"]) document.getElementById(id).required = entrega;
+    for (const id of ["cidade","cep","rua","numero","bairro"]) document.getElementById(id).required = entrega && !(id === "bairro" && form.elements.cidade.value === "Quarto Centenário");
 }
 form.querySelectorAll('input[name="modalidade"]').forEach(r => r.addEventListener("change", atualizarModalidade));
 atualizarModalidade();
+
+const cidadeFrete = document.getElementById("cidade");
+const bairroFrete = document.getElementById("bairro");
+async function carregarBairrosFrete() {
+    const cidade = cidadeFrete.value;
+    bairroFrete.replaceChildren();
+    const inicial = document.createElement("option");
+    inicial.value = "";
+    inicial.textContent = cidade === "Quarto Centenário" ? "Entrega gratuita" : "Selecione o bairro";
+    bairroFrete.append(inicial);
+    bairroFrete.disabled = cidade === "Quarto Centenário";
+    bairroFrete.required = form.elements.modalidade.value === "entrega" && cidade !== "Quarto Centenário";
+    if (!cidade || cidade === "Quarto Centenário") return;
+    try {
+        const r = await fetch(`${API}/fretes/disponiveis?cidade=${encodeURIComponent(cidade)}`);
+        const d = await r.json();
+        if (!r.ok || !d.sucesso) throw Error(d.mensagem || "Erro ao carregar bairros.");
+        for (const b of d.bairros) {
+            const o = document.createElement("option");
+            o.value = b.bairro;
+            o.textContent = `${b.bairro} — Frete: ${Number(b.valor).toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}`;
+            bairroFrete.append(o);
+        }
+        if (!d.bairros.length) inicial.textContent = "Nenhum bairro disponível";
+    } catch (erro) { inicial.textContent = "Erro ao consultar bairros"; console.error(erro); }
+}
+cidadeFrete.addEventListener("change", carregarBairrosFrete);
+carregarBairrosFrete();
 
 async function iniciar() {
     try {

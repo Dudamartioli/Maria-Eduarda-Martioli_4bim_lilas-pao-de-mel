@@ -1,0 +1,674 @@
+
+/* =====================================================
+   LILA'S - GERENCIAMENTO DE FRETES
+   Amarelo mel + chocolate + efeitos 3D
+   ===================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&display=swap");
+
+
+/* =====================================================
+   CORES E EFEITOS
+   ===================================================== */
+
+:root {
+    --base: #FFE49A;
+    --creme: #FFF3D1;
+    --mel: #E08A2E;
+    --caramelo: #9A4F0E;
+
+    --chocolate: #5C3A2E;
+    --cafe: #3F2418;
+    --marrom-claro: #79553C;
+
+    --sombra: rgba(185, 115, 25, .30);
+    --luz: rgba(255, 251, 228, .90);
+
+    --relevo:
+        6px 6px 15px var(--sombra),
+        -6px -6px 15px var(--luz);
+
+    --afundado:
+        inset 4px 4px 10px rgba(185, 115, 25, .25),
+        inset -4px -4px 10px rgba(255, 251, 228, .85);
+
+    --gradiente-marrom:
+        linear-gradient(145deg, #754A35, #4A2D22);
+
+    --sombra-botao:
+        0 8px 16px rgba(63, 36, 24, .25),
+        inset 0 1px 0 rgba(255, 255, 255, .20);
+
+    --fonte: "Jost", "Segoe UI", sans-serif;
+}
+
+
+/* =====================================================
+   CONFIGURAÇÕES GERAIS
+   ===================================================== */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    min-height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    margin: 0;
+
+    background: var(--base);
+    color: var(--cafe);
+
+    font-family: var(--fonte);
+    line-height: 1.5;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+
+/* =====================================================
+   CABEÇALHO
+   ===================================================== */
+
+header {
+    position: relative;
+
+    padding: 35px 25px 40px;
+
+    background: var(--gradiente-marrom);
+
+    color: var(--creme);
+
+    text-align: center;
+
+    box-shadow:
+        0 7px 20px rgba(63, 36, 24, .22);
+}
+
+/* Botão voltar */
+header > a {
+    position: absolute;
+    top: 25px;
+    left: 30px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 11px 20px;
+
+    border: 2px solid rgba(255, 228, 154, .45);
+    border-radius: 999px;
+
+    background: var(--base);
+    color: var(--chocolate);
+
+    font-size: .9rem;
+    font-weight: 700;
+
+    text-decoration: none;
+
+    box-shadow:
+        0 5px 12px rgba(0, 0, 0, .20);
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease;
+}
+
+header > a:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 9px 18px rgba(0, 0, 0, .25);
+}
+
+/* Título principal */
+header h1 {
+    margin: 35px 0 10px;
+
+    color: var(--base);
+
+    font-size: clamp(1.7rem, 3vw, 2.5rem);
+    font-weight: 700;
+}
+
+/* Descrição */
+header p {
+    max-width: 750px;
+
+    margin: 0 auto;
+
+    color: var(--creme);
+
+    font-size: .95rem;
+    line-height: 1.7;
+}
+
+
+/* =====================================================
+   ÁREA PRINCIPAL
+   ===================================================== */
+
+main {
+    width: min(1180px, 100%);
+
+    margin: 0 auto;
+    padding: 40px 25px 65px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 35px;
+}
+
+
+/* =====================================================
+   CARTÕES DAS SEÇÕES
+   ===================================================== */
+
+main > section {
+    overflow: hidden;
+
+    padding: 30px;
+
+    border: 1px solid rgba(92, 58, 46, .12);
+    border-radius: 26px;
+
+    background: var(--base);
+
+    box-shadow: var(--relevo);
+}
+
+/* Títulos das seções */
+main > section > h2 {
+    margin: -30px -30px 30px;
+    padding: 20px 30px;
+
+    background: var(--gradiente-marrom);
+    color: var(--base);
+
+    font-size: 1.3rem;
+    font-weight: 700;
+
+    box-shadow:
+        0 5px 12px rgba(63, 36, 24, .12);
+}
+
+
+/* =====================================================
+   FORMULÁRIO DE FRETES
+   ===================================================== */
+
+#form {
+    display: grid;
+
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    gap: 22px;
+    align-items: end;
+}
+
+/* Cada campo do formulário */
+#form label {
+    display: flex;
+    flex-direction: column;
+
+    gap: 9px;
+
+    color: var(--chocolate);
+
+    font-size: .95rem;
+    font-weight: 700;
+}
+
+/* Campos de texto, número e select */
+#form input:not([type="checkbox"]):not([type="hidden"]),
+#form select {
+    width: 100%;
+    min-height: 48px;
+
+    padding: 12px 15px;
+
+    border: 1px solid transparent;
+    border-radius: 15px;
+
+    background: var(--base);
+    color: var(--cafe);
+
+    font-family: var(--fonte);
+    font-size: .95rem;
+    font-weight: 500;
+
+    box-shadow: var(--afundado);
+
+    outline: none;
+
+    transition:
+        border-color .2s ease,
+        box-shadow .2s ease;
+}
+
+/* Destaque ao selecionar */
+#form input:focus-visible,
+#form select:focus-visible {
+    border-color: var(--mel);
+
+    outline: 2px solid var(--mel);
+    outline-offset: 2px;
+}
+
+/* Texto das opções */
+#form select option {
+    background: var(--creme);
+    color: var(--chocolate);
+}
+
+/* Campo de disponibilidade */
+#form label:has(#disponivel) {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+
+    gap: 12px;
+
+    min-height: 48px;
+    padding: 12px 15px;
+
+    border-radius: 15px;
+
+    background: var(--creme);
+
+    box-shadow:
+        3px 4px 10px rgba(185, 115, 25, .15);
+
+    cursor: pointer;
+}
+
+/* Checkbox */
+#disponivel {
+    width: 20px;
+    height: 20px;
+
+    margin: 0;
+
+    accent-color: var(--chocolate);
+
+    cursor: pointer;
+}
+
+
+/* =====================================================
+   BOTÕES DO FORMULÁRIO
+   ===================================================== */
+
+#form button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 48px;
+
+    padding: 12px 22px;
+
+    border: none;
+    border-radius: 999px;
+
+    background: var(--gradiente-marrom);
+    color: var(--base);
+
+    font-family: var(--fonte);
+    font-size: .95rem;
+    font-weight: 700;
+
+    box-shadow: var(--sombra-botao);
+
+    cursor: pointer;
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        background .2s ease;
+}
+
+#form button:hover:not(:disabled) {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 10px 20px rgba(63, 36, 24, .32);
+}
+
+#form button:active:not(:disabled) {
+    transform: translateY(1px);
+}
+
+#form button:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+}
+
+/* Botão cancelar edição */
+#limpar {
+    border: 2px solid var(--chocolate) !important;
+
+    background: var(--creme) !important;
+    color: var(--chocolate) !important;
+
+    box-shadow:
+        4px 5px 12px rgba(185, 115, 25, .16) !important;
+}
+
+#limpar:hover:not(:disabled) {
+    background: #F3D68E !important;
+}
+
+
+/* =====================================================
+   MENSAGENS
+   ===================================================== */
+
+#mensagem {
+    margin: 0 0 20px;
+    padding: 14px 18px;
+
+    border-radius: 15px;
+
+    background: var(--creme);
+    color: var(--chocolate);
+
+    font-size: .95rem;
+    font-weight: 600;
+
+    text-align: center;
+
+    box-shadow: var(--afundado);
+}
+
+#mensagem:empty {
+    display: none;
+}
+
+
+/* =====================================================
+   TABELA DE FRETES
+   ===================================================== */
+
+/* Permite rolagem horizontal em telas menores */
+.rolagem {
+    width: 100%;
+    overflow-x: auto;
+
+    border: 1px solid rgba(92, 58, 46, .15);
+    border-radius: 20px;
+
+    background: var(--creme);
+
+    box-shadow:
+        4px 5px 14px rgba(185, 115, 25, .15);
+}
+
+/* Tabela */
+table {
+    width: 100%;
+    min-width: 680px;
+
+    border-collapse: separate;
+    border-spacing: 0;
+
+    font-size: .93rem;
+}
+
+/* Cabeçalho da tabela */
+thead {
+    background: var(--gradiente-marrom);
+}
+
+thead th {
+    padding: 17px 18px;
+
+    color: var(--base);
+
+    font-size: .9rem;
+    font-weight: 700;
+
+    text-align: left;
+    white-space: nowrap;
+}
+
+/* Linhas */
+tbody tr {
+    background: var(--creme);
+
+    transition: background .2s ease;
+}
+
+tbody tr:nth-child(even) {
+    background: #F8E5B7;
+}
+
+tbody tr:hover {
+    background: #F3D68E;
+}
+
+/* Células */
+tbody td {
+    padding: 15px 18px;
+
+    border-bottom: 1px solid rgba(92, 58, 46, .12);
+
+    color: var(--chocolate);
+
+    vertical-align: middle;
+}
+
+/* Última linha sem borda */
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Cidade */
+tbody td:first-child {
+    font-weight: 700;
+}
+
+/* Preço */
+tbody td:nth-child(3) {
+    color: var(--doce-de-leite, #9A4F0E);
+    font-weight: 700;
+}
+
+/* Disponibilidade */
+tbody td:nth-child(4) {
+    font-weight: 700;
+}
+
+/* Quando o JS utiliza classes de status */
+.disponivel,
+.ativo {
+    color: #35652F;
+}
+
+.indisponivel,
+.inativo {
+    color: #9B3030;
+}
+
+
+/* =====================================================
+   BOTÕES DE AÇÕES DA TABELA
+   ===================================================== */
+
+#lista button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+
+    margin: 4px;
+    padding: 9px 15px;
+
+    border: none;
+    border-radius: 999px;
+
+    background: var(--gradiente-marrom);
+    color: var(--base);
+
+    font-family: var(--fonte);
+    font-size: .85rem;
+    font-weight: 700;
+
+    white-space: nowrap;
+
+    box-shadow:
+        0 5px 10px rgba(63, 36, 24, .18);
+
+    cursor: pointer;
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease;
+}
+
+#lista button:hover:not(:disabled) {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 14px rgba(63, 36, 24, .28);
+}
+
+#lista button:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+/* Botão excluir, caso tenha essa classe */
+#lista button.excluir,
+#lista .btn-excluir {
+    background: linear-gradient(
+        145deg,
+        #A74437,
+        #782C26
+    );
+
+    color: #FFF4E9;
+}
+
+
+/* =====================================================
+   ESTADOS VAZIOS
+   ===================================================== */
+
+#lista:empty::after {
+    content: "";
+}
+
+
+/* =====================================================
+   RESPONSIVIDADE - TABLETS
+   ===================================================== */
+
+@media (max-width: 900px) {
+
+    #form {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    main {
+        padding: 30px 20px 50px;
+    }
+}
+
+
+/* =====================================================
+   RESPONSIVIDADE - CELULARES
+   ===================================================== */
+
+@media (max-width: 600px) {
+
+    header {
+        padding: 22px 15px 28px;
+    }
+
+    header > a {
+        position: static;
+
+        margin-bottom: 20px;
+        padding: 10px 16px;
+
+        font-size: .83rem;
+    }
+
+    header h1 {
+        margin: 5px 0 12px;
+
+        font-size: 1.65rem;
+    }
+
+    header p {
+        font-size: .86rem;
+    }
+
+    main {
+        gap: 25px;
+        padding: 25px 12px 40px;
+    }
+
+    main > section {
+        padding: 20px 15px;
+
+        border-radius: 20px;
+    }
+
+    main > section > h2 {
+        margin: -20px -15px 25px;
+        padding: 17px 18px;
+
+        font-size: 1.15rem;
+    }
+
+    #form {
+        grid-template-columns: 1fr;
+
+        gap: 17px;
+    }
+
+    #form button {
+        width: 100%;
+    }
+
+    .rolagem {
+        border-radius: 14px;
+    }
+
+    table {
+        font-size: .85rem;
+    }
+
+    thead th,
+    tbody td {
+        padding: 12px;
+    }
+}
+
+
+/* =====================================================
+   ACESSIBILIDADE
+   ===================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        transition: none !important;
+    }
+}

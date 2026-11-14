@@ -102,3 +102,16 @@ ALTER TABLE pedido_encomenda
 ADD COLUMN IF NOT EXISTS comprovante_enviado_em TIMESTAMPTZ;
 
 COMMIT;
+
+
+-- Execute uma única vez no DBeaver, no banco da Lila's.
+CREATE TABLE IF NOT EXISTS frete_bairro (
+ id_frete SERIAL PRIMARY KEY,
+ cidade VARCHAR(100) NOT NULL,
+ bairro VARCHAR(100) NOT NULL,
+ valor NUMERIC(10,2) NOT NULL CHECK (valor >= 0),
+ disponivel BOOLEAN NOT NULL DEFAULT TRUE,
+ CONSTRAINT frete_bairro_unico UNIQUE (cidade, bairro),
+ CONSTRAINT frete_cidade_valida CHECK (cidade IN ('Campo Mourão','Goioerê'))
+);
+-- Cadastre os preços reais pelo painel; nenhum preço é criado automaticamente.

@@ -41,6 +41,7 @@ const administradorRoutes = require("./routes/administradorRoutes");
 const recuperacaoRoutes = require("./routes/recuperacaoRoutes");
 const bannerRoutes = require("./routes/bannerRoutes");
 const checkoutRoutes = require("./routes/checkoutRoutes");
+const freteRoutes = require("./routes/freteRoutes");
 const pagamentosAdminRoutes = require("./routes/pagamentosAdminRoutes");
 
 // Listagem pública dos banners
@@ -48,6 +49,7 @@ app.use("/banner", bannerRoutes);
 
 // Solicitações de encomenda (checkout)
 app.use("/checkout", checkoutRoutes);
+app.use("/fretes", freteRoutes);
 app.use("/pagamentos-admin", pagamentosAdminRoutes);
 
 // Rotas dos produtos

@@ -1,0 +1,1155 @@
+
+/* ==============================================
+   LILA'S - CARRINHO DE COMPRAS
+   Cores originais e efeito 3D
+   ============================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&display=swap");
+
+:root {
+    --base: #FFE49A;
+    --mel: #E08A2E;
+    --doce-de-leite: #9A4F0E;
+    --chocolate: #5C3A2E;
+    --cafe: #3F2418;
+
+    --sombra: rgba(185, 115, 25, .32);
+    --luz: rgba(255, 251, 228, .95);
+
+    --relevo:
+        6px 6px 14px var(--sombra),
+        -6px -6px 14px var(--luz);
+
+    --afundado:
+        inset 5px 5px 11px var(--sombra),
+        inset -5px -5px 11px var(--luz);
+
+    --botao-fundo:
+        linear-gradient(150deg, #7b4f3d, #4a2d22);
+
+    --botao-sombra:
+        0 10px 18px -6px rgba(63,36,24,.55),
+        inset 0 1px 0 rgba(255,255,255,.28),
+        inset 0 -2px 0 rgba(0,0,0,.22);
+
+    --botao-brilho:
+        0 10px 22px -6px rgba(224,138,46,.75),
+        0 0 0 4px rgba(224,138,46,.28);
+
+    --fonte: "Jost", "Segoe UI", sans-serif;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+body.pagina-do-carrinho {
+    min-height: 100vh;
+    min-height: 100dvh;
+    margin: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    background: var(--base);
+    color: var(--cafe);
+    font-family: var(--fonte);
+}
+
+/* ==============================================
+   CABEÇALHO
+   ============================================== */
+
+.cabecalho-carrinho {
+    position: relative;
+    flex-shrink: 0;
+    background: var(--base);
+}
+
+.cabecalho-carrinho nav {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+
+    min-height: 95px;
+    padding: 10px clamp(20px, 4vw, 55px);
+    gap: 15px;
+}
+
+.cabecalho-carrinho h1 {
+    margin: 0;
+}
+
+.cabecalho-carrinho #logo {
+    display: block;
+    width: 160px;
+    max-width: 30vw;
+    height: auto;
+}
+
+.botao-voltar {
+    justify-self: start;
+
+    padding: 12px 20px;
+    border-radius: 999px;
+
+    background: var(--botao-fundo);
+    color: var(--base);
+
+    font-weight: 600;
+    text-decoration: none;
+
+    box-shadow: var(--botao-sombra);
+    transition: .2s ease;
+}
+
+.botao-voltar:hover {
+    transform: translateY(-3px);
+    color: white;
+    box-shadow: var(--botao-brilho);
+}
+
+/* ==============================================
+   CONTEÚDO PRINCIPAL
+   ============================================== */
+
+main.pagina-carrinho {
+    flex: 1;
+
+    display: block;
+    width: min(1250px, 100%);
+    margin: 0 auto;
+
+    padding: 20px clamp(18px, 4vw, 50px) 45px;
+}
+
+.apresentacao-carrinho {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.apresentacao-carrinho .subtitulo {
+    margin: 0 0 7px;
+    color: var(--doce-de-leite);
+
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .2em;
+}
+
+.apresentacao-carrinho h2 {
+    margin: 0 0 8px;
+
+    color: var(--chocolate);
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-weight: 700;
+}
+
+.apresentacao-carrinho > p:last-child {
+    margin: 0;
+    color: #79553c;
+}
+
+/* ==============================================
+   ORGANIZAÇÃO DO CARRINHO
+   ============================================== */
+
+.layout-carrinho {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(290px, 1fr);
+    gap: 30px;
+    align-items: start;
+}
+
+.cartao-carrinho,
+.resumo {
+    min-width: 0;
+    padding: 28px;
+
+    border-radius: 28px;
+    background: var(--base);
+    box-shadow: var(--relevo);
+}
+
+.titulo-cartao {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 22px;
+}
+
+.titulo-cartao h3,
+.resumo h3 {
+    margin: 0;
+    color: var(--chocolate);
+    font-size: 1.35rem;
+    font-weight: 700;
+}
+
+.titulo-cartao span {
+    font-size: 1.6rem;
+}
+
+/* ==============================================
+   PRODUTOS DO CARRINHO
+   ============================================== */
+
+#listaItens {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+#listaItens .item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 16px;
+    align-items: center;
+
+    padding: 20px;
+    border-radius: 20px;
+
+    background: var(--base);
+    box-shadow: var(--afundado);
+}
+
+.item .descricao-item {
+    min-width: 0;
+}
+
+.item h3 {
+    margin: 0 0 8px;
+    color: var(--chocolate);
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.item p {
+    margin: 5px 0;
+    color: #79553c;
+    font-size: .9rem;
+}
+
+.item .controles-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.item .controles-item label {
+    color: var(--chocolate);
+    font-size: .85rem;
+    font-weight: 600;
+}
+
+.item input[type="number"] {
+    width: 85px;
+    padding: 10px;
+
+    border: none;
+    border-radius: 13px;
+
+    background: var(--base);
+    color: var(--chocolate);
+    text-align: center;
+
+    box-shadow: var(--afundado);
+    font: inherit;
+}
+
+.item .subtotal {
+    grid-column: 1 / -1;
+    justify-self: end;
+
+    color: var(--chocolate);
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.item button,
+#finalizar,
+.acoes-modal button {
+    border: none;
+    border-radius: 999px;
+
+    padding: 11px 19px;
+
+    background: var(--botao-fundo);
+    color: var(--base);
+
+    font: inherit;
+    font-size: .9rem;
+    font-weight: 600;
+
+    box-shadow: var(--botao-sombra);
+    cursor: pointer;
+
+    transition: transform .2s, box-shadow .2s;
+}
+
+.item button:hover,
+#finalizar:hover:not(:disabled),
+.acoes-modal button:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--botao-brilho);
+}
+
+button:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+}
+
+/* ==============================================
+   RESUMO DO PEDIDO
+   ============================================== */
+
+.resumo {
+    position: sticky;
+    top: 110px;
+}
+
+.resumo h3 {
+    margin-bottom: 25px;
+}
+
+.linha-total {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    padding: 20px 0;
+
+    border-top: 1px solid rgba(154,79,14,.2);
+    border-bottom: 1px solid rgba(154,79,14,.2);
+}
+
+.linha-total strong:last-child {
+    color: var(--chocolate);
+    font-size: 1.5rem;
+}
+
+.resumo > p {
+    margin: 20px 0;
+
+    color: #79553c;
+    font-size: .9rem;
+    line-height: 1.6;
+}
+
+#finalizar {
+    width: 100%;
+    padding: 15px;
+}
+
+.adicionar-produtos {
+    display: block;
+    margin-top: 22px;
+
+    color: var(--chocolate);
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+}
+
+.adicionar-produtos:hover {
+    text-decoration: underline;
+}
+
+/* ==============================================
+   MENSAGENS E CARRINHO VAZIO
+   ============================================== */
+
+#mensagem {
+    color: var(--doce-de-leite);
+    text-align: center;
+    font-weight: 500;
+}
+
+#mensagem:empty {
+    display: none;
+}
+
+#listaItens:empty::after {
+    content: "🍯 Seu carrinho está esperando por algo delicioso!";
+    display: block;
+
+    padding: 45px 20px;
+    border-radius: 20px;
+
+    color: var(--chocolate);
+    text-align: center;
+
+    background: var(--base);
+    box-shadow: var(--afundado);
+}
+
+/* ==============================================
+   MODAL PERSONALIZADO
+   ============================================== */
+
+.modal-lilas {
+    width: min(420px, calc(100% - 30px));
+    max-height: calc(100dvh - 30px);
+
+    padding: 0;
+    border: none;
+    border-radius: 28px;
+
+    background: var(--base);
+    color: var(--chocolate);
+
+    box-shadow:
+        12px 12px 35px rgba(63,36,24,.3),
+        -5px -5px 20px rgba(255,251,228,.8);
+}
+
+.modal-lilas::backdrop {
+    background: rgba(40, 23, 12, .6);
+    backdrop-filter: blur(5px);
+}
+
+.conteudo-modal {
+    padding: 35px 28px;
+    text-align: center;
+}
+
+.icone-modal {
+    display: block;
+    font-size: 3rem;
+    margin-bottom: 15px;
+}
+
+.conteudo-modal h2 {
+    margin: 0 0 12px;
+    font-size: 1.6rem;
+    color: var(--chocolate);
+}
+
+.conteudo-modal p {
+    margin: 0 0 25px;
+    line-height: 1.6;
+}
+
+.acoes-modal {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+/* ==============================================
+   RODAPÉ
+   ============================================== */
+
+body.pagina-do-carrinho footer {
+    flex-shrink: 0;
+
+    padding: 15px;
+    background: var(--base);
+    color: var(--chocolate);
+
+    text-align: center;
+    font-size: .85rem;
+
+    box-shadow:
+        0 -14px 26px -18px rgba(160,95,15,.5);
+}
+
+body.pagina-do-carrinho footer p {
+    margin: 3px 0;
+}
+
+/* ==============================================
+   RESPONSIVIDADE
+   ============================================== */
+
+@media (max-width: 850px) {
+    .layout-carrinho {
+        grid-template-columns: 1fr;
+    }
+
+    .resumo {
+        position: static;
+    }
+}
+
+@media (max-width: 550px) {
+    .cabecalho-carrinho nav {
+        grid-template-columns: 1fr auto;
+        min-height: 75px;
+        padding: 12px 15px;
+    }
+
+    .cabecalho-carrinho h1 {
+        grid-column: 2;
+        grid-row: 1;
+    }
+
+    .cabecalho-carrinho #logo {
+        width: 110px;
+        max-width: 100%;
+    }
+
+    .espaco-cabecalho {
+        display: none;
+    }
+
+    .botao-voltar {
+        font-size: .8rem;
+        padding: 10px 12px;
+    }
+
+    main.pagina-carrinho {
+        padding: 20px 15px 35px;
+    }
+
+    .cartao-carrinho,
+    .resumo {
+        padding: 20px 16px;
+    }
+
+    #listaItens .item {
+        padding: 15px;
+        gap: 12px;
+    }
+
+    .item .subtotal {
+        justify-self: start;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        transition: none !important;
+    }
+}
+
+
+/* =====================================================
+   LILA'S - CARRINHO EM DUAS LINHAS
+   Resumo em cima e produtos embaixo
+   ===================================================== */
+
+
+/* =====================================================
+   CONTEÚDO PRINCIPAL
+   ===================================================== */
+
+main.pagina-carrinho {
+    display: block;
+
+    width: min(1300px, 100%);
+
+    margin: 0 auto;
+
+    padding: 10px clamp(18px, 4vw, 50px) 25px;
+}
+
+
+/* =====================================================
+   TÍTULO DA PÁGINA
+   ===================================================== */
+
+.apresentacao-carrinho {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.apresentacao-carrinho h2 {
+    margin-bottom: 5px;
+}
+
+
+/* =====================================================
+   LAYOUT EM DUAS LINHAS
+   ===================================================== */
+
+.layout-carrinho {
+    display: grid;
+
+    /* Uma única coluna */
+    grid-template-columns: minmax(0, 1fr);
+
+    gap: 20px;
+
+    width: 100%;
+
+    align-items: stretch;
+}
+
+
+/* =====================================================
+   CARTÕES PRINCIPAIS
+   ===================================================== */
+
+.layout-carrinho > .resumo,
+.layout-carrinho > .cartao-carrinho {
+    width: 100%;
+    min-width: 0;
+    height: auto;
+
+    padding: 22px 28px;
+
+    border-radius: 25px;
+
+    background: var(--base);
+
+    box-shadow: var(--relevo);
+}
+
+
+/* =====================================================
+   PRIMEIRA LINHA: RESUMO DO PEDIDO
+   ===================================================== */
+
+.layout-carrinho > .resumo {
+    position: static;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+.resumo h3 {
+    margin: 0;
+
+    color: var(--chocolate);
+
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.linha-total {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 12px 0;
+
+    border-top: 1px solid rgba(154, 79, 14, 0.2);
+    border-bottom: 1px solid rgba(154, 79, 14, 0.2);
+}
+
+.linha-total strong:last-child {
+    color: var(--chocolate);
+
+    font-size: 1.45rem;
+    font-weight: 700;
+}
+
+/* Texto explicativo */
+.resumo > p {
+    margin: 0;
+
+    color: #79553c;
+
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+/* Botão finalizar */
+#finalizar {
+    width: 100%;
+
+    padding: 13px 20px;
+
+    border-radius: 999px;
+}
+
+/* Link para adicionar mais produtos */
+.adicionar-produtos {
+    margin-top: 0;
+
+    color: var(--chocolate);
+
+    font-size: 0.9rem;
+    font-weight: 600;
+
+    text-align: center;
+}
+
+
+/* =====================================================
+   SEGUNDA LINHA: PRODUTOS
+   ===================================================== */
+
+.layout-carrinho > .cartao-carrinho {
+    display: flex;
+    flex-direction: column;
+}
+
+.titulo-cartao {
+    margin-bottom: 15px;
+}
+
+.titulo-cartao h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+
+/* =====================================================
+   LISTAGEM DE PRODUTOS
+   ===================================================== */
+
+#listaItens {
+    display: flex;
+    flex-direction: column;
+
+    gap: 15px;
+
+    width: 100%;
+}
+
+/* Cada produto ocupa sua própria linha */
+#listaItens .item {
+    width: 100%;
+
+    padding: 18px 22px;
+
+    border-radius: 18px;
+
+    background: var(--base);
+
+    box-shadow: var(--afundado);
+}
+
+
+/* =====================================================
+   CARRINHO VAZIO
+   ===================================================== */
+
+/* Não deixa uma área vazia enorme */
+#listaItens:empty {
+    min-height: 0;
+}
+
+/* Mensagem quando não existem produtos */
+#listaItens:empty::after {
+    content: "🍯 Seu carrinho está vazio. Que tal escolher um pão de mel?";
+
+    display: block;
+
+    padding: 22px 15px;
+
+    border-radius: 18px;
+
+    background: var(--base);
+
+    box-shadow: var(--afundado);
+
+    color: var(--chocolate);
+
+    font-size: 0.95rem;
+    font-weight: 500;
+
+    text-align: center;
+}
+
+
+/* =====================================================
+   NOTEBOOKS COM TELAS MAIS BAIXAS
+   ===================================================== */
+
+@media (min-width: 851px) and (max-height: 800px) {
+
+    .cabecalho-carrinho nav {
+        min-height: 75px;
+    }
+
+    .cabecalho-carrinho #logo {
+        width: 130px;
+    }
+
+    main.pagina-carrinho {
+        padding-top: 5px;
+        padding-bottom: 15px;
+    }
+
+    .apresentacao-carrinho {
+        margin-bottom: 12px;
+    }
+
+    .layout-carrinho {
+        gap: 15px;
+    }
+
+    .layout-carrinho > .resumo,
+    .layout-carrinho > .cartao-carrinho {
+        padding: 17px 24px;
+    }
+
+    .layout-carrinho > .resumo {
+        gap: 9px;
+    }
+
+    .linha-total {
+        padding: 9px 0;
+    }
+
+    #listaItens:empty::after {
+        padding: 15px;
+    }
+}
+
+
+/* =====================================================
+   CELULARES
+   ===================================================== */
+
+@media (max-width: 550px) {
+
+    main.pagina-carrinho {
+        padding: 10px 15px 25px;
+    }
+
+    .apresentacao-carrinho {
+        margin-bottom: 18px;
+    }
+
+    .layout-carrinho {
+        gap: 18px;
+    }
+
+    .layout-carrinho > .resumo,
+    .layout-carrinho > .cartao-carrinho {
+        padding: 20px 16px;
+        border-radius: 22px;
+    }
+
+    .linha-total strong:last-child {
+        font-size: 1.25rem;
+    }
+
+    #listaItens .item {
+        padding: 15px;
+    }
+}
+
+
+/* =====================================================
+   LILA'S - CARRINHO VAZIO COMPACTO
+   ===================================================== */
+
+/* Evita alturas fixas nos cartões */
+.layout-carrinho,
+.layout-carrinho > .resumo,
+.layout-carrinho > .cartao-carrinho {
+    min-height: 0;
+    height: auto;
+}
+
+/* Não força a listagem a ocupar espaço */
+#listaItens {
+    min-height: 0;
+    height: auto;
+}
+
+/* Mensagem compacta de carrinho vazio */
+#listaItens:empty::after {
+    display: block;
+
+    padding: 16px 20px;
+
+    border-radius: 16px;
+
+    background: var(--base);
+    box-shadow: var(--afundado);
+
+    color: var(--chocolate);
+
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+/* Reduz a altura do resumo */
+.layout-carrinho > .resumo {
+    gap: 8px;
+    padding-top: 18px;
+    padding-bottom: 18px;
+}
+
+/* Reduz os espaços entre os elementos */
+.resumo h3 {
+    margin-bottom: 0;
+}
+
+.resumo > p {
+    margin: 0;
+}
+
+.linha-total {
+    padding: 8px 0;
+}
+
+/* Deixa o cartão dos produtos mais compacto */
+.layout-carrinho > .cartao-carrinho {
+    padding-top: 18px;
+    padding-bottom: 18px;
+}
+
+.titulo-cartao {
+    margin-bottom: 12px;
+}
+
+
+/* =====================================================
+   LILA'S - SELETOR DE QUANTIDADE PERSONALIZADO
+   Botões circulares 3D
+   ===================================================== */
+
+/* Organiza o controle de quantidade */
+.seletor-quantidade {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 12px;
+
+    width: max-content;
+}
+
+/* Botões + e - */
+.item .btn-quantidade {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    width: 42px;
+    height: 42px;
+
+    padding: 0;
+
+    border: none;
+    border-radius: 50%;
+
+    background: var(--botao-fundo);
+    color: var(--base);
+
+    font-family: var(--fonte);
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1;
+
+    cursor: pointer;
+
+    box-shadow: var(--botao-sombra);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+/* Efeito ao passar o mouse */
+.item .btn-quantidade:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: var(--botao-brilho);
+}
+
+/* Efeito ao clicar */
+.item .btn-quantidade:active:not(:disabled) {
+    transform: translateY(1px);
+}
+
+/* Botão desativado */
+.item .btn-quantidade:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* Número da quantidade */
+.numero-quantidade {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 58px;
+    height: 46px;
+
+    padding: 0 12px;
+
+    border-radius: 14px;
+
+    background: var(--base);
+    color: var(--chocolate);
+
+    font-family: var(--fonte);
+    font-size: 1.25rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+
+    box-shadow: var(--afundado);
+}
+
+/* Centraliza os controles no cartão */
+.item .controles-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 12px;
+}
+
+/* Responsividade */
+@media (max-width: 550px) {
+
+    .seletor-quantidade {
+        gap: 8px;
+    }
+
+    .item .btn-quantidade {
+        width: 36px;
+        height: 36px;
+        font-size: 1.3rem;
+    }
+
+    .numero-quantidade {
+        min-width: 45px;
+        height: 40px;
+        font-size: 1.1rem;
+    }
+}
+
+/* =============================================
+   FOTO 1 DOS PRODUTOS NO CARRINHO
+   ============================================= */
+.foto-item-carrinho {
+    display: block;
+    width: 112px;
+    height: 112px;
+    min-width: 112px;
+    object-fit: cover;
+    border-radius: 18px;
+    background: #FFE49A;
+    box-shadow: 4px 4px 10px rgba(92,58,46,.17);
+    align-self: center;
+}
+.foto-item-carrinho.foto-indisponivel {
+    background: #f4e5c4;
+    opacity: .55;
+}
+/* Mantém o layout atual e reserva espaço para a foto. */
+.item {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+.item .descricao-item {
+    flex: 1 1 170px;
+    min-width: 0;
+}
+@media (max-width: 600px) {
+    .foto-item-carrinho {
+        width: 88px;
+        height: 88px;
+        min-width: 88px;
+    }
+}
+
+
+/* ==============================================
+   FOTO 1 DO PRODUTO NO CARRINHO
+   ============================================== */
+
+#listaItens .item {
+    grid-template-columns: 112px minmax(0, 1fr) auto;
+}
+
+#listaItens .imagem-item {
+    grid-column: 1;
+    grid-row: 1;
+    width: 112px;
+    height: 112px;
+    object-fit: cover;
+    border-radius: 18px;
+    background: var(--base);
+    box-shadow: var(--relevo);
+}
+
+#listaItens .imagem-item[hidden] {
+    display: none;
+}
+
+#listaItens .descricao-item {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+#listaItens .controles-item {
+    grid-column: 3;
+    grid-row: 1;
+}
+
+#listaItens .subtotal {
+    grid-column: 1 / -1;
+}
+
+@media (max-width: 650px) {
+    #listaItens .item {
+        grid-template-columns: 90px minmax(0, 1fr);
+        gap: 14px;
+    }
+
+    #listaItens .imagem-item {
+        width: 90px;
+        height: 90px;
+    }
+
+    #listaItens .controles-item {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        align-items: flex-start;
+    }
+
+    #listaItens .subtotal {
+        grid-row: 3;
+    }
+}
+
+/* LILA'S - AVISO DELICADO PARA PRODUTOS SEM FOTOGRAFIA */
+.lilas-sem-foto {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 18px;
+    text-align: center;
+    color: #70421f;
+    background: linear-gradient(145deg, #fff7df, #f5dda7);
+    border: 1px dashed #c69b55;
+    border-radius: 18px;
+    box-sizing: border-box;
+    min-height: 140px;
+}
+.lilas-sem-foto-icone { font-size: 30px; line-height: 1; }
+.lilas-sem-foto strong { font-size: 16px; line-height: 1.35; }
+.lilas-sem-foto span:last-child { font-size: 13px; line-height: 1.45; }
+.lilas-sem-foto[hidden], .lilas-foto-area img[hidden], #imagemProduto[hidden] { display: none !important; }
+
+#listaItens .lilas-sem-foto-carrinho {
+    grid-column: 1; grid-row: 1; width: 112px; min-height: 112px;
+    padding: 8px; gap: 5px; box-shadow: var(--relevo);
+}
+#listaItens .lilas-sem-foto-carrinho strong { font-size: 11px; }
+#listaItens .lilas-sem-foto-carrinho .lilas-sem-foto-icone { font-size: 20px; }
+@media (max-width: 650px) {
+    #listaItens .lilas-sem-foto-carrinho { width: 90px; min-height: 90px; }
+}

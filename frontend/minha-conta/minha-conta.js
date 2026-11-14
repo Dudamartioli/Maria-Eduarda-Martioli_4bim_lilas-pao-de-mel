@@ -71,7 +71,7 @@ async function verificarLogin() {
         console.log("Erro ao verificar login:", erro);
 
         // Informa que não foi possível verificar a sessão
-        alert("Não foi possível verificar sua conta.");
+        LilaAvisos.alerta("Não foi possível verificar sua conta.");
 
         // Volta para a página inicial
         window.location.href = "../menu/menu.html";
@@ -100,13 +100,13 @@ function configurarBotoes() {
     // Configura a alteração de senha
     btnAlterarSenha.onclick = function() {
 
-        alert("Em breve você poderá alterar sua senha por aqui!");
+        LilaAvisos.alerta("Em breve você poderá alterar sua senha por aqui!");
     };
 
     // Configura o histórico de pedidos
     btnPedidos.onclick = function() {
 
-        alert("Em breve você poderá consultar seus pedidos!");
+        LilaAvisos.alerta("Em breve você poderá consultar seus pedidos!");
     };
 
     // Configura a entrada na administração
@@ -140,7 +140,7 @@ async function entrarAdministracao() {
         } else {
 
             // Informa que o acesso não foi permitido
-            alert("Você não possui permissão administrativa.");
+            LilaAvisos.alerta("Você não possui permissão administrativa.");
         }
 
     } catch (erro) {
@@ -149,7 +149,7 @@ async function entrarAdministracao() {
         console.log("Erro ao acessar administração:", erro);
 
         // Informa o problema
-        alert("Não foi possível acessar a administração.");
+        LilaAvisos.alerta("Não foi possível acessar a administração.");
     }
 }
 
@@ -174,7 +174,7 @@ async function logout() {
         if (resposta.ok && dados.sucesso) {
 
             // Informa que o usuário saiu da conta
-            alert("Você saiu da sua conta com sucesso!");
+            LilaAvisos.alerta("Você saiu da sua conta com sucesso!");
 
             // Volta para a página inicial
             window.location.href = "../menu/menu.html";
@@ -182,7 +182,7 @@ async function logout() {
         } else {
 
             // Mostra a mensagem enviada pelo servidor
-            alert(dados.mensagem);
+            LilaAvisos.alerta(dados.mensagem);
         }
 
     } catch (erro) {
@@ -191,6 +191,6 @@ async function logout() {
         console.log("Erro ao sair da conta:", erro);
 
         // Informa o problema
-        alert("Não foi possível sair da conta.");
+        LilaAvisos.alerta("Não foi possível sair da conta.");
     }
 }

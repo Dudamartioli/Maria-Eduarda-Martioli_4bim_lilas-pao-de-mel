@@ -185,12 +185,6 @@ async function carregarGaleria() {
         }
     }
 
-    // Para os quatro produtos originais, mantém as fotos antigas
-    // quando não houver imagens cadastradas pelo administrador.
-    if (imagensEncontradas.length === 0 && imagensProdutos[nomeSelecionado]) {
-        imagensEncontradas.push(...imagensProdutos[nomeSelecionado]);
-    }
-
     window.imagensDaGaleria = imagensEncontradas;
     imagemAtual = 0;
 
@@ -198,6 +192,8 @@ async function carregarGaleria() {
         // Não tenta carregar pdm.jpg ou outro arquivo inexistente.
         const elemento = document.getElementById("imagemProduto");
         elemento.removeAttribute("src");
+        elemento.hidden = true;
+        document.getElementById("avisoSemFotoProduto").hidden = false;
         elemento.alt = "Este produto ainda não possui imagens";
         document.getElementById("indicadoresImagens").innerHTML = "";
         document.getElementById("imagemAnterior").hidden = true;
@@ -205,6 +201,8 @@ async function carregarGaleria() {
         return;
     }
 
+    document.getElementById("imagemProduto").hidden = false;
+    document.getElementById("avisoSemFotoProduto").hidden = true;
     document.getElementById("imagemAnterior").hidden = imagensEncontradas.length < 2;
     document.getElementById("imagemProxima").hidden = imagensEncontradas.length < 2;
     mostrarImagem();
@@ -301,39 +299,91 @@ document.getElementById("imagemProxima").onclick = proximaImagem;
 document.getElementById("imagemAnterior").onclick = imagemAnterior;
 
 
-// Adiciona o produto ao carrinho
+// Adiciona o sabor escolhido ao armazenamento local do carrinho.
 function adicionarAoCarrinho() {
+    const idProduto = Number(document.getElementById("selectSabor").value);
+    const quantidade = Number(document.getElementById("quantidadeProduto").value);
+    if (!idProduto) { LilaAvisos.alerta("Escolha um sabor antes de continuar."); return; }
+    if (!Number.isSafeInteger(quantidade) || quantidade < 1 || quantidade > 999) {
+        LilaAvisos.alerta("Informe uma quantidade entre 1 e 999."); return;
+    }
+    const produto = produtosDoTipo.find(p => Number(p.id_produto) === idProduto);
+    if (!produto || produto.disponivel === false) { LilaAvisos.alerta("Produto indisponível."); return; }
+    try {
+        LilaCarrinho.adicionar(idProduto, quantidade);
+        // Produto já foi adicionado com sucesso.
+        // Mostra a janela personalizada.
+        mostrarConfirmacaoCarrinho();
+    } catch (erro) { LilaAvisos.alerta(erro.message); }
+}
+document.getElementById("btnAdicionarCarrinho").onclick = adicionarAoCarrinho;
 
-    // Busca o sabor selecionado
-    const idProduto = document.getElementById("selectSabor").value;
 
-    // Busca a quantidade
-    const quantidade = Number(
-        document.getElementById("quantidadeProduto").value
+// =============================================
+// JANELA DE CONFIRMAÇÃO DO CARRINHO
+// =============================================
+
+// Abre a janela personalizada.
+function mostrarConfirmacaoCarrinho() {
+
+    const modal = document.getElementById(
+        "modalProdutoAdicionado"
     );
 
-    // Verifica se o cliente escolheu um sabor
-    if (idProduto === "") {
-        alert("Escolha um sabor antes de continuar.");
-        return;
+    if (modal && !modal.open) {
+        modal.showModal();
     }
+}
 
-    // Verifica a quantidade
-    if (quantidade < 1 || !Number.isInteger(quantidade)) {
-        alert("Informe uma quantidade válida.");
-        return;
-    }
+// Botão para continuar comprando.
 
-    // Por enquanto, mostra a seleção realizada
-    alert(
-        "Produto selecionado!\n" +
-        "ID: " + idProduto + "\n" +
-        "Quantidade: " + quantidade
-    );
+/* =====================================================
+   BOTÃO CONTINUAR COMPRANDO
+   ===================================================== */
 
+// Localiza o botão e a janela de confirmação.
+const btnContinuar = document.getElementById("btnContinuarComprando");
+
+const modalAdicionado = document.getElementById("modalProdutoAdicionado");
+
+// Verifica se os elementos existem na página.
+if (btnContinuar && modalAdicionado) {
+
+    // Executa quando o cliente clica no botão.
+    btnContinuar.addEventListener("click", function (evento) {
+
+        // Impede qualquer comportamento padrão do botão.
+        evento.preventDefault();
+
+        // Fecha a janela personalizada.
+        if (modalAdicionado.open) {
+            modalAdicionado.close();
+        }
+
+    });
 }
 
 
-// Liga o botão de adicionar ao carrinho
-document.getElementById("btnAdicionarCarrinho").onclick =
-    adicionarAoCarrinho;
+// =============================================
+// MODAL PERSONALIZADO DO CARRINHO
+// =============================================
+
+// Mostra a janela após adicionar o produto.
+function mostrarConfirmacaoCarrinho() {
+
+    const modal = document.getElementById(
+        "modalProdutoAdicionado"
+    );
+
+    if (modal && !modal.open) {
+        modal.showModal();
+    }
+}
+
+// Botão para continuar comprando.
+document.getElementById("btnContinuarComprando")
+    ?.addEventListener("click", () => {
+
+        document.getElementById("modalProdutoAdicionado")
+            .close();
+    });

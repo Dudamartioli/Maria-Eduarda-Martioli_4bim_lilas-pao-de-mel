@@ -680,3 +680,336 @@ body {
     }
 
 }
+
+
+/* ==============================================
+   MODAL - PRODUTO ADICIONADO AO CARRINHO
+   ============================================== */
+
+.modal-produto-adicionado {
+    width: min(440px, calc(100% - 30px));
+    max-height: calc(100dvh - 30px);
+
+    padding: 0;
+    border: none;
+    border-radius: 28px;
+
+    background: #FFE49A;
+    color: #5C3A2E;
+
+    box-shadow:
+        12px 12px 35px rgba(63,36,24,.3),
+        -5px -5px 20px rgba(255,251,228,.8);
+}
+
+.modal-produto-adicionado::backdrop {
+    background: rgba(40,23,12,.6);
+    backdrop-filter: blur(5px);
+}
+
+.conteudo-confirmacao {
+    padding: 35px 28px;
+    text-align: center;
+}
+
+.icone-confirmacao {
+    display: block;
+    margin-bottom: 12px;
+    font-size: 3rem;
+}
+
+.conteudo-confirmacao h2 {
+    margin: 0 0 12px;
+    color: #5C3A2E;
+    font-size: 1.6rem;
+}
+
+.conteudo-confirmacao p {
+    margin: 0 0 25px;
+    line-height: 1.6;
+}
+
+.botoes-confirmacao {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+}
+
+.btn-ver-carrinho,
+#btnContinuarComprando {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    flex: 1;
+    min-width: 150px;
+
+    padding: 12px 18px;
+    border: none;
+    border-radius: 999px;
+
+    background: linear-gradient(150deg, #7b4f3d, #4a2d22);
+    color: #FFE49A;
+
+    font: inherit;
+    font-size: .9rem;
+    font-weight: 600;
+    text-decoration: none;
+
+    box-shadow:
+        0 10px 18px -6px rgba(63,36,24,.55);
+
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.btn-ver-carrinho:hover,
+#btnContinuarComprando:hover {
+    transform: translateY(-3px);
+    color: white;
+
+    box-shadow:
+        0 10px 22px -6px rgba(224,138,46,.75);
+}
+
+#btnContinuarComprando {
+    background: #FFE49A;
+    color: #5C3A2E;
+
+    box-shadow:
+        inset 0 0 0 2px #5C3A2E,
+        4px 4px 10px rgba(185,115,25,.25);
+}
+
+
+/* =====================================================
+   LILA'S - MODAL PERSONALIZADO DO CARRINHO
+   ===================================================== */
+
+/* Janela principal */
+.modal-produto-adicionado {
+    position: fixed;
+
+    width: min(450px, calc(100% - 30px));
+    max-width: 450px;
+    max-height: calc(100dvh - 30px);
+
+    margin: auto;
+    padding: 0;
+
+    border: none;
+    border-radius: 30px;
+
+    background: #FFE49A;
+    color: #5C3A2E;
+
+    box-shadow:
+        12px 12px 35px rgba(63, 36, 24, 0.35),
+        inset 1px 1px 2px rgba(255, 255, 255, 0.8);
+
+    overflow: auto;
+}
+
+/* Fundo escurecido */
+.modal-produto-adicionado::backdrop {
+    background: rgba(40, 23, 12, 0.65);
+    backdrop-filter: blur(6px);
+}
+
+/* Animação */
+.modal-produto-adicionado[open] {
+    animation: aparecerModal 0.3s ease-out;
+}
+
+@keyframes aparecerModal {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Conteúdo interno */
+.conteudo-confirmacao {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding: 38px 30px;
+
+    text-align: center;
+}
+
+/* Ícone circular */
+.icone-confirmacao {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 75px;
+    height: 75px;
+
+    margin-bottom: 22px;
+
+    border-radius: 50%;
+
+    background: #FFE49A;
+    color: #5C3A2E;
+
+    font-size: 2.5rem;
+    font-weight: 700;
+
+    box-shadow:
+        6px 6px 14px rgba(185, 115, 25, 0.32),
+        -6px -6px 14px rgba(255, 251, 228, 0.95);
+}
+
+/* Título */
+.conteudo-confirmacao h2 {
+    margin: 0 0 12px;
+
+    color: #5C3A2E;
+
+    font-family: "Jost", sans-serif;
+    font-size: 1.65rem;
+    font-weight: 700;
+}
+
+/* Descrição */
+.conteudo-confirmacao p {
+    margin: 0 0 28px;
+
+    color: #79553c;
+
+    font-family: "Jost", sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+/* Área dos botões */
+.botoes-confirmacao {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+
+    width: 100%;
+
+    gap: 12px;
+}
+
+/* Botões */
+.btn-ver-carrinho,
+#btnContinuarComprando {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    flex: 1;
+    min-width: 0;
+    min-height: 48px;
+
+    padding: 12px 15px;
+
+    border: none;
+    border-radius: 999px;
+
+    font-family: "Jost", sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+
+    text-align: center;
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+/* Botão principal */
+.btn-ver-carrinho {
+    background: linear-gradient(
+        150deg,
+        #7b4f3d 0%,
+        #4a2d22 100%
+    );
+
+    color: #FFE49A;
+
+    box-shadow:
+        0 10px 18px -6px rgba(63, 36, 24, 0.55),
+        inset 0 1px 0 rgba(255, 255, 255, 0.28);
+}
+
+/* Botão secundário */
+#btnContinuarComprando {
+    background: #FFE49A;
+    color: #5C3A2E;
+
+    box-shadow:
+        inset 5px 5px 11px rgba(185, 115, 25, 0.32),
+        inset -5px -5px 11px rgba(255, 251, 228, 0.95);
+}
+
+/* Efeito hover */
+.btn-ver-carrinho:hover,
+#btnContinuarComprando:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 10px 22px -6px rgba(224, 138, 46, 0.75),
+        0 0 0 4px rgba(224, 138, 46, 0.2);
+}
+
+/* Celulares */
+@media (max-width: 480px) {
+
+    .conteudo-confirmacao {
+        padding: 30px 20px;
+    }
+
+    .botoes-confirmacao {
+        flex-direction: column;
+    }
+
+    .btn-ver-carrinho,
+    #btnContinuarComprando {
+        width: 100%;
+        flex: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .modal-produto-adicionado[open] {
+        animation: none;
+    }
+}
+
+/* LILA'S - AVISO DELICADO PARA PRODUTOS SEM FOTOGRAFIA */
+.lilas-sem-foto {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 18px;
+    text-align: center;
+    color: #70421f;
+    background: linear-gradient(145deg, #fff7df, #f5dda7);
+    border: 1px dashed #c69b55;
+    border-radius: 18px;
+    box-sizing: border-box;
+    min-height: 140px;
+}
+.lilas-sem-foto-icone { font-size: 30px; line-height: 1; }
+.lilas-sem-foto strong { font-size: 16px; line-height: 1.35; }
+.lilas-sem-foto span:last-child { font-size: 13px; line-height: 1.45; }
+.lilas-sem-foto[hidden], .lilas-foto-area img[hidden], #imagemProduto[hidden] { display: none !important; }
+
+.imagem-principal > .lilas-sem-foto { width: 100%; min-height: 420px; }

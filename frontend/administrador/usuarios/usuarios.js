@@ -23,7 +23,7 @@ async function requisicao(caminho, opcoes = {}) {
     if (!resposta.ok || !dados.sucesso) throw new Error(dados.mensagem || 'Não foi possível completar a operação.');
     return dados;
 }
-function informar(texto) { mensagem.textContent = texto; }
+function informar(texto) { mensagem.textContent = texto; if (texto) LilaAvisos.alerta(texto); }
 function limpar() {
     id.value = ''; nome.value = ''; email.value = ''; telefone.value = '';
     tipo.value = 'cliente'; senha.value = ''; usuarioCarregado = null;
@@ -111,7 +111,7 @@ async function salvar() {
 }
 async function excluir() {
     if (modo !== 'alterar' || !usuarioCarregado) return;
-    if (!confirm('Tem certeza que deseja excluir o usuário ' + usuarioCarregado.nome + '?')) return;
+    if (!await LilaAvisos.confirmar('Tem certeza que deseja excluir o usuário ' + usuarioCarregado.nome + '?')) return;
     try {
         const dados = await requisicao('/admin/usuario/' + id.value, {method:'DELETE'});
         limpar(); definirModo('consulta'); informar(dados.mensagem || 'Usuário excluído.');

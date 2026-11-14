@@ -1,0 +1,134 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Lila's - Meu Carrinho</title>
+
+    <link rel="stylesheet" href="../menu/menu.css">
+    <link rel="stylesheet" href="carrinho.css">
+    <link rel="stylesheet" href="../alertas/lilas-alertas.css">
+    <script src="../alertas/lilas-alertas.js" defer></script>
+</head>
+
+<body class="pagina-do-carrinho">
+
+    <!-- Cabeçalho -->
+    <header class="cabecalho-carrinho">
+        <nav>
+            <a href="../menu/menu.html" class="botao-voltar">
+                ← Continuar comprando
+            </a>
+
+            <h1>
+                <a href="../menu/menu.html">
+                    <img id="logo"
+                         src="../menu/logo-lilas.jpg"
+                         alt="Logo da Lila's">
+                </a>
+            </h1>
+
+            <span class="espaco-cabecalho"></span>
+        </nav>
+    </header>
+
+    <!-- Conteúdo principal -->
+    <main class="pagina-carrinho">
+
+        <section class="apresentacao-carrinho">
+            <p class="subtitulo">LILA'S — PÃO DE MEL</p>
+            <h2>Meu carrinho 🛒</h2>
+            <p>Confira os produtos escolhidos antes de finalizar seu pedido.</p>
+        </section>
+
+        <p id="mensagem" role="status"></p>
+
+        
+<!-- Organização do carrinho em duas linhas -->
+<div class="layout-carrinho">
+
+    <!-- PRIMEIRA LINHA: RESUMO DO PEDIDO -->
+    <section class="resumo">
+
+        <h3>Resumo do pedido</h3>
+
+        <div class="linha-total">
+
+            <strong>Total estimado</strong>
+
+            <strong id="total">R$ 0,00</strong>
+
+        </div>
+
+        <p>
+            Os valores serão conferidos novamente no checkout.
+        </p>
+
+        <button id="finalizar" type="button" disabled>
+            Finalizar pedido
+        </button>
+
+        <a href="../menu/menu.html"
+           class="adicionar-produtos">
+            + Adicionar mais produtos
+        </a>
+
+    </section>
+
+
+    <!-- SEGUNDA LINHA: PRODUTOS DO CARRINHO -->
+    <section class="cartao-carrinho">
+
+        <div class="titulo-cartao">
+
+            <h3>Seus produtos</h3>
+
+            <span>🍯</span>
+
+        </div>
+
+        <!-- Produtos carregados pelo JavaScript -->
+        <section id="listaItens"
+                 aria-label="Produtos no carrinho">
+        </section>
+
+    </section>
+
+</div>
+
+    </main>
+
+    <!-- Janela personalizada -->
+    <dialog id="modalCarrinho" class="modal-lilas"
+            aria-labelledby="tituloModal">
+        <div class="conteudo-modal">
+            <span class="icone-modal" aria-hidden="true">🍯</span>
+
+            <h2 id="tituloModal">Aviso da Lila's</h2>
+            <p id="textoModal"></p>
+
+            <div class="acoes-modal">
+                <button type="button" id="btnFecharModal">
+                    Entendi
+                </button>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- Rodapé -->
+    <footer>
+        <p>© Lila's - Todos os direitos reservados</p>
+        <p>
+            Desenvolvido por
+            <strong>Maria Eduarda Brito Lucheti Martioli</strong>
+        </p>
+    </footer>
+
+    <script src="carrinhoStorage.js"></script>
+    <script src="carrinho.js"></script>
+
+</body>
+</html>

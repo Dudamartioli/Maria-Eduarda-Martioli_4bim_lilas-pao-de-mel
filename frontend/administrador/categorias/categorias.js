@@ -46,6 +46,7 @@ let categoriaSelecionada = null;
 function mostrarAviso(texto) {
 
     mensagem.textContent = texto;
+    if (texto) LilaAvisos.alerta(texto);
 }
 
 // ==========================================
@@ -302,7 +303,7 @@ function alterar() {
 // EXCLUIR CATEGORIA
 // ==========================================
 
-function excluir() {
+async function excluir() {
 
     if (categoriaSelecionada === null) {
 
@@ -310,7 +311,7 @@ function excluir() {
         return;
     }
 
-    const confirmou = confirm(
+    const confirmou = await LilaAvisos.confirmar(
         "Deseja realmente excluir esta categoria?"
     );
 

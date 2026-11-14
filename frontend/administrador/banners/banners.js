@@ -34,7 +34,7 @@ async function verificarAcesso() {
     }
 }
 
-function mostrarMensagem(texto) { $("mensagem").textContent = texto; }
+function mostrarMensagem(texto) { $("mensagem").textContent = texto; if (texto) LilaAvisos.alerta(texto); }
 
 // Evita manter URLs temporárias de prévias anteriores na memória.
 function limparUrlLocal() {
@@ -194,7 +194,7 @@ async function salvarBanner(evento) {
 // Exclui somente depois da confirmação.
 async function excluirBanner() {
     if (idSelecionado === null) return;
-    if (!window.confirm("Deseja realmente excluir este banner?")) return;
+    if (!await LilaAvisos.confirmar("Deseja realmente excluir este banner?")) return;
     try {
         const resposta = await fetch(URL_API + "/admin/banner/" + idSelecionado, { method: "DELETE", credentials: "include" });
         const dados = await resposta.json();

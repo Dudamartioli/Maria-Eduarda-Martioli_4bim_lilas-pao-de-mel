@@ -162,14 +162,6 @@ async function mostrarProdutos(produtos) {
         }
     });
 
-    // Fotos originais dos quatro cards: não vamos removê-las
-    const imagensCards = {
-        "Pão de mel normal": "../imagens-produtos/pao-grande/foto1.jpg",
-        "Mini clássico": "../imagens-produtos/mini-classico/foto1.jpg",
-        "Mini refinado": "../imagens-produtos/mini-refinado/foto1.jpg",
-        "Mini no palito": "../imagens-produtos/mini-palito/foto1.jpg"
-    };
-
     // Cria um card para cada nome de produto encontrado
     for (const nomeProduto of ordemProdutos) {
 
@@ -181,33 +173,53 @@ async function mostrarProdutos(produtos) {
         const cartao = document.createElement("article");
         cartao.className = "produto";
 
+        // Área visual: imagem real ou mensagem de foto em preparação.
+        const areaFoto = document.createElement("div");
+        areaFoto.className = "lilas-foto-area";
+
         const imagem = document.createElement("img");
-        imagem.alt = nomeProduto;
+        imagem.alt = "Foto de " + nomeProduto;
+        imagem.hidden = true;
 
-        // Para os quatro cards antigos, mantém a imagem conhecida.
-        // Para novos produtos, procura as fotos na pasta do ID.
-        let caminhoImagem = imagensCards[nomeProduto] || "";
+        const aviso = document.createElement("div");
+        aviso.className = "lilas-sem-foto";
+        aviso.innerHTML = '<span class="lilas-sem-foto-icone" aria-hidden="true">🍯</span>' +
+            '<strong>Uma foto deliciosa vem aí!</strong>' +
+            '<span>Estamos preparando a imagem deste produto com muito carinho.</span>';
+        areaFoto.append(imagem, aviso);
 
-        if (!caminhoImagem) {
+        // Um modelo pode ter vários sabores com IDs diferentes.
+        // Procura a primeira foto cadastrada entre eles, sem usar fotos fixas.
+        const saboresDoModelo = produtos.filter(function(item) {
+            return item.nome_produto === nomeProduto;
+        });
+        let caminhoImagem = "";
+        for (const sabor of saboresDoModelo) {
             try {
                 const resposta = await fetch(
-                    URL_API + "/produto/" + produto.id_produto + "/imagens",
-                    { credentials: "include" }
+                    URL_API + "/produto/" + sabor.id_produto + "/imagens"
                 );
-
-                if (resposta.ok) {
-                    const dados = await resposta.json();
-                    if (dados.sucesso && dados.imagens.length > 0) {
-                        caminhoImagem = dados.imagens[0];
-                    }
+                if (!resposta.ok) continue;
+                const dados = await resposta.json();
+                if (dados.sucesso && Array.isArray(dados.imagens) && dados.imagens.length) {
+                    caminhoImagem = new URL(dados.imagens[0], URL_API).href;
+                    break;
                 }
             } catch (erro) {
-                console.log("Não foi possível buscar a imagem:", erro);
+                console.warn("Não foi possível consultar a foto:", erro);
             }
         }
-
-        // Imagem alternativa quando não houver foto disponível
-        imagem.src = caminhoImagem || "../imagens-produtos/pao-grande/foto1.jpg";
+        if (caminhoImagem) {
+            imagem.onload = function() {
+                imagem.hidden = false;
+                aviso.hidden = true;
+            };
+            imagem.onerror = function() {
+                imagem.hidden = true;
+                aviso.hidden = false;
+            };
+            imagem.src = caminhoImagem;
+        }
 
         const nome = document.createElement("h3");
         nome.textContent = nomeProduto;
@@ -224,7 +236,7 @@ async function mostrarProdutos(produtos) {
                 encodeURIComponent(nomeProduto);
         };
 
-        cartao.appendChild(imagem);
+        cartao.appendChild(areaFoto);
         cartao.appendChild(nome);
         cartao.appendChild(preco);
         cartao.appendChild(botao);
@@ -257,7 +269,7 @@ function marcarBotao(numero) {
 
 // Função provisória do carrinho
 function adicionarCarrinho(id) {
-    alert("Produto " + id + " selecionado!");
+    LilaAvisos.alerta("Produto " + id + " selecionado!");
 }
 
 
@@ -334,55 +346,75 @@ function linkPermitido(link) {
 }
 
 // Cria um slide com as informações recebidas do backend.
+
+// Cria um slide com as informações recebidas do backend.
 function criarSlideBanner(banner) {
+
+    // Cria o banner.
     const slide = document.createElement("div");
     slide.className = "slideBanner";
 
-    // A imagem é enviada pelo backend como /imagens-banners/nome.jpg.
-    if (typeof banner.imagem === "string" && banner.imagem.startsWith("/imagens-banners/")) {
-        slide.style.backgroundImage = 'url("' + encodeURI(banner.imagem).replace(/"/g, "%22") + '")';
+    // Coloca a imagem de fundo.
+    if (
+        typeof banner.imagem === "string" &&
+        banner.imagem.startsWith("/imagens-banners/")
+    ) {
+        slide.style.backgroundImage =
+            'url("' + encodeURI(banner.imagem).replace(/"/g, "%22") + '")';
     }
 
+    // Cria a área que receberá os textos.
     const conteudo = document.createElement("div");
     conteudo.className = "conteudoBanner";
 
+    // Cria o título.
     const titulo = document.createElement("h2");
-    titulo.appendChild(document.createTextNode(banner.titulo || ""));
+    titulo.appendChild(
+        document.createTextNode(banner.titulo || "")
+    );
 
+    // Adiciona o destaque ao título.
     if (banner.destaque) {
         const destaque = document.createElement("span");
         destaque.textContent = banner.destaque;
+
         titulo.appendChild(document.createTextNode(" "));
         titulo.appendChild(destaque);
     }
 
+    // Cria a descrição.
     const descricao = document.createElement("p");
     descricao.textContent = banner.descricao || "";
 
-    // Só cria o botão se o banner tiver um link
-if (banner.link_botao && banner.texto_botao) {
+    // ADICIONA O TÍTULO E A DESCRIÇÃO AO BANNER.
+    conteudo.appendChild(titulo);
+    conteudo.appendChild(descricao);
 
-    const botao = document.createElement("a");
+    // Só cria o botão se houver texto e link.
+    if (banner.link_botao && banner.texto_botao) {
 
-    botao.className = "btnConhecer";
+        const botao = document.createElement("a");
+        botao.className = "btnConhecer";
+        botao.href = linkPermitido(banner.link_botao);
 
-    botao.href = linkPermitido(banner.link_botao);
+        botao.appendChild(
+            document.createTextNode(banner.texto_botao + " ")
+        );
 
-    botao.appendChild(
-        document.createTextNode(banner.texto_botao + " ")
-    );
+        // Adiciona a seta ao botão.
+        const seta = document.createElement("span");
+        seta.textContent = "→";
+        botao.appendChild(seta);
 
-    const seta = document.createElement("span");
+        conteudo.appendChild(botao);
+    }
 
-    seta.textContent = "→";
-
-    botao.appendChild(seta);
-
-    conteudo.appendChild(botao);
-}
+    // Coloca o conteúdo dentro do slide.
     slide.appendChild(conteudo);
+
     return slide;
 }
+
 
 // Consulta os banners ativos e substitui os slides fixos do HTML.
 async function carregarBanners() {
@@ -553,12 +585,12 @@ async function logout() {
             await verificarLogin();
 
             // Mostra uma mensagem ao usuário
-            alert("Você saiu da sua conta com sucesso!");
+            LilaAvisos.alerta("Você saiu da sua conta com sucesso!");
 
         } else {
 
             // Mostra a mensagem de erro
-            alert(dados.mensagem);
+            LilaAvisos.alerta(dados.mensagem);
         }
 
     } catch (erro) {
@@ -566,7 +598,7 @@ async function logout() {
         // Mostra o erro no console
         console.log("Erro ao sair da conta:", erro);
 
-        alert("Não foi possível sair da conta.");
+        LilaAvisos.alerta("Não foi possível sair da conta.");
     }
 }
 

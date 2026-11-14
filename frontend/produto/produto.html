@@ -13,6 +13,8 @@
 
     <!-- CSS exclusivo dos detalhes do produto -->
     <link rel="stylesheet" href="produto.css">
+    <link rel="stylesheet" href="../alertas/lilas-alertas.css">
+    <script src="../alertas/lilas-alertas.js" defer></script>
 </head>
 
 <body>
@@ -79,6 +81,11 @@
                     <!-- Imagem principal -->
                     <div class="imagem-principal">
                         <img id="imagemProduto" src="" alt="Imagem do produto">
+                        <div id="avisoSemFotoProduto" class="lilas-sem-foto" hidden>
+                            <span class="lilas-sem-foto-icone" aria-hidden="true">🍯</span>
+                            <strong>Uma foto deliciosa vem aí!</strong>
+                            <span>Estamos preparando a imagem deste produto com muito carinho.</span>
+                        </div>
                     </div>
 
                     <!-- Botão para avançar as imagens -->
@@ -141,8 +148,58 @@
         <p>Lila's - Todos os direitos reservados</p>
     </footer>
 
-    <!-- JavaScript da página -->
+
+<!-- =====================================================
+     MODAL - PRODUTO ADICIONADO AO CARRINHO
+     ===================================================== -->
+
+<dialog id="modalProdutoAdicionado"
+        class="modal-produto-adicionado"
+        aria-labelledby="tituloProdutoAdicionado">
+
+    <div class="conteudo-confirmacao">
+
+        <!-- Ícone de confirmação -->
+        <div class="icone-confirmacao">
+            ✓
+        </div>
+
+        <!-- Título -->
+        <h2 id="tituloProdutoAdicionado">
+            Produto adicionado!
+        </h2>
+
+        <!-- Mensagem -->
+        <p>
+            Seu pão de mel foi adicionado ao carrinho
+            com sucesso. O que deseja fazer agora?
+        </p>
+
+        <!-- Botões -->
+        <div class="botoes-confirmacao">
+
+            <!-- Abre o carrinho -->
+            <a href="../carrinho/carrinho.html"
+               class="btn-ver-carrinho">
+                Ver carrinho
+            </a>
+
+            <!-- Fecha a janela -->
+            <button type="button"
+                    id="btnContinuarComprando">
+                Continuar comprando
+            </button>
+
+        </div>
+
+    </div>
+
+</dialog>
+
+<!-- JavaScript da página -->
+    <script src="../carrinho/carrinhoStorage.js"></script>
     <script src="produto.js"></script>
+
 
 </body>
 </html>

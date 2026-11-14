@@ -136,6 +136,7 @@ let salvando = false;
 function mostrarAviso(texto) {
 
     mensagem.textContent = texto;
+    if (texto) LilaAvisos.alerta(texto);
 }
 
 // ==========================================
@@ -492,7 +493,7 @@ function alterar() {
 // EXCLUIR PRODUTO
 // ==========================================
 
-function excluir() {
+async function excluir() {
 
     if (produtoSelecionado === null) {
 
@@ -500,7 +501,7 @@ function excluir() {
         return;
     }
 
-    const confirmou = confirm(
+    const confirmou = await LilaAvisos.confirmar(
         "Deseja realmente excluir este produto?"
     );
 

@@ -1,0 +1,334 @@
+/* ==========================================================
+   LILA'S | ADMINISTRAÇÃO — GERENCIAMENTO DE AGENDA
+   Visual alinhado ao CRUD de Fretes.
+   ========================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&display=swap');
+
+/* 1. PALETA E CONFIGURAÇÕES GERAIS */
+:root {
+    --mel: #FFE49A;
+    --creme: #FFF3D1;
+    --chocolate: #5C3A2E;
+    --caramelo: #754A35;
+    --marrom-escuro: #4A2D22;
+    --gradiente-marrom: linear-gradient(145deg, #754A35, #4A2D22);
+    --relevo: 7px 7px 16px rgba(185, 115, 25, .22),
+               -6px -6px 16px rgba(255, 251, 228, .85);
+    --sombra-botao: 0 6px 0 rgba(63, 36, 24, .26),
+                    0 10px 16px rgba(63, 36, 24, .14);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    background: var(--mel);
+    color: var(--chocolate);
+    font-family: 'Jost', sans-serif;
+    line-height: 1.5;
+}
+
+button, select, textarea { font: inherit; }
+button { cursor: pointer; }
+button:disabled { opacity: .48; cursor: not-allowed; box-shadow: none; }
+:focus-visible { outline: 3px solid #D58A30; outline-offset: 3px; }
+
+/* 2. CABEÇALHO — MESMO PADRÃO DO CRUD DE FRETES */
+header {
+    position: relative;
+    padding: 35px 25px 40px;
+    background: var(--gradiente-marrom);
+    color: var(--creme);
+    text-align: center;
+    box-shadow: 0 7px 20px rgba(63, 36, 24, .22);
+}
+
+header .voltar {
+    position: absolute;
+    top: 25px;
+    right: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 11px 20px;
+    border: 2px solid rgba(255, 228, 154, .45);
+    border-radius: 999px;
+    background: var(--mel);
+    color: var(--chocolate);
+    font-size: .9rem;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: 0 5px 12px rgba(0, 0, 0, .2);
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+header .voltar:hover { transform: translateY(-3px); box-shadow: 0 9px 18px rgba(0, 0, 0, .25); }
+header h1 { margin: 35px 0 10px; color: var(--mel); font-size: clamp(1.7rem, 3vw, 2.5rem); }
+header p { margin: 0 auto; color: var(--creme); font-size: .95rem; letter-spacing: .07em; }
+
+/* 3. LAYOUT DOS DOIS CARTÕES */
+main {
+    width: min(1250px, 100%);
+    margin: 0 auto;
+    padding: 38px 25px 65px;
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    align-items: start;
+    gap: 26px;
+}
+
+main > section {
+    min-width: 0;
+    padding: 28px;
+    border: 1px solid rgba(92, 58, 46, .12);
+    border-radius: 26px;
+    background: var(--creme);
+    box-shadow: var(--relevo);
+}
+
+main > section > h2 {
+    margin: -28px -28px 26px;
+    padding: 20px 28px;
+    border-radius: 26px 26px 0 0;
+    background: var(--gradiente-marrom);
+    color: var(--mel);
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+/* 4. NAVEGAÇÃO DO MÊS */
+.mes { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 22px; }
+.mes h2 { flex: 1; margin: 0; text-align: center; text-transform: capitalize; font-size: clamp(1.1rem, 2vw, 1.45rem); }
+
+.mes button, .acoes button {
+    border: 0;
+    border-radius: 999px;
+    background: var(--gradiente-marrom);
+    color: var(--mel);
+    font-weight: 700;
+    box-shadow: var(--sombra-botao);
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.mes button { flex: 0 0 46px; height: 46px; font-size: 1.65rem; line-height: 1; }
+.mes button:hover:not(:disabled), .acoes button:hover:not(:disabled) { transform: translateY(-3px); }
+.mes button:active:not(:disabled), .acoes button:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 2px 5px rgba(63, 36, 24, .2); }
+
+/* 5. CALENDÁRIO E ESTADOS DOS DIAS */
+.calendario { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; }
+.calendario .dia-semana { padding: 9px 0; text-align: center; font-size: .9rem; font-weight: 700; }
+.calendario .vazio { min-height: 54px; }
+
+.calendario button {
+    width: 100%;
+    min-height: 58px;
+    padding: 5px;
+    border: 1px solid rgba(92, 58, 46, .12);
+    border-radius: 14px;
+    background: var(--mel);
+    color: var(--chocolate);
+    font-size: 1rem;
+    font-weight: 700;
+    box-shadow: 3px 4px 7px rgba(92, 58, 46, .13), inset 0 2px 2px rgba(255, 255, 255, .4);
+    transition: transform .18s ease, box-shadow .18s ease;
+}
+
+.calendario button:hover { transform: translateY(-2px); box-shadow: 0 6px 10px rgba(92, 58, 46, .2); }
+.calendario button.producao { background: #F3BD73; }
+.calendario button.entrega { background: #E8A2A0; }
+.calendario button.ambos { background: #79553C; color: #FFF8E5; }
+.calendario button.selecionado { outline: 3px solid #D58A30; outline-offset: 2px; box-shadow: 0 0 0 5px rgba(255, 243, 209, .9); }
+
+/* Legenda que vem logo após o calendário */
+.calendario + p { margin: 22px 0 0; padding: 14px 16px; border-radius: 15px; background: #FFE9AF; font-size: .88rem; line-height: 1.9; }
+
+/* 6. FORMULÁRIO DE BLOQUEIO */
+#form label { display: block; margin: 0 0 22px; font-weight: 700; }
+#form select, #form textarea {
+    display: block;
+    width: 100%;
+    margin-top: 9px;
+    padding: 13px 16px;
+    border: 1px solid #DFC78F;
+    border-radius: 15px;
+    background: #FFF9E9;
+    color: var(--chocolate);
+    box-shadow: inset 3px 3px 7px rgba(92, 58, 46, .09);
+    outline-offset: 2px;
+}
+
+#form select { min-height: 50px; }
+#form textarea { min-height: 120px; resize: vertical; }
+#form select:focus, #form textarea:focus { border-color: #BD8240; }
+#pedidos { margin: 0 0 16px; color: #94500F; font-weight: 700; }
+#pedidos:empty { display: none; }
+
+/* 7. AÇÕES E MENSAGENS */
+.acoes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.acoes button { width: 100%; min-height: 54px; padding: 12px 14px; font-size: .98rem; }
+#mensagem { min-height: 24px; margin: 22px 0 0; font-weight: 700; color: var(--chocolate); }
+#mensagem:empty { margin: 0; min-height: 0; }
+
+/* 8. RESPONSIVIDADE */
+@media (max-width: 980px) {
+    main { grid-template-columns: 1fr; max-width: 760px; }
+}
+
+@media (max-width: 600px) {
+    header { padding: 80px 18px 30px; }
+    header .voltar { top: 18px; right: 18px; padding: 9px 14px; }
+    header h1 { margin: 0 0 10px; }
+    main { padding: 24px 14px 45px; gap: 22px; }
+    main > section { padding: 18px; border-radius: 20px; }
+    main > section > h2 { margin: -18px -18px 22px; padding: 17px 18px; border-radius: 20px 20px 0 0; }
+    .calendario { gap: 5px; }
+    .calendario button { min-height: 43px; border-radius: 9px; font-size: .9rem; }
+    .calendario .vazio { min-height: 43px; }
+    .calendario .dia-semana { font-size: .75rem; }
+    .mes button { flex-basis: 40px; height: 40px; }
+    .acoes { grid-template-columns: 1fr; }
+}
+
+/* 9. AJUSTE FINAL — LOGO, ALTURAS IGUAIS E TELA COMPACTA */
+header { padding: 22px 190px 22px; min-height: 142px; }
+header h1 { margin: 5px 0 5px; font-size: clamp(1.5rem, 2.4vw, 2.1rem); }
+header p { font-size: .83rem; }
+header .voltar { top: 22px; right: 26px; }
+header .logo-agenda {
+    position: absolute; left: 28px; top: 50%; transform: translateY(-50%);
+    display: flex; align-items: center; justify-content: center;
+    padding: 0; background: transparent; border: 0; box-shadow: none;
+}
+header .logo-agenda img { display: block; width: 118px; max-height: 104px; object-fit: contain; }
+header .logo-agenda:hover { box-shadow: none; }
+main {
+    width: min(1320px, 100%); padding: 22px 24px 26px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch; gap: 22px;
+}
+main > section { height: 100%; padding: 20px 22px; }
+main > section > h2 { margin: -20px -22px 18px; padding: 14px 22px; }
+.mes { margin-bottom: 12px; }
+.mes button { flex-basis: 40px; height: 40px; }
+.calendario { gap: 6px; }
+.calendario .dia-semana { padding: 5px 0; }
+.calendario .vazio { min-height: 42px; }
+.calendario button { min-height: 42px; border-radius: 11px; }
+.calendario + p { margin-top: 12px; padding: 9px 12px; line-height: 1.5; font-size: .8rem; }
+#form label { margin-bottom: 15px; }
+#form select { min-height: 44px; }
+#form textarea { min-height: 90px; resize: vertical; }
+.acoes button { min-height: 46px; }
+#mensagem { margin-top: 12px; }
+@media (min-width: 981px) and (min-height: 680px) {
+    body { min-height: 100vh; }
+    main { min-height: calc(100vh - 142px); }
+}
+@media (min-width: 981px) and (max-height: 820px) {
+    header { min-height: 116px; padding-top: 12px; padding-bottom: 12px; }
+    main { padding-top: 14px; padding-bottom: 14px; min-height: calc(100vh - 116px); }
+    main > section { padding-top: 15px; padding-bottom: 15px; }
+    main > section > h2 { margin-top: -15px; margin-bottom: 12px; padding-top: 11px; padding-bottom: 11px; }
+    .calendario button, .calendario .vazio { min-height: 35px; }
+    .calendario .dia-semana { padding: 3px 0; }
+    .mes { margin-bottom: 7px; }
+    .calendario + p { margin-top: 8px; }
+}
+@media (max-width: 980px) {
+    header { padding: 90px 20px 24px; }
+    header .logo-agenda { top: 18px; left: 18px; transform: none; }
+    header .logo-agenda img { width: 95px; max-height: 65px; }
+    header .voltar { top: 22px; right: 18px; }
+    main { grid-template-columns: 1fr; max-width: 760px; }
+    main > section { height: auto; }
+}
+@media (max-width: 600px) {
+    header { padding: 92px 16px 25px; }
+    header h1 { margin: 0 0 8px; }
+    main { padding: 18px 12px 32px; }
+    main > section { padding: 16px; }
+    main > section > h2 { margin: -16px -16px 15px; padding: 14px 16px; }
+    .calendario button { min-height: 40px; }
+    .acoes { grid-template-columns: 1fr; }
+}
+
+/* 10. APROVEITAMENTO DO ESPAÇO VERTICAL — DESKTOP
+   Mantém os dois cartões com a mesma altura, mas distribui
+   melhor o conteúdo em vez de deixá-lo concentrado no topo. */
+@media (min-width: 981px) and (min-height: 680px) {
+    main > section:first-child {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .mes { margin-bottom: clamp(14px, 2.2vh, 24px); }
+    .calendario { row-gap: clamp(8px, 1.2vh, 13px); }
+    .calendario button,
+    .calendario .vazio {
+        min-height: clamp(49px, 7.3vh, 72px);
+    }
+    .calendario .dia-semana { padding: 7px 0; }
+    .calendario + p {
+        margin-top: clamp(16px, 2.5vh, 28px);
+        padding: 12px 14px;
+    }
+
+    main > section:nth-child(2) #form {
+        display: flex;
+        flex-direction: column;
+        min-height: calc(100% - 62px);
+    }
+    #form label { margin-bottom: clamp(22px, 3vh, 34px); }
+    #form select { min-height: clamp(52px, 6.5vh, 66px); }
+    #form textarea {
+        min-height: clamp(145px, 23vh, 220px);
+        resize: vertical;
+    }
+    .acoes { margin-top: clamp(14px, 2.2vh, 24px); }
+    .acoes button { min-height: clamp(52px, 6.5vh, 66px); }
+}
+
+/* Em alturas pequenas, preservar acesso a todos os controles. */
+@media (min-width: 981px) and (max-height: 679px) {
+    main { min-height: 0; }
+    main > section { height: auto; }
+}
+
+/* 11. CARTÕES CENTRALIZADOS — mantém o tamanho dos controles internos.
+   Retira somente a altura esticada dos cartões no desktop. */
+@media (min-width: 981px) and (min-height: 680px) {
+    main {
+        align-items: center;
+    }
+
+    main > section {
+        height: auto;
+        min-height: 555px;
+        align-self: center;
+    }
+}
+
+
+/* ==========================================
+   AJUSTE FINAL — CARTÕES DA AGENDA
+   ========================================== */
+
+@media (min-width: 901px) {
+
+    /* Centraliza os dois cartões na tela */
+    main {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Remove a altura excessiva dos cartões */
+    main > section,
+    main > article {
+        height: auto;
+        min-height: 0;
+        align-self: center;
+    }
+}

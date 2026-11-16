@@ -402,6 +402,14 @@ exports.solicitar = async (req, res) => {
             });
         }
 
+        // Bloqueios da agenda (validar no backend antes de salvar).
+        try {
+            await require('../services/agenda').verificarAgenda(data_desejada, diasMinimos, conexao);
+        } catch (erro) {
+            await conexao.query('ROLLBACK');
+            return res.status(409).json({sucesso:false,mensagem:erro.message});
+        }
+
         // =================================================
         // INSERIR PEDIDO NO BANCO
         // =================================================

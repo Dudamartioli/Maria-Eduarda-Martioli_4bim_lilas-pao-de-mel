@@ -458,3 +458,9 @@ btnFinalizarPagamento.addEventListener(
     }
 );
 
+
+// Agenda pública: recebe somente datas e tipos, nunca os motivos privados.
+let agendaPublica=[];
+fetch(API+'/agenda/indisponiveis').then(r=>r.json()).then(d=>{if(d.sucesso)agendaPublica=d.bloqueios;}).catch(console.error);
+const dataCheckout=document.getElementById('data');
+dataCheckout.addEventListener('change',()=>{const dia=dataCheckout.value;const b=agendaPublica.find(x=>x.data===dia&&['entrega','ambos'].includes(x.tipo));if(b){dataCheckout.setCustomValidity('Data indisponível para entregas e retiradas.');dataCheckout.reportValidity();dataCheckout.value='';}else dataCheckout.setCustomValidity('');});

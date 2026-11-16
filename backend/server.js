@@ -43,6 +43,7 @@ const bannerRoutes = require("./routes/bannerRoutes");
 const checkoutRoutes = require("./routes/checkoutRoutes");
 const freteRoutes = require("./routes/freteRoutes");
 const pagamentosAdminRoutes = require("./routes/pagamentosAdminRoutes");
+const agendaRoutes = require("./routes/agendaRoutes");
 
 // Listagem pública dos banners
 app.use("/banner", bannerRoutes);
@@ -63,6 +64,8 @@ app.use("/admin", administradorRoutes);
 
 // Rotas para recuperar a senha
 app.use("/recuperacao", recuperacaoRoutes);
+
+app.use("/agenda", agendaRoutes);
 
 // ========================================
 // FRONTEND DA LILA'S

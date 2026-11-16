@@ -170,6 +170,8 @@ if (indisponiveis.length > 0) {
         );
     }
 
+    await require('../services/agenda').verificarAgenda(data,diasMinimos,c);
+
     const subtotal=Math.round(linhas.reduce((a,x)=>a+x.subtotal,0)*100)/100;
     if(subtotal<=0) throw new Error('O subtotal deve ser positivo.');
     const campos=[usuario,modalidade,texto(d.cidade,60),texto(d.cep,9),texto(d.rua,150),texto(d.numero,30),texto(d.complemento,300),texto(d.bairro,100),texto(d.referencia,300),data,horario,texto(d.observacao,300),subtotal,frete,Math.round((subtotal+frete)*100)/100];

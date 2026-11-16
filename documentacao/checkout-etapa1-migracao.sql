@@ -129,3 +129,11 @@ CREATE TABLE IF NOT EXISTS descricao_tipo (
 UPDATE pedido
 SET status = 'Aguardando pagamento'
 WHERE status = 'Pendente';
+
+-- Execute uma única vez no DBeaver antes de iniciar a agenda.
+CREATE TABLE IF NOT EXISTS agenda_bloqueio (
+ data DATE PRIMARY KEY,
+ tipo VARCHAR(12) NOT NULL CHECK(tipo IN ('producao','entrega','ambos')),
+ motivo VARCHAR(500) NOT NULL DEFAULT '',
+ criado_em TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);

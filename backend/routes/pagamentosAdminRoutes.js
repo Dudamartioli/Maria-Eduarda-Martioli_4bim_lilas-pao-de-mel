@@ -12,6 +12,185 @@ const falha = (res, erro) => {
     .status(500)
     .json({ sucesso: false, mensagem: "Erro interno ao consultar o banco." });
 };
+
+// Cadastro e edição manual de encomendas (somente administração).
+router.get('/pedidos-cadastro/opcoes', async (req, res) => {
+  try {
+    const [u, p] = await Promise.all([
+      pool.query("SELECT id_usuario,nome,email FROM usuario WHERE tipo_usuario IN ('cliente','ambos') ORDER BY nome"),
+      pool.query(`
+    SELECT
+        p.id_produto,
+        p.nome_produto,
+        p.preco,
+        p.estoque_pronto,
+        p.disponivel,
+        s.nome_sabor,
+        c.nome_categoria
+    FROM produto p
+    LEFT JOIN sabor s ON s.id_sabor = p.id_sabor
+    JOIN categoria c ON c.id_categoria = p.id_categoria
+    ORDER BY p.nome_produto, s.nome_sabor
+`)
+    ]);
+    res.json({sucesso:true,usuarios:u.rows,produtos:p.rows});
+  } catch(e) {falha(res,e);}
+});
+
+async function salvarPedidoManual(req,res,edicao) {
+  const d=req.body||{};
+  const id=Number(req.params.id);
+  const usuario=Number(d.id_usuario);
+  const itens=d.itens;
+  const data=String(d.data_desejada||'');
+  const horario=String(d.horario_desejado||'');
+  const modalidade=d.modalidade;
+  const texto=(v,max)=>String(v??'').trim().slice(0,max)||null;
+  if ((edicao&&(!Number.isSafeInteger(id)||id<1)) || !Number.isSafeInteger(usuario)||usuario<1 ||
+      !['retirada','entrega'].includes(modalidade) || !/^\d{4}-\d{2}-\d{2}$/.test(data) ||
+      !/^\d{2}:\d{2}$/.test(horario) || !Array.isArray(itens)||!itens.length||itens.length>50 ||
+      itens.some(i=>!Number.isSafeInteger(Number(i.id_produto))||Number(i.id_produto)<1||!Number.isSafeInteger(Number(i.quantidade))||Number(i.quantidade)<1||Number(i.quantidade)>10000) ||
+      (modalidade==='entrega'&&(!texto(d.cidade,60)||!texto(d.bairro,100)||!texto(d.rua,150)||!texto(d.numero,30)))) {
+    return res.status(400).json({sucesso:false,mensagem:'Confira cliente, itens, data, horário e endereço de entrega.'});
+  }
+  const frete=Number(d.frete||0);
+  if (!Number.isFinite(frete)||frete<0||frete>10000 || (modalidade==='retirada'&&frete!==0))
+    return res.status(400).json({sucesso:false,mensagem:'Frete inválido.'});
+  const c=await pool.connect();
+  try {
+    await c.query('BEGIN');
+    const usr=await c.query("SELECT id_usuario FROM usuario WHERE id_usuario=$1 AND tipo_usuario IN ('cliente','ambos')",[usuario]);
+    if (!usr.rowCount) throw new Error('Selecione um cliente cadastrado.');
+    if (edicao) {
+      const atual=await c.query('SELECT * FROM pedido_encomenda WHERE id_pedido=$1 FOR UPDATE',[id]);
+      if (!atual.rowCount) throw new Error('Pedido não encontrado.');
+      if (!atual.rows[0].status === 'Aguardando pagamento' ||
+          atual.rows[0].pagamento_status!=='Pendente' || atual.rows[0].comprovante_caminho || atual.rows[0].pix_copia_cola)
+        throw new Error('Este pedido já possui pagamento, Pix gerado ou andamento iniciado. Não é seguro editar seus valores.');
+      const reservas=await c.query('SELECT COALESCE(SUM(quantidade_reservada),0)::int AS total FROM item_encomenda WHERE id_pedido=$1',[id]);
+      if(reservas.rows[0].total>0) throw new Error('Pedido com estoque reservado não pode ser editado por este formulário.');
+    }
+    const ids=[...new Set(itens.map(i=>Number(i.id_produto)))];
+const produtos = await c.query(
+    `SELECT id_produto, preco, disponivel
+     FROM produto
+     WHERE id_produto = ANY($1::int[])
+     FOR UPDATE`,
+    [ids]
+);
+
+const indisponiveis = produtos.rows.filter(
+    p => !(p.disponivel === true || p.disponivel === 'true' || p.disponivel === 't' || p.disponivel === 1 || p.disponivel === '1')
+);
+
+if (indisponiveis.length > 0) {
+    throw new Error(
+        "Um ou mais produtos selecionados estão indisponíveis. " +
+        "Escolha apenas produtos disponíveis."
+    );
+}    const mapa=new Map(produtos.rows.map(x=>[Number(x.id_produto),Number(x.preco)]));
+    if(mapa.size!==ids.length) throw new Error('Um dos produtos não existe.');
+    const agrupados=new Map();
+    for(const i of itens) agrupados.set(Number(i.id_produto),(agrupados.get(Number(i.id_produto))||0)+Number(i.quantidade));
+    const linhas=[...agrupados].map(([produto,quantidade])=>({produto,quantidade,preco:mapa.get(produto),subtotal:Math.round(mapa.get(produto)*quantidade*100)/100}));
+
+    // Validação da antecedência no servidor.
+    // Utiliza o horário oficial de Brasília.
+    const partesHoje = new Intl.DateTimeFormat("en-US", {
+        timeZone: "America/Sao_Paulo",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
+    }).formatToParts(new Date());
+
+    const hojePartes = Object.fromEntries(
+        partesHoje.map(p => [p.type, p.value])
+    );
+
+    function dataMinimaAdmin(dias) {
+        const base = new Date(Date.UTC(
+            Number(hojePartes.year),
+            Number(hojePartes.month) - 1,
+            Number(hojePartes.day)
+        ));
+
+        base.setUTCDate(base.getUTCDate() + dias);
+        return base.toISOString().slice(0, 10);
+    }
+
+    const detalhes = await c.query(`
+        SELECT
+            p.id_produto,
+            p.estoque_pronto,
+            cat.nome_categoria
+        FROM produto p
+        JOIN categoria cat
+            ON cat.id_categoria = p.id_categoria
+        WHERE p.id_produto = ANY($1::int[])
+        FOR UPDATE OF p
+    `, [ids]);
+
+    const detalhesMapa = new Map(
+        detalhes.rows.map(p => [Number(p.id_produto), p])
+    );
+
+    const totalUnidades = linhas.reduce(
+        (total, item) => total + item.quantidade, 0
+    );
+
+    const contemMini = linhas.some(item => {
+        const produto = detalhesMapa.get(item.produto);
+        return !String(produto.nome_categoria)
+            .toLowerCase().includes("normal");
+    });
+
+    const faltaEstoque = linhas.some(item => {
+        const produto = detalhesMapa.get(item.produto);
+        return item.quantidade > Number(produto.estoque_pronto);
+    });
+
+    const pedidoRapido =
+        totalUnidades <= 20 &&
+        !contemMini &&
+        !faltaEstoque;
+
+    const diasMinimos = pedidoRapido ? 1 : 7;
+    const primeiraData = dataMinimaAdmin(diasMinimos);
+
+    if (data < primeiraData) {
+        throw new Error(
+            `A data mínima para este pedido é ${primeiraData}. ` +
+            (contemMini
+                ? "Pedidos com minis exigem 7 dias de antecedência."
+                : totalUnidades > 20
+                    ? "Pedidos acima de 20 unidades exigem 7 dias."
+                    : faltaEstoque
+                        ? "Estoque insuficiente para o pedido rápido."
+                        : "Não são permitidos pedidos para o mesmo dia.")
+        );
+    }
+
+    const subtotal=Math.round(linhas.reduce((a,x)=>a+x.subtotal,0)*100)/100;
+    if(subtotal<=0) throw new Error('O subtotal deve ser positivo.');
+    const campos=[usuario,modalidade,texto(d.cidade,60),texto(d.cep,9),texto(d.rua,150),texto(d.numero,30),texto(d.complemento,300),texto(d.bairro,100),texto(d.referencia,300),data,horario,texto(d.observacao,300),subtotal,frete,Math.round((subtotal+frete)*100)/100];
+    let pedidoId;
+    if(edicao) {
+      await c.query(`UPDATE pedido_encomenda SET id_usuario=$1,modalidade=$2,cidade=$3,cep=$4,rua=$5,numero=$6,complemento=$7,bairro=$8,referencia=$9,data_desejada=$10,horario_desejado=$11,observacao=$12,subtotal=$13,frete=$14,total=$15,desconto=0,cupom_codigo=NULL WHERE id_pedido=$16`,[...campos,id]);
+      await c.query('DELETE FROM item_encomenda WHERE id_pedido=$1',[id]);
+      pedidoId=id;
+    } else {
+      const novo=await c.query(`INSERT INTO pedido_encomenda (id_usuario,modalidade,cidade,cep,rua,numero,complemento,bairro,referencia,data_desejada,horario_desejado,observacao,subtotal,frete,total,status,pagamento_status) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,'Aguardando pagamento','Pendente') RETURNING id_pedido`,campos);
+      pedidoId=novo.rows[0].id_pedido;
+    }
+    for(const x of linhas) await c.query('INSERT INTO item_encomenda (id_pedido,id_produto,quantidade,preco_unitario,subtotal) VALUES ($1,$2,$3,$4,$5)',[pedidoId,x.produto,x.quantidade,x.preco,x.subtotal]);
+    await c.query('COMMIT');
+    res.status(edicao?200:201).json({sucesso:true,id_pedido:pedidoId,mensagem:edicao?'Pedido alterado com sucesso.':'Pedido cadastrado com sucesso.'});
+  } catch(e) {await c.query('ROLLBACK');if(e.message.startsWith('Erro'))return falha(res,e);console.error('Cadastro manual:',e);res.status(400).json({sucesso:false,mensagem:e.message||'Não foi possível salvar.'});}
+  finally {c.release();}
+}
+router.post('/pedidos-cadastro', (req,res)=>salvarPedidoManual(req,res,false));
+router.put('/pedidos-cadastro/:id', (req,res)=>salvarPedidoManual(req,res,true));
+
 router.get("/pedidos", async (req, res) => {
   try {
     const r =
@@ -31,7 +210,8 @@ router.patch("/pedidos/:id/confirmar-pix", async (req, res) => {
     await c.query("BEGIN");
     const r = await c.query(
       `UPDATE pedido_encomenda SET status='Confirmado', pagamento_status='Confirmado', confirmado_em=NOW()
-   WHERE id_pedido=$1 AND status='Aguardando pagamento' RETURNING id_pedido,cupom_codigo`,
+   WHERE id_pedido=$1 AND status = 'Aguardando pagamento'
+     AND pagamento_status='Pendente' RETURNING id_pedido,cupom_codigo`,
       [id],
     );
     if (!r.rowCount) {

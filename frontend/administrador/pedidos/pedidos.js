@@ -82,7 +82,7 @@ lista.before(painelBusca);
 const barraFiltros = document.createElement("div");
 barraFiltros.className = "filtros-pedidos";
 const grupos = [
-    ["Todos", "Todos"], ["Pendentes", "Aguardando pagamento"],
+    ["Todos", "Todos"], ["Aguardando pagamento", "Aguardando pagamento"],
     ["Confirmados", "Confirmado"], ["Em produção", "Em produção"],
     ["Prontos", "Pronto"], ["Finalizados", "Concluído"],
     ["Cancelados", "Cancelado"]
@@ -206,6 +206,12 @@ function mostrarDetalhes(pedido) {
     destaque.className = "pedido-cabecalho";
     destaque.append(elemento("h2", `Pedido #${pedido.id_pedido}`), seloStatus(pedido.status));
     card.append(destaque);
+    const botaoEditarManual=elemento("button","✏️ Alterar dados e produtos");
+    botaoEditarManual.disabled = !podeEditarPedidoManual(pedido);
+    botaoEditarManual.title = botaoEditarManual.disabled ? "Pedido com pagamento, Pix ou estoque reservado não pode ser editado." : "Abrir formulário de alteração";
+    botaoEditarManual.type="button";
+    botaoEditarManual.onclick=()=>editarPedidoManual(pedido.id_pedido);
+    card.append(botaoEditarManual);
     if (pedido.status === "Cancelado") card.append(elemento("p", "⛔ PEDIDO CANCELADO — NÃO PRODUZIR"));
 
     card.append(
@@ -302,7 +308,7 @@ card.append(areaProdutos);
     card.append(areaComprovante);
 
     // Confirmar Pix somente após conferir no banco.
-    if (pedido.status === "Aguardando pagamento") {
+    if (pedido.status === "Aguardando pagamento" && pedido.pagamento_status === "Pendente") {
 
         const confirmar = elemento(
             "button",
@@ -584,3 +590,336 @@ if (btnAtualizarPedidos) {
 
     });
 }
+
+
+// Formulário de cadastro e alteração manual.
+const secaoCadastro=document.createElement('section');
+secaoCadastro.className='cadastro-manual';
+secaoCadastro.innerHTML=`<div class="cadastro-topo"><h2>🍯 Cadastrar ou alterar pedido</h2></div>
+<form id="formManual"><div class="campos-manual">
+<label>ID (para alteração)>
+    <input
+        name="id"
+        type="number"
+        min="1"
+        placeholder="Digite o ID do pedido"
+    >
+</label><button type="button" id="buscarIdManual" class="buscar-id-manual">Buscar pedido pelo ID</button><label>Cliente<select name="id_usuario" required></select></label>
+<label>Modalidade<select name="modalidade"><option value="retirada">Retirada</option><option value="entrega">Entrega</option></select></label>
+<label>Data desejada<input name="data_desejada" type="date" required></label>
+<label>Horário<input name="horario_desejado" type="time" required></label>
+<label>Cidade<input name="cidade" maxlength="60"></label>
+<label>Bairro<input name="bairro" maxlength="100"></label>
+<label>Rua<input name="rua" maxlength="150"></label>
+<label>Número<input name="numero" maxlength="30"></label>
+<label>CEP<input name="cep" maxlength="9"></label>
+<label>Complemento<input name="complemento" maxlength="300"></label>
+<label>Referência<input name="referencia" maxlength="300"></label>
+<label>Frete (R$)<input name="frete" type="number" min="0" step="0.01" value="0"></label>
+<label class="campo-largo">Observação<textarea name="observacao" maxlength="300" rows="2"></textarea></label>
+</div><h3>Produtos e sabores</h3><div id="itensManual"></div>
+<button type="button" id="adicionarItemManual">+ Adicionar produto</button>
+<div class="total-manual" id="totalManual">Total: R$ 0,00</div>
+<div class="acoes-manual"><button type="button" id="inserirManual">Inserir</button><button type="button" id="alterarManual">Alterar</button><button type="submit" id="salvarManual" class="salvar-manual">Salvar</button><button type="button" id="cancelarManual">Cancelar</button></div>
+<p id="avisoManual" role="status"></p></form>`;
+const painelExistente=document.querySelector('.painel-pedidos');
+painelExistente.before(secaoCadastro);
+const formManual=document.getElementById('formManual');
+
+const campoDataManual = formManual.elements.namedItem("data_desejada");
+
+function dataLocalMaisDias(dias) {
+    const data = new Date();
+    data.setHours(12, 0, 0, 0);
+    data.setDate(data.getDate() + dias);
+
+    const ano = data.getFullYear();
+    const mes = String(data.getMonth() + 1).padStart(2, "0");
+    const dia = String(data.getDate()).padStart(2, "0");
+
+    return `${ano}-${mes}-${dia}`;
+}
+
+function atualizarCalendarioManual() {
+    const linhas = [
+        ...document.querySelectorAll(
+            "#itensManual .linha-item-manual"
+        )
+    ];
+
+    let quantidadeTotal = 0;
+    let possuiMini = false;
+    let estoqueInsuficiente = false;
+
+    for (const linha of linhas) {
+        const id = Number(linha.querySelector("select").value);
+        const quantidade = Number(linha.querySelector("input").value);
+
+        if (!id || !Number.isInteger(quantidade) || quantidade < 1) {
+            continue;
+        }
+
+        const produto = opcoesManuais.produtos.find(
+            p => Number(p.id_produto) === id
+        );
+
+        if (!produto) continue;
+
+        quantidadeTotal += quantidade;
+
+        if (!String(produto.nome_categoria)
+            .toLowerCase().includes("normal")) {
+            possuiMini = true;
+        }
+
+        // Verifica o estoque de cada produto e sabor.
+        const quantidadeMesmoProduto = linhas.reduce((total, outra) => {
+            if (Number(outra.querySelector("select").value) !== id) {
+                return total;
+            }
+            return total + (Number(outra.querySelector("input").value) || 0);
+        }, 0);
+
+        if (
+            produto.estoque_pronto == null ||
+            quantidadeMesmoProduto > Number(produto.estoque_pronto)
+        ) {
+            estoqueInsuficiente = true;
+        }
+    }
+
+    const diasMinimos =
+        quantidadeTotal > 20 || possuiMini || estoqueInsuficiente
+            ? 7
+            : 1;
+
+    campoDataManual.min = dataLocalMaisDias(diasMinimos);
+
+    // Não apaga a data durante a edição: sinaliza a data inválida.
+    const dataInvalida =
+        campoDataManual.value &&
+        campoDataManual.value < campoDataManual.min;
+
+    campoDataManual.setCustomValidity(
+        dataInvalida
+            ? `A data mínima para esses produtos é ${campoDataManual.min}.`
+            : ""
+    );
+
+    campoDataManual.title =
+        `Primeira data possível: ${campoDataManual.min}`;
+
+    return !dataInvalida;
+}
+
+campoDataManual.addEventListener("change", atualizarCalendarioManual);
+
+const itensManual=document.getElementById('itensManual');
+let opcoesManuais={usuarios:[],produtos:[]};
+const avisoManual=document.getElementById('avisoManual');
+const campoManual=(nome)=>formManual.elements.namedItem(nome);
+function podeEditarPedidoManual(pedido) {
+ return pedido.status === 'Aguardando pagamento' &&
+        pedido.pagamento_status === 'Pendente' &&
+        !pedido.pix_copia_cola && !pedido.comprovante_caminho &&
+        !(pedido.itens || []).some(i => Number(i.quantidade_reservada) > 0);
+}
+function bloquearCamposManuais() {
+ const editando = modoManual === 'inserir' || modoManual === 'alterar';
+ formManual.querySelectorAll('input, select, textarea').forEach(campo => {
+   if (campo.name === 'id') {
+     campo.disabled = false;
+     campo.readOnly = editando;
+   } else campo.disabled = !editando;
+ });
+ itensManual.querySelectorAll('button').forEach(botao => botao.disabled = !editando);
+ document.getElementById('adicionarItemManual').disabled = !editando;
+ botaoSalvarManual.disabled = !editando;
+}
+
+let modoManual = null;
+const botaoSalvarManual = document.getElementById('salvarManual');
+function definirModoManual(modo) {
+ modoManual = modo;
+ botaoSalvarManual.disabled = !modo;
+ botaoSalvarManual.textContent = modo === 'inserir' ? 'Salvar novo pedido' : modo === 'alterar' ? 'Salvar alterações' : 'Salvar';
+ document.getElementById('inserirManual').classList.toggle('ativo', modo === 'inserir');
+ document.getElementById('alterarManual').classList.toggle('ativo', modo === 'alterar');
+ bloquearCamposManuais();
+}
+definirModoManual(null);
+function calcularManual(){
+ let subtotal=0;
+ itensManual.querySelectorAll('.linha-item-manual').forEach(l=>{
+   const produto=opcoesManuais.produtos.find(p=>String(p.id_produto)===l.querySelector('select').value);
+   subtotal+=(Number(produto?.preco)||0)*(Number(l.querySelector('input').value)||0);
+ });
+ const frete=campoManual('modalidade').value==='retirada'?0:Number(campoManual('frete').value)||0;
+ document.getElementById('totalManual').textContent=`Subtotal: ${moeda(subtotal)} · Frete: ${moeda(frete)} · Total: ${moeda(subtotal+frete)}`;
+ atualizarCalendarioManual();
+}
+function adicionarLinhaManual(id='',quantidade=1){
+ const linha=document.createElement('div');linha.className='linha-item-manual';
+ const select=document.createElement('select');select.required=true;
+ select.append(new Option('Selecione um produto e sabor',''));
+opcoesManuais.produtos.forEach(p => {
+    const disponivel = p.disponivel === true || p.disponivel === 'true' || p.disponivel === 't' || p.disponivel === 1 || p.disponivel === '1';
+
+    const nome = `${p.nome_produto} — ${p.nome_sabor || 'Sem sabor'}`;
+
+    const texto = disponivel
+        ? `${nome} (${moeda(p.preco)})`
+        : `${nome} — INDISPONÍVEL`;
+
+    const opcao = new Option(texto, p.id_produto);
+
+    // Impede selecionar produtos indisponíveis.
+    opcao.disabled = !disponivel;
+
+    select.append(opcao);
+}); select.value=String(id);
+ // Ao editar, mantém o item antigo visível mesmo se ficou indisponível.
+ if (id && ![...select.options].some(o => o.value === String(id))) {
+     select.append(new Option(`Produto #${id} (não está mais no catálogo)`, String(id)));
+     select.value = String(id);
+ }
+ const qtd=document.createElement('input');qtd.type='number';qtd.min='1';qtd.max='10000';qtd.required=true;qtd.value=quantidade;
+ const remover=document.createElement('button');remover.type='button';remover.textContent='Remover';remover.onclick=()=>{linha.remove();calcularManual()};
+ select.onchange=calcularManual;qtd.oninput=calcularManual;
+ linha.append(select,qtd,remover);itensManual.append(linha);calcularManual();bloquearCamposManuais();
+}
+async function carregarOpcoesManuais(){
+ const d=await requisicao('/pagamentos-admin/pedidos-cadastro/opcoes');opcoesManuais=d;
+ const sel=campoManual('id_usuario');sel.replaceChildren(new Option('Selecione o cliente',''));
+ d.usuarios.forEach(u=>sel.append(new Option(`${u.nome} (${u.email})`,u.id_usuario)));
+}
+function limparManual(){formManual.reset();campoManual('id').value='';itensManual.replaceChildren();adicionarLinhaManual();avisoManual.textContent='';campoManual('frete').value='0';calcularManual();}
+document.getElementById('inserirManual').onclick=()=>{limparManual();definirModoManual('inserir');avisoManual.textContent='Novo pedido: preencha os dados e clique em Salvar.';};
+document.getElementById('alterarManual').onclick=async()=>{
+ const id=Number(campoManual('id').value);
+ if(!Number.isSafeInteger(id)||id<1){avisoManual.textContent='Digite o ID e clique em Buscar antes de alterar.';campoManual('id').focus();return;}
+ await editarPedidoManual(id);
+};
+document.getElementById('cancelarManual').onclick=()=>{limparManual();definirModoManual(null);};
+document.getElementById('buscarIdManual').onclick=async()=>{
+ const id=Number(campoManual('id').value);
+ if(!Number.isSafeInteger(id)||id<1){avisoManual.textContent='Digite um ID válido para buscar.';campoManual('id').focus();return;}
+ await editarPedidoManual(id, false);
+};
+document.getElementById('adicionarItemManual').onclick=()=>adicionarLinhaManual();
+campoManual('modalidade').onchange=()=>{if(campoManual('modalidade').value==='retirada')campoManual('frete').value=0;calcularManual()};
+campoManual('frete').oninput=calcularManual;
+async function editarPedidoManual(id, permitirEdicao = true){
+ try{
+  await carregarOpcoesManuais();
+  const {pedido}=await requisicao(`/pagamentos-admin/pedidos/${id}`);
+  if (permitirEdicao && !podeEditarPedidoManual(pedido)) throw Error('Este pedido possui pagamento, Pix ou estoque reservado, ou já está em produção. Não pode ser editado por este formulário.');
+  limparManual();
+  for(const nome of ['id_usuario','modalidade','cidade','cep','rua','numero','complemento','bairro','referencia','data_desejada','horario_desejado','observacao','frete']){
+   const valor=pedido[nome];campoManual(nome).value=valor==null?'':nome==='data_desejada'?String(valor).slice(0,10):nome==='horario_desejado'?String(valor).slice(0,5):valor;
+  }
+  campoManual('id').value=pedido.id_pedido;
+  itensManual.replaceChildren();(pedido.itens||[]).forEach(i=>adicionarLinhaManual(i.id_produto,i.quantidade));
+  calcularManual();definirModoManual(permitirEdicao ? 'alterar' : null);
+  avisoManual.textContent = permitirEdicao ? 'Edição liberada. Faça as alterações e clique em Salvar.' : 'Pedido encontrado. Clique em Alterar para liberar os campos, se permitido.';
+  secaoCadastro.scrollIntoView({behavior:'smooth',block:'start'});
+ }catch(e){alert(e.message)}
+}
+formManual.onsubmit=async e=>{
+ e.preventDefault();avisoManual.textContent='Salvando...';
+ try{
+  const id=campoManual('id').value;
+  if (!modoManual) throw new Error('Clique em Inserir ou Alterar antes de salvar.');
+  if (modoManual === 'alterar' && !id) throw new Error('Busque um pedido antes de alterar.');
+  if (!atualizarCalendarioManual()) {
+    campoDataManual.reportValidity();
+    throw new Error("A data escolhida não respeita o prazo do pedido.");
+}
+  const d=Object.fromEntries(new FormData(formManual).entries());
+  d.itens=[...itensManual.querySelectorAll('.linha-item-manual')].map(l=>({id_produto:Number(l.querySelector('select').value),quantidade:Number(l.querySelector('input').value)}));
+  if(!d.itens.length)throw Error('Adicione pelo menos um produto.');
+  if(d.modalidade==='retirada')d.frete=0;
+  const alterando = modoManual === 'alterar';
+  const resp=await requisicao(alterando?`/pagamentos-admin/pedidos-cadastro/${id}`:'/pagamentos-admin/pedidos-cadastro',{method:alterando?'PUT':'POST',body:JSON.stringify(d)});
+  avisoManual.textContent=resp.mensagem;const pedidoId=resp.id_pedido;
+  limparManual();definirModoManual(null);avisoManual.textContent=resp.mensagem;
+  await carregar();await procurar(pedidoId);
+ }catch(erro){avisoManual.textContent=erro.message}
+};
+carregarOpcoesManuais().then(()=>{limparManual();definirModoManual(null);}).catch(e=>{avisoManual.textContent=e.message});
+
+
+/* ==========================================
+   EXIBIR ENDEREÇO SOMENTE PARA ENTREGA
+   ========================================== */
+
+(function () {
+    const camposEndereco = [
+        "Cidade",
+        "Bairro",
+        "Rua",
+        "Número",
+        "CEP",
+        "Complemento",
+        "Referência",
+        "Frete (R$)"
+    ];
+
+    function atualizarCamposEntrega() {
+        const cadastro = document.querySelector(".cadastro-manual");
+
+        if (!cadastro) return;
+
+        const selectModalidade = [...cadastro.querySelectorAll("select")]
+            .find(select =>
+                [...select.options].some(option =>
+                    /^(entrega|retirada)$/i.test(option.value.trim())
+                )
+            );
+
+        if (!selectModalidade) return;
+
+        const entrega =
+            selectModalidade.value.trim().toLowerCase() === "entrega";
+
+        cadastro.querySelectorAll(".campos-manual label")
+            .forEach(label => {
+                const texto = label.textContent
+                    .replace(/\s+/g, " ")
+                    .trim();
+
+                const ehEndereco = camposEndereco.some(campo =>
+                    texto.toLowerCase().startsWith(campo.toLowerCase())
+                );
+
+                if (!ehEndereco) return;
+
+                label.classList.toggle(
+                    "campo-endereco-oculto",
+                    !entrega
+                );
+
+                label.querySelectorAll("input, select, textarea")
+                    .forEach(campo => {
+                        if (!entrega) {
+                            campo.required = false;
+                        }
+                    });
+            });
+    }
+
+    document.addEventListener("change", evento => {
+        if (evento.target.matches(".cadastro-manual select")) {
+            atualizarCamposEntrega();
+        }
+    });
+
+    const observador = new MutationObserver(atualizarCamposEntrega);
+
+    observador.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+
+    atualizarCamposEntrega();
+})();

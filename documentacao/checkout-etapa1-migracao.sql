@@ -125,3 +125,7 @@ CREATE TABLE IF NOT EXISTS descricao_tipo (
 
 -- Depois, edite a descrição geral no CRUD de Produtos.
 -- Ao editar um sabor, o texto geral será compartilhado com os outros sabores do mesmo nome.
+
+UPDATE pedido
+SET status = 'Aguardando pagamento'
+WHERE status = 'Pendente';

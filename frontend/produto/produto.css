@@ -1013,3 +1013,193 @@ body {
 .lilas-sem-foto[hidden], .lilas-foto-area img[hidden], #imagemProduto[hidden] { display: none !important; }
 
 .imagem-principal > .lilas-sem-foto { width: 100%; min-height: 420px; }
+
+
+/* =============================================================
+   VISUAL 3 — Amarelo original da Lila's + relevo 3D
+   Apenas a página de detalhes. IDs e JS preservados.
+   ============================================================= */
+html, body { min-height: 100%; }
+body { background: var(--base) !important; }
+.pagina-produto {
+  background: var(--base) !important;
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 10px clamp(18px,3.5vw,55px) 12px !important;
+  min-height: 0 !important;
+  flex: 1 1 auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-sizing: border-box !important;
+}
+.detalhes-produto {
+  display: grid !important;
+  grid-template-columns: minmax(0,1.08fr) minmax(0,.92fr) !important;
+  gap: clamp(22px,3.7vw,65px) !important;
+  align-items: center !important;
+  width: min(1200px,100%) !important;
+  max-width: 1200px !important;
+  min-height: 0 !important;
+  height: auto !important;
+  padding: 0 !important;
+  margin: 0 auto !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+.area-galeria { width:100% !important; min-width:0 !important; padding:0 !important; background:transparent !important; border:0 !important; box-shadow:none !important; }
+.area-galeria h2 { color:var(--chocolate) !important; font-size:clamp(13px,1.1vw,17px) !important; text-transform:uppercase; letter-spacing:.12em; margin:0 0 9px 8px !important; text-align:left !important; }
+.galeria { position:relative !important; display:flex !important; align-items:center !important; width:100% !important; padding:0 !important; background:transparent !important; border:0 !important; box-shadow:none !important; }
+.imagem-principal {
+  width:100% !important;
+  height:clamp(270px,calc(100dvh - 215px),560px) !important;
+  max-height:none !important;
+  overflow:hidden !important;
+  border-radius:46% 46% 26px 26px !important;
+  background:#d9ad6d !important;
+  box-shadow: 10px 12px 0 rgba(92,58,46,.16), 15px 21px 25px rgba(92,58,46,.16) !important;
+}
+.imagem-principal img { width:100% !important; height:100% !important; object-fit:cover !important; border-radius:inherit !important; }
+.seta-galeria { position:absolute !important; top:50% !important; transform:translateY(-50%) !important; z-index:2 !important; width:40px !important; height:40px !important; border-radius:50% !important; background:var(--base) !important; color:var(--chocolate) !important; box-shadow:var(--relevo-pequeno) !important; }
+#imagemAnterior {left:10px !important;} #imagemProxima {right:10px !important;}
+.indicadores-imagens { margin-top:12px !important; }
+.informacoes-produto { min-width:0 !important; width:100% !important; padding:0 !important; margin:0 !important; background:transparent !important; border:0 !important; border-radius:0 !important; box-shadow:none !important; color:var(--chocolate) !important; text-align:left !important; }
+.informacoes-produto::before { content:'FEITO COM CARINHO • LILA’S'; display:block; color:var(--doce-de-leite); letter-spacing:.15em; font-size:11px; font-weight:800; margin-bottom:7px; }
+.informacoes-produto h3 { color:var(--chocolate) !important; font-size:clamp(28px,3.2vw,47px) !important; line-height:1.08 !important; margin:0 0 9px !important; text-align:left !important; }
+.informacoes-produto #descricaoProduto { color:var(--chocolate) !important; font-size:clamp(13px,1.15vw,15px) !important; line-height:1.45 !important; margin:0 0 9px !important; text-align:left !important; }
+.informacoes-produto .preco-produto { color:var(--doce-de-leite) !important; font-size:clamp(24px,2.5vw,34px) !important; font-weight:800 !important; margin:7px 0 10px !important; text-align:left !important; }
+.informacoes-produto label { display:block !important; color:var(--chocolate) !important; font-size:13px !important; font-weight:700 !important; margin:9px 0 5px !important; text-align:left !important; }
+/* Recupera os campos afundados 3D da versão original. */
+.informacoes-produto select, .informacoes-produto input {
+  display:block !important; box-sizing:border-box !important; width:100% !important;
+  height:43px !important; padding:8px 13px !important;
+  border:0 !important; border-radius:15px !important;
+  background:var(--base) !important; color:var(--chocolate) !important;
+  box-shadow:var(--afundado) !important; font:inherit !important;
+}
+.informacoes-produto select:focus, .informacoes-produto input:focus { outline:2px solid var(--mel) !important; }
+.informacoes-produto #quantidadeProduto { max-width:130px !important; }
+/* Mesmo acabamento e comportamento do botão Voltar. */
+#btnAdicionarCarrinho {
+  display:block !important; width:100% !important; min-height:48px !important;
+  margin-top:16px !important; padding:11px 18px !important;
+  border:0 !important; border-radius:30px !important;
+  background:var(--botao-fundo) !important; color:var(--base) !important;
+  box-shadow:var(--botao-sombra) !important;
+  font:inherit !important; font-weight:700 !important;
+  cursor:pointer !important; transition:transform .2s ease,box-shadow .2s ease !important;
+}
+#btnAdicionarCarrinho:hover { transform:translateY(-3px) !important; color:white !important; box-shadow:var(--botao-brilho) !important; }
+/* Rodapé discreto, sem ocupar a área útil da compra no desktop. */
+body > footer { display:none !important; }
+@media (min-width: 851px) {
+  body { min-height:100dvh !important; height:100dvh !important; display:flex !important; flex-direction:column !important; overflow:hidden !important; }
+  .cabecalho-produto { flex:0 0 auto !important; }
+  .cabecalho-produto nav { min-height:0 !important; padding-top:8px !important; padding-bottom:8px !important; }
+  .cabecalho-produto #logo { width:clamp(105px,10vw,150px) !important; }
+  .pagina-produto { overflow:hidden !important; }
+  .detalhes-produto { max-height:100% !important; }
+  .imagem-principal { height:min(55vw,calc(100dvh - 210px),560px) !important; }
+}
+@media (max-width:850px) {
+  body { height:auto !important; overflow-y:auto !important; }
+  .pagina-produto { padding:20px 18px 35px !important; overflow:visible !important; }
+  .detalhes-produto { grid-template-columns:1fr !important; gap:20px !important; }
+  .imagem-principal { height:clamp(270px,75vw,470px) !important; }
+  .informacoes-produto { padding:0 5px !important; }
+}
+@media (min-width:851px) and (max-height:690px) {
+  .area-galeria h2 {margin-bottom:5px !important;}
+  .informacoes-produto h3 {font-size:clamp(26px,2.7vw,38px) !important;}
+  .informacoes-produto #descricaoProduto {font-size:13px !important;line-height:1.3 !important;}
+  .informacoes-produto label {margin-top:6px !important;}
+  .informacoes-produto select,.informacoes-produto input {height:37px !important;}
+  #btnAdicionarCarrinho {min-height:42px !important;margin-top:10px !important;}
+}
+
+/* ==============================================
+   LILA'S - AVISO SEM FOTO
+   Adaptado ao novo formato arredondado da galeria
+   ============================================== */
+
+.imagem-principal > .lilas-sem-foto {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 14px;
+    padding: 35px 45px;
+
+    box-sizing: border-box;
+
+    /* Acompanha o formato da imagem */
+    border-radius: inherit !important;
+
+    /* Fundo suave */
+    background: linear-gradient(
+        160deg,
+        #fff8e5 0%,
+        #f8e9bd 55%,
+        #edcf91 100%
+    );
+
+    border: none !important;
+
+    text-align: center;
+    color: #5C3A2E;
+
+    overflow: hidden;
+}
+
+/* Ícone */
+.imagem-principal .lilas-sem-foto-icone {
+    font-size: 42px;
+    line-height: 1;
+    margin-bottom: 5px;
+}
+
+/* Título */
+.imagem-principal .lilas-sem-foto strong {
+    font-size: clamp(17px, 1.5vw, 23px);
+    font-weight: 800;
+    line-height: 1.4;
+
+    max-width: 350px;
+}
+
+/* Mensagem */
+.imagem-principal .lilas-sem-foto span:last-child {
+    font-size: clamp(13px, 1vw, 16px);
+    line-height: 1.7;
+
+    max-width: 340px;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+
+    .imagem-principal > .lilas-sem-foto {
+        padding: 30px 24px;
+        gap: 10px;
+    }
+
+    .imagem-principal .lilas-sem-foto-icone {
+        font-size: 34px;
+    }
+
+    .imagem-principal .lilas-sem-foto strong {
+        font-size: 17px;
+    }
+
+    .imagem-principal .lilas-sem-foto span:last-child {
+        font-size: 13px;
+    }
+}

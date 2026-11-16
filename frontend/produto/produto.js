@@ -47,6 +47,14 @@ const imagensProdutos = {
 };
 
 
+// Textos gerais para cada tipo de produto, sem depender de um sabor específico.
+const descricoesGerais = {
+    "Pão de mel normal": "Pão de mel artesanal com massa macia, recheio cremoso e cobertura de chocolate. Escolha entre nossos sabores e aproveite!",
+    "Mini clássico": "A versão mini do nosso pão de mel artesanal, perfeita para festas, lembrancinhas e momentos especiais. Escolha seu sabor favorito!",
+    "Mini refinado": "Mini pães de mel com apresentação refinada, ideais para presentear e celebrar. Escolha o recheio que mais combina com você!",
+    "Mini no palito": "Pão de mel em versão mini no palito, uma opção prática e deliciosa para festas e comemorações. Escolha seu sabor favorito!"
+};
+
 // Quando a página carregar, busca os dados
 window.onload = carregarProduto;
 
@@ -116,9 +124,10 @@ function mostrarInformacoes() {
     document.getElementById("tituloProduto").textContent =
         produto.nome_produto;
 
-    // Mostra a descrição
+    // Exibe a descrição cadastrada no banco de dados. do tipo e nao do sabor
     document.getElementById("descricaoProduto").textContent =
-        produto.descricao || "Um delicioso pão de mel preparado com carinho!";
+        produto.descricao?.trim() ||
+        "Este produto ainda não possui descrição cadastrada.";
 
     // Mostra o preço
     document.getElementById("precoProduto").textContent =
@@ -154,6 +163,25 @@ function mostrarInformacoes() {
 
 }
 
+
+// Atualiza a descrição e informa o estoque pronto do sabor selecionado.
+function atualizarDetalhesSabor() {
+    const id = Number(document.getElementById("selectSabor").value);
+    const produto = produtosDoTipo.find(p => Number(p.id_produto) === id);
+    const descricao = document.getElementById("descricaoSabor");
+    const estoque = document.getElementById("estoqueSabor");
+    descricao.textContent = produto ? (produto.descricao || "Este sabor ainda não possui descrição cadastrada.") : "Selecione um sabor para ver sua descrição cadastrada.";
+    if (!produto) { estoque.textContent = ""; return; }
+    const normal = String(produto.nome_categoria || "").toLowerCase().includes("normal");
+    if (!normal) {
+        estoque.textContent = "Produzido sob encomenda. Peça com pelo menos 7 dias de antecedência.";
+    } else {
+        const qtd = Number(produto.estoque_pronto || 0);
+        estoque.textContent = qtd > 0
+            ? `${qtd} unidade(s) pronta(s) disponíveis. Quantidades maiores exigem 7 dias de antecedência.`
+            : "Sem unidades prontas disponíveis. Você pode encomendar com pelo menos 7 dias de antecedência.";
+    }
+}
 
 // Prepara as imagens da galeria
 // Prepara as imagens da galeria, consultando o backend pelo ID.

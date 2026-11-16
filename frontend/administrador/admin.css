@@ -743,3 +743,47 @@ footer p {
     outline: 3px solid var(--mel);
     outline-offset: 4px;
 }
+
+
+/* =====================================================
+   BOAS-VINDAS - MARROM CHOCOLATE 3D
+   ===================================================== */
+
+.boas-vindas {
+    background: linear-gradient(
+        145deg,
+        #754A35,
+        #4A2D22
+    );
+
+    border: 1px solid rgba(255, 228, 154, 0.25);
+
+    box-shadow:
+        8px 10px 22px rgba(63, 36, 24, 0.30),
+        -4px -4px 12px rgba(255, 251, 228, 0.65);
+}
+
+/* Reflexo suave */
+.boas-vindas::before {
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.12),
+        transparent 50%
+    );
+}
+
+/* Subtítulo */
+.boas-vindas .subtitulo {
+    color: #F3D68E;
+}
+
+/* Título principal */
+.boas-vindas h2 {
+    color: #FFE49A;
+    font-weight: 600;
+}
+
+/* Nome do administrador */
+.boas-vindas #nomeAdministrador {
+    color: #FFF3D1;
+}

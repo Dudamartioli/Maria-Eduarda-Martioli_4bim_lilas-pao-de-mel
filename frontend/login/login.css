@@ -539,3 +539,178 @@ body {
 .cartaoLogin input {
     filter: drop-shadow(2px 2px 3px rgba(185, 115, 25, 0.15));
 }
+
+/* AVISO DE ACESSO ADMINISTRATIVO */
+
+.aviso-admin {
+    padding: 25px 20px;
+    text-align: center;
+    background: #FFF3D1;
+    border: 2px solid #D6AA65;
+    border-radius: 22px;
+    color: #5C3A2E;
+    box-shadow: 5px 6px 0 #CBA86D;
+}
+
+.aviso-admin-icone {
+    font-size: 42px;
+    margin-bottom: 12px;
+}
+
+.aviso-admin h2 {
+    color: #5C3A2E;
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+.aviso-admin p {
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 12px;
+}
+
+.botao-admin {
+    display: block;
+    margin-top: 25px;
+    padding: 15px 20px;
+    background: linear-gradient(
+        135deg,
+        #754A35,
+        #4A2D22
+    );
+    color: #FFE49A;
+    text-decoration: none;
+    font-weight: 700;
+    border-radius: 14px;
+    box-shadow: 0 5px 0 #352018;
+    transition: 0.2s ease;
+}
+
+.botao-admin:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 0 #352018;
+}
+
+
+/* ==========================================================
+   AVISO ADMINISTRATIVO - VISUAL PADRÃO FRETES
+   Apenas a mensagem exibida após login admin no checkout
+   ========================================================== */
+
+.cartaoLogin:has(.aviso-admin) {
+    max-width: 490px;
+    padding: 22px 28px;
+}
+
+.cartaoLogin:has(.aviso-admin) > #mensagem {
+    margin: 12px 0 8px;
+    color: var(--chocolate);
+}
+
+.cartaoLogin .aviso-admin {
+    overflow: hidden;
+    padding: 0 0 18px;
+    border: 1px solid rgba(92, 58, 46, .18);
+    border-radius: 24px;
+    background: #FFE49A;
+    color: #5C3A2E;
+    box-shadow:
+        6px 7px 16px rgba(185, 115, 25, .25),
+        -4px -4px 12px rgba(255, 251, 228, .85);
+    text-align: center;
+}
+
+.cartaoLogin .aviso-admin-icone {
+    display: grid;
+    place-items: center;
+    height: 54px;
+    margin: 0;
+    background: linear-gradient(145deg, #754A35, #4A2D22);
+    font-size: 27px;
+    line-height: 1;
+}
+
+.cartaoLogin .aviso-admin h2 {
+    margin: 0 0 14px;
+    padding: 13px 12px;
+    background: linear-gradient(145deg, #754A35, #4A2D22);
+    color: #FFE49A;
+    font-family: var(--fonte);
+    font-size: 21px;
+    font-weight: 700;
+    letter-spacing: 0;
+}
+
+.cartaoLogin .aviso-admin p {
+    max-width: 350px;
+    margin: 0 auto 11px;
+    padding: 0 12px;
+    color: #5C3A2E;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.45;
+}
+
+.cartaoLogin .aviso-admin p:first-of-type {
+    font-weight: 700;
+}
+
+.cartaoLogin .aviso-admin .botao-admin {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(100% - 42px);
+    min-height: 46px;
+    margin: 10px auto 0;
+    padding: 11px 18px;
+    border: 0;
+    border-radius: 999px;
+    background: linear-gradient(145deg, #754A35, #4A2D22);
+    color: #FFE49A;
+    font-family: var(--fonte);
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.3;
+    text-decoration: none;
+    box-shadow:
+        0 5px 0 #3F2418,
+        0 9px 16px rgba(63, 36, 24, .23);
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.cartaoLogin .aviso-admin .botao-admin:hover {
+    transform: translateY(-2px);
+    color: #FFE49A;
+    text-decoration: none;
+    box-shadow:
+        0 7px 0 #3F2418,
+        0 12px 20px rgba(63, 36, 24, .28);
+}
+
+.cartaoLogin .aviso-admin .botao-admin:active {
+    transform: translateY(3px);
+    box-shadow: 0 2px 0 #3F2418;
+}
+
+.cartaoLogin .aviso-admin .botao-admin:focus-visible {
+    outline: 3px solid #E08A2E;
+    outline-offset: 4px;
+}
+
+@media (max-height: 750px) {
+    .cartaoLogin:has(.aviso-admin) { padding: 14px 22px; }
+    .cartaoLogin .aviso-admin-icone { height: 42px; font-size: 23px; }
+    .cartaoLogin .aviso-admin h2 { padding: 9px 10px; margin-bottom: 10px; }
+    .cartaoLogin .aviso-admin p { margin-bottom: 8px; }
+    .cartaoLogin .aviso-admin { padding-bottom: 14px; }
+}
+
+@media (max-width: 600px) {
+    .cartaoLogin:has(.aviso-admin) { padding: 18px; }
+    .cartaoLogin .aviso-admin h2 { font-size: 19px; }
+    .cartaoLogin .aviso-admin p { font-size: 13px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cartaoLogin .aviso-admin .botao-admin { transition: none; }
+}

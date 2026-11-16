@@ -1,13 +1,17 @@
-
 const pool = require("../database");
 
 // Lista os produtos cadastrados no banco
 const listar = async (req, res) => {
     try {
         const resultado = await pool.query(
-            `SELECT produto.*, sabor.nome_sabor,
+            `SELECT produto.*,
+                    descricao_tipo.descricao_geral,
+                    sabor.nome_sabor,
+                    sabor.descricao AS descricao_sabor,
                     categoria.nome_categoria
              FROM produto
+             LEFT JOIN descricao_tipo
+             ON descricao_tipo.nome_produto = produto.nome_produto
              INNER JOIN sabor
              ON produto.id_sabor = sabor.id_sabor
              INNER JOIN categoria

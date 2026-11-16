@@ -4,6 +4,15 @@
    ========================================== */
 
 const pool = require("../database");
+const fs = require("fs").promises;
+const path = require("path");
+const crypto = require("crypto");
+
+// Pasta principal das imagens dos produtos
+const pastaImagens = path.join(
+    __dirname,
+    "../../frontend/imagens-produtos/por-id"
+);
 
 // ==========================================
 // LISTAR PRODUTOS
@@ -15,10 +24,12 @@ const listar = async (req, res) => {
 
         // Lista todos, inclusive os indisponíveis
         const resultado = await pool.query(
-            `SELECT produto.*,
+            `SELECT produto.*, descricao_tipo.descricao_geral,
                     categoria.nome_categoria,
                     sabor.nome_sabor
              FROM produto
+             LEFT JOIN descricao_tipo
+                 ON descricao_tipo.nome_produto = produto.nome_produto
              INNER JOIN categoria
                  ON produto.id_categoria = categoria.id_categoria
              INNER JOIN sabor
@@ -51,7 +62,11 @@ const procurar = async (req, res) => {
     try {
 
         const resultado = await pool.query(
-            "SELECT * FROM produto WHERE id_produto = $1",
+            `SELECT produto.*, descricao_tipo.descricao_geral
+             FROM produto
+             LEFT JOIN descricao_tipo
+                 ON descricao_tipo.nome_produto = produto.nome_produto
+             WHERE produto.id_produto = $1`,
             [req.params.id]
         );
 
@@ -88,6 +103,7 @@ function validarProduto(dados) {
     const {
         nome_produto,
         descricao,
+        descricao_geral,
         preco,
         id_categoria,
         id_sabor,
@@ -110,7 +126,15 @@ function validarProduto(dados) {
         return "A descrição deve ter até 200 caracteres.";
     }
 
-    if (preco === "" || preco === null ||
+    if (descricao_geral !== undefined &&
+        descricao_geral !== null &&
+        (typeof descricao_geral !== "string" ||
+         descricao_geral.length > 500)) {
+        return "A descrição geral deve ter até 500 caracteres.";
+    }
+
+    if (preco === "" ||
+        preco === null ||
         preco === undefined ||
         !Number.isFinite(Number(preco)) ||
         Number(preco) <= 0) {
@@ -127,9 +151,11 @@ function validarProduto(dados) {
         return "Selecione um sabor válido.";
     }
 
-    if (!Number.isSafeInteger(Number(estoque_pronto)) || Number(estoque_pronto) < 0) {
+    if (!Number.isSafeInteger(Number(estoque_pronto)) ||
+        Number(estoque_pronto) < 0) {
         return "Informe uma quantidade de estoque válida (zero ou maior).";
     }
+
     return null;
 }
 
@@ -169,6 +195,22 @@ const inserir = async (req, res) => {
             ]
         );
 
+        if (dados.descricao_geral?.trim()) {
+
+            await pool.query(
+                `INSERT INTO descricao_tipo
+                 (nome_produto, descricao_geral)
+                 VALUES ($1, $2)
+                 ON CONFLICT (nome_produto)
+                 DO UPDATE SET
+                    descricao_geral = EXCLUDED.descricao_geral`,
+                [
+                    dados.nome_produto.trim(),
+                    dados.descricao_geral.trim()
+                ]
+            );
+        }
+
         res.status(201).json({
             sucesso: true,
             mensagem: "Produto cadastrado com sucesso!",
@@ -177,7 +219,7 @@ const inserir = async (req, res) => {
 
     } catch (erro) {
 
-        tratarErro(erro, res, "cadastrar");
+        return tratarErro(erro, res, "cadastrar");
     }
 };
 
@@ -231,6 +273,22 @@ const alterar = async (req, res) => {
             });
         }
 
+        if (dados.descricao_geral !== undefined) {
+
+            await pool.query(
+                `INSERT INTO descricao_tipo
+                 (nome_produto, descricao_geral)
+                 VALUES ($1, $2)
+                 ON CONFLICT (nome_produto)
+                 DO UPDATE SET
+                    descricao_geral = EXCLUDED.descricao_geral`,
+                [
+                    dados.nome_produto.trim(),
+                    dados.descricao_geral?.trim() || ""
+                ]
+            );
+        }
+
         res.json({
             sucesso: true,
             mensagem: "Produto alterado com sucesso!",
@@ -239,26 +297,62 @@ const alterar = async (req, res) => {
 
     } catch (erro) {
 
-        tratarErro(erro, res, "alterar");
+        return tratarErro(erro, res, "alterar");
     }
 };
 
 // ==========================================
-// EXCLUIR PRODUTO
+// EXCLUIR PRODUTO E SUAS IMAGENS
 // ==========================================
 
 const excluir = async (req, res) => {
 
+    const id = Number(req.params.id);
+
+    if (!Number.isSafeInteger(id) || id <= 0) {
+
+        return res.status(400).json({
+            sucesso: false,
+            mensagem: "ID do produto inválido."
+        });
+    }
+
+    const pastaProduto = path.join(
+        pastaImagens,
+        String(id)
+    );
+
+    // Pasta temporária para proteger as imagens
+    const pastaTemporaria = path.join(
+        pastaImagens,
+        `.exclusao-${id}-${crypto.randomUUID()}`
+    );
+
+    let cliente;
+    let transacaoIniciada = false;
+    let pastaMovida = false;
+    let exclusaoConfirmada = false;
+
     try {
 
-        const resultado = await pool.query(
-            `DELETE FROM produto
+        cliente = await pool.connect();
+
+        await cliente.query("BEGIN");
+        transacaoIniciada = true;
+
+        // Verifica e bloqueia o produto durante a exclusão
+        const produto = await cliente.query(
+            `SELECT id_produto
+             FROM produto
              WHERE id_produto = $1
-             RETURNING *`,
-            [req.params.id]
+             FOR UPDATE`,
+            [id]
         );
 
-        if (resultado.rows.length === 0) {
+        if (produto.rows.length === 0) {
+
+            await cliente.query("ROLLBACK");
+            transacaoIniciada = false;
 
             return res.status(404).json({
                 sucesso: false,
@@ -266,15 +360,114 @@ const excluir = async (req, res) => {
             });
         }
 
-        res.json({
-            sucesso: true,
-            mensagem: "Produto excluído com sucesso!"
-        });
+        // Move temporariamente a pasta de imagens
+        try {
+
+            await fs.rename(
+                pastaProduto,
+                pastaTemporaria
+            );
+
+            pastaMovida = true;
+
+        } catch (erro) {
+
+            // Permite excluir produtos sem pasta de imagens
+            if (erro.code !== "ENOENT") {
+                throw erro;
+            }
+        }
+
+        // Exclui o registro do produto no banco
+        await cliente.query(
+            `DELETE FROM produto
+             WHERE id_produto = $1`,
+            [id]
+        );
+
+        // Confirma a exclusão no PostgreSQL
+        await cliente.query("COMMIT");
+
+        exclusaoConfirmada = true;
+        transacaoIniciada = false;
 
     } catch (erro) {
 
-        tratarErro(erro, res, "excluir");
+        // Desfaz a transação se ainda estiver aberta
+        if (transacaoIniciada && cliente) {
+
+            try {
+
+                await cliente.query("ROLLBACK");
+
+            } catch (erroRollback) {
+
+                console.log(
+                    "Erro ao desfazer exclusão:",
+                    erroRollback
+                );
+            }
+        }
+
+        // Restaura as imagens se a exclusão não foi confirmada
+        if (pastaMovida && !exclusaoConfirmada) {
+
+            try {
+
+                await fs.rename(
+                    pastaTemporaria,
+                    pastaProduto
+                );
+
+            } catch (erroRestauracao) {
+
+                console.log(
+                    "ATENÇÃO: erro ao restaurar imagens:",
+                    erroRestauracao
+                );
+            }
+        }
+
+        return tratarErro(erro, res, "excluir");
+
+    } finally {
+
+        if (cliente) {
+            cliente.release();
+        }
     }
+
+    // Remove definitivamente a pasta de imagens
+    // somente depois da confirmação no banco
+    if (pastaMovida) {
+
+        try {
+
+            await fs.rm(pastaTemporaria, {
+                recursive: true,
+                force: true
+            });
+
+        } catch (erro) {
+
+            console.log(
+                "Produto excluído, mas houve erro ao limpar imagens:",
+                erro
+            );
+
+            return res.status(500).json({
+                sucesso: false,
+                mensagem:
+                    "Produto excluído do banco, mas a limpeza das imagens ficou pendente."
+            });
+        }
+    }
+
+    return res.json({
+        sucesso: true,
+        mensagem:
+            "Produto e suas imagens excluídos com sucesso!"
+    });
 };
 
 // ==========================================
@@ -305,13 +498,16 @@ function tratarErro(erro, res, operacao) {
 
     console.log("Erro ao " + operacao + " produto:", erro);
 
-    res.status(500).json({
+    return res.status(500).json({
         sucesso: false,
         mensagem: "Erro ao " + operacao + " produto."
     });
 }
 
-// Exporta as funções
+// ==========================================
+// EXPORTAR FUNÇÕES
+// ==========================================
+
 module.exports = {
     listar,
     procurar,

@@ -72,6 +72,35 @@ async function iniciar() {
             return;
         }
         if (!sessao.ok) throw new Error("Não foi possível verificar sua sessão.");
+        const dadosSessao = await sessao.json();
+
+if (dadosSessao.usuario.tipo_usuario === "admin") {
+
+    document.querySelector(".checkout").innerHTML = `
+        <section class="aviso-admin">
+            <div class="aviso-admin-icone">🍯</div>
+
+            <h2>Acesso exclusivo para clientes</h2>
+
+            <p>
+                Você está conectado com uma conta
+                de administrador.
+            </p>
+
+            <p>
+                Esta conta não possui permissão
+                para realizar compras.
+            </p>
+
+            <a href="../administrador/admin.html"
+               class="botao-admin">
+                Abrir painel administrativo
+            </a>
+        </section>
+    `;
+
+    return;
+}
         const resposta = await fetch(API + "/produto/listar");
         const dados = await resposta.json();
         if (!resposta.ok || !dados.sucesso || !Array.isArray(dados.produtos)) throw new Error("Não foi possível consultar os produtos.");

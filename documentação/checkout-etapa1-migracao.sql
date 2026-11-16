@@ -115,3 +115,13 @@ CREATE TABLE IF NOT EXISTS frete_bairro (
  CONSTRAINT frete_cidade_valida CHECK (cidade IN ('Campo Mourão','Goioerê'))
 );
 -- Cadastre os preços reais pelo painel; nenhum preço é criado automaticamente.
+
+-- Execute UMA VEZ no DBeaver, no banco da Lila's.
+-- Descrição geral única por nome de produto, compartilhada por todos os sabores.
+CREATE TABLE IF NOT EXISTS descricao_tipo (
+    nome_produto VARCHAR(100) PRIMARY KEY,
+    descricao_geral VARCHAR(500) NOT NULL DEFAULT ''
+);
+
+-- Depois, edite a descrição geral no CRUD de Produtos.
+-- Ao editar um sabor, o texto geral será compartilhado com os outros sabores do mesmo nome.

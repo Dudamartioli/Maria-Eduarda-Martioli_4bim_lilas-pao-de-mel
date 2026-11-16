@@ -1,6 +1,6 @@
 
 // Endereço do servidor
-const URL_API = window.location.origin; //"http://localhost:3001";
+const URL_API = "http://localhost:3001";
 
 // Recebe o nome do produto enviado pela página inicial
 const parametros = new URLSearchParams(window.location.search);
@@ -124,10 +124,9 @@ function mostrarInformacoes() {
     document.getElementById("tituloProduto").textContent =
         produto.nome_produto;
 
-    // Exibe a descrição cadastrada no banco de dados. do tipo e nao do sabor
+    // Descrição geral do tipo, não do sabor.
     document.getElementById("descricaoProduto").textContent =
-        produto.descricao?.trim() ||
-        "Este produto ainda não possui descrição cadastrada.";
+        produto.descricao_geral?.trim() || "Este produto ainda não possui descrição geral cadastrada.";
 
     // Mostra o preço
     document.getElementById("precoProduto").textContent =
@@ -161,6 +160,11 @@ function mostrarInformacoes() {
 
     });
 
+    selectSabor.addEventListener(
+        "change",
+        atualizarDetalhesSabor
+    );
+
 }
 
 
@@ -170,8 +174,10 @@ function atualizarDetalhesSabor() {
     const produto = produtosDoTipo.find(p => Number(p.id_produto) === id);
     const descricao = document.getElementById("descricaoSabor");
     const estoque = document.getElementById("estoqueSabor");
-    descricao.textContent = produto ? (produto.descricao || "Este sabor ainda não possui descrição cadastrada.") : "Selecione um sabor para ver sua descrição cadastrada.";
-    if (!produto) { estoque.textContent = ""; return; }
+    descricao.textContent = produto
+        ? (produto.descricao_sabor?.trim() ||
+        "Este sabor ainda não possui descrição cadastrada.")
+        : "";    if (!produto) { estoque.textContent = ""; return; }
     const normal = String(produto.nome_categoria || "").toLowerCase().includes("normal");
     if (!normal) {
         estoque.textContent = "Produzido sob encomenda. Peça com pelo menos 7 dias de antecedência.";
@@ -240,18 +246,28 @@ async function carregarGaleria() {
 // Mostra a imagem selecionada
 function mostrarImagem() {
 
-    // Busca a imagem atual
     const imagem = window.imagensDaGaleria[imagemAtual];
 
-    // Atualiza a imagem principal
-    document.getElementById("imagemProduto").src = imagem;
+    const elemento = document.getElementById("imagemProduto");
 
-    // Atualiza o texto alternativo
-    document.getElementById("imagemProduto").alt = nomeSelecionado;
+    if (!imagem) {
+        elemento.removeAttribute("src");
+        elemento.hidden = true;
+        return;
+    }
 
-    // Atualiza os indicadores
+    // Constrói a URL no servidor correto
+    const caminhoImagem = new URL(imagem, URL_API).href;
+
+    elemento.src = caminhoImagem;
+    elemento.alt = nomeSelecionado;
+    elemento.hidden = false;
+
+    elemento.onerror = function() {
+        console.error("Erro ao carregar imagem:", caminhoImagem);
+    };
+
     mostrarIndicadores();
-
 }
 
 

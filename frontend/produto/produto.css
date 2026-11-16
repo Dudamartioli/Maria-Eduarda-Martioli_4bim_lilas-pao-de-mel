@@ -1203,3 +1203,16 @@ body > footer { display:none !important; }
         font-size: 13px;
     }
 }
+
+/* Descrição específica do sabor */
+.descricao-sabor {
+    font-weight: 800;
+    color: #5C3A2E;
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 10px 0 18px;
+}
+
+.descricao-sabor:empty {
+    display: none;
+}

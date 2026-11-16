@@ -141,43 +141,74 @@ if (formLogin) {
                 mensagem.textContent = "Login realizado com sucesso!";
 
                 // Retorna ao checkout se o login foi iniciado pelo carrinho.
-                if (sessionStorage.getItem("lilas_voltar_checkout") === "1") {
-                    sessionStorage.removeItem("lilas_voltar_checkout");
-                    window.location.href = "../checkout/checkout.html";
-                    return;
-                }
-
-                // Recupera o tipo do usuário
                 const tipo_usuario = dados.usuario.tipo_usuario;
 
-                // Aguarda um segundo antes de mudar a página
-                setTimeout(function() {
+const veioCheckout =
+    sessionStorage.getItem("lilas_voltar_checkout") === "1";
 
-                    // Cliente acessa a loja
-                    if (tipo_usuario === "cliente") {
+sessionStorage.removeItem("lilas_voltar_checkout");
 
-                        window.location.href = "http://localhost:3001/menu/menu.html";
+// ADMINISTRADOR
+if (tipo_usuario === "admin") {
 
-                    // Administrador acessa a área administrativa
-                    } else if (tipo_usuario === "admin") {
+    if (veioCheckout) {
 
-                        // Temporariamente, até criarmos o painel
-                        window.location.href =
-                            "../escolher-acesso/escolher-acesso.html";
+        formLogin.style.display = "none";
 
-                    // Usuário com as duas permissões escolhe o acesso
-                    } else if (tipo_usuario === "ambos") {
+        mensagem.innerHTML = `
+            <div class="aviso-admin">
+                <div class="aviso-admin-icone">🍯</div>
 
-                        window.location.href =
-                            "../escolher-acesso/escolher-acesso.html";
+                <h2>Acesso administrativo</h2>
 
-                    } else {
+                <p>
+                    Esta conta possui acesso exclusivo à
+                    administração da Lila's.
+                </p>
 
-                        mensagem.textContent =
-                            "Tipo de usuário não reconhecido.";
-                    }
+                <p>
+                    Para realizar compras, entre com uma
+                    conta de cliente.
+                </p>
 
-                }, 1000);
+                <a href="../administrador/admin.html"
+                   class="botao-admin">
+                    Abrir painel administrativo
+                </a>
+            </div>
+        `;
+
+        return;
+    }
+
+    window.location.href = "../administrador/admin.html";
+    return;
+}
+
+// CLIENTE
+if (tipo_usuario === "cliente") {
+
+    window.location.href = veioCheckout
+        ? "../checkout/checkout.html"
+        : "../menu/menu.html";
+
+    return;
+}
+
+// AMBOS
+if (tipo_usuario === "ambos") {
+
+    if (veioCheckout) {
+        window.location.href = "../checkout/checkout.html";
+    } else {
+        window.location.href =
+            "../escolher-acesso/escolher-acesso.html";
+    }
+
+    return;
+}
+
+mensagem.textContent = "Tipo de usuário não reconhecido.";
 
             } else {
 

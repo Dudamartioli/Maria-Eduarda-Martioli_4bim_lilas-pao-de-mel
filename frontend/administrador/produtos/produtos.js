@@ -14,6 +14,7 @@ const URL_API = window.location.origin;
 const campoId = document.getElementById("id_produto");
 const campoNome = document.getElementById("nome_produto");
 const campoDescricao = document.getElementById("descricao");
+const campoDescricaoGeral = document.getElementById("descricao_geral");
 const campoPreco = document.getElementById("preco");
 const campoCategoria = document.getElementById("id_categoria");
 const campoSabor = document.getElementById("id_sabor");
@@ -148,6 +149,7 @@ function bloquearAtributos(bloquear) {
 
     campoNome.disabled = bloquear;
     campoDescricao.disabled = bloquear;
+    campoDescricaoGeral.disabled = bloquear;
     campoPreco.disabled = bloquear;
     campoCategoria.disabled = bloquear;
     campoSabor.disabled = bloquear;
@@ -178,6 +180,7 @@ function limparCampos() {
     campoId.value = "";
     campoNome.value = "";
     campoDescricao.value = "";
+    campoDescricaoGeral.value = "";
     campoPreco.value = "";
     campoCategoria.value = "";
     campoSabor.value = "";
@@ -197,6 +200,7 @@ function preencherCampos(produto) {
     campoId.value = produto.id_produto;
     campoNome.value = produto.nome_produto;
     campoDescricao.value = produto.descricao || "";
+    campoDescricaoGeral.value = produto.descricao_geral || "";
     campoPreco.value = produto.preco;
     campoCategoria.value = produto.id_categoria;
     campoSabor.value = produto.id_sabor;
@@ -536,6 +540,7 @@ async function salvar() {
     const produto = {
         nome_produto: campoNome.value.trim(),
         descricao: campoDescricao.value.trim(),
+        descricao_geral: campoDescricaoGeral.value.trim(),
         preco: campoPreco.value,
         id_categoria: campoCategoria.value,
         id_sabor: campoSabor.value,

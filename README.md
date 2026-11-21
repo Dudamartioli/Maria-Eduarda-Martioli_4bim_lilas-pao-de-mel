@@ -168,7 +168,7 @@ O desenvolvimento envolveu compreender as necessidades da usuária, definir regr
 
 <h4 align="center">05 • Checkout</h4>
 <p align="center">
-  Definição da modalidade, endereço e dados do pedido.
+  Definição da modalidade, endereço, dados do pedido e cupons.
 </p>
 <p align="center">
   <img src="screenshots/checkout.png" alt="Checkout" width="850">

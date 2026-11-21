@@ -53,3 +53,94 @@ button:disabled:hover {
 [hidden] {
     display: none !important;
 }
+
+/* Cabeçalho unificado com o Gerenciamento de Pedidos */
+.cabecalho{min-height:78px;padding:8px clamp(18px,4vw,55px);background:#FFE49A}
+.cabecalho .logo img{width:135px;max-width:35vw}
+.cabecalho .botao-voltar{padding:12px 24px;background:#5C3A2E;color:#FFE49A;font-weight:700;box-shadow:0 5px 0 #3F2418,0 9px 16px rgba(63,36,24,.2)}
+.cabecalho .botao-voltar:hover{color:#FFE49A;transform:translateY(-2px);box-shadow:0 7px 0 #3F2418,0 12px 20px rgba(63,36,24,.24)}
+.apresentacao{width:100%;padding:13px 20px;margin:0 0 16px;border-radius:22px;background:linear-gradient(145deg,#754A35,#4A2D22);box-shadow:0 6px 15px rgba(63,36,24,.19);text-align:center}
+.apresentacao .subtitulo{margin:0 0 2px;color:#FFE49A;font-size:.72rem;font-weight:700;letter-spacing:.18em}
+.apresentacao h1{margin:0 0 3px;color:#FFE49A;font-size:clamp(1.45rem,2.3vw,2rem);font-weight:700}
+.apresentacao > p:last-child,.apresentacao .descricao{margin:0;color:#FFF3D1;font-size:.88rem;letter-spacing:normal}
+main#conteudo{justify-content:flex-start;padding-top:12px}
+
+/* Botão Voltar: mesmo efeito original do Gerenciamento de Usuários */
+.cabecalho .botao-voltar,
+.cabecalho-lilas .voltar-lilas {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    padding: 0.75rem 1.4rem;
+    border: none;
+    border-radius: 999px;
+    background: #5C3A2E;
+    color: #FFE49A;
+    font-family: 'Jost', sans-serif;
+    font-size: .9rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 5px 0 #3F2418, 0 9px 16px rgba(63,36,24,.22);
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+.cabecalho .botao-voltar:hover,
+.cabecalho-lilas .voltar-lilas:hover {
+    transform: translateY(-3px);
+    color: #fff;
+    box-shadow: 0 0 0 5px rgba(184,120,57,.35), 0 7px 0 #3F2418, 0 12px 22px rgba(63,36,24,.25);
+}
+.cabecalho .botao-voltar:active,
+.cabecalho-lilas .voltar-lilas:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #3F2418, 0 4px 9px rgba(63,36,24,.2);
+}
+
+/* BOTÃO VOLTAR À ADMINISTRAÇÃO */
+
+.voltar-admin {
+    background: #5C3A2E;
+    color: #FFE49A;
+    border: none;
+    border-radius: 50px;
+    padding: 15px 28px;
+
+    font-weight: 700;
+    text-decoration: none;
+
+    box-shadow: 0 8px 16px rgba(70, 40, 25, 0.22);
+
+    transition: transform 0.25s ease,
+                box-shadow 0.25s ease;
+}
+
+.voltar-admin:hover {
+    transform: translateY(-5px);
+
+    box-shadow: 0 13px 22px rgba(70, 40, 25, 0.28);
+}
+
+.voltar-admin:active {
+    transform: translateY(-1px);
+}
+
+/* CENTRALIZAR O CONTEÚDO DA PÁGINA */
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+/* Espaçamento entre o cabeçalho e os cartões */
+
+.area-gerenciamento {
+    margin-top: 25px;
+}

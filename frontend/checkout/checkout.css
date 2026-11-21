@@ -1204,3 +1204,78 @@ body.pagina-checkout .rodape-checkout {
         align-items: flex-start;
     }
 }
+
+/* Navegação do checkout: ambos os botões no cabeçalho. */
+.topo .acoes-topo {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+.topo .acoes-topo [hidden] { display: none !important; }
+.topo .acoes-topo button.botao-voltar { cursor: pointer; }
+@media (max-width: 650px) {
+    .topo .acoes-topo { gap: 8px; }
+    .topo .acoes-topo .botao-voltar { font-size: .78rem; padding: 10px 12px; }
+}
+
+/* Cupom de desconto — largura igual à área de observações. */
+.cartao-cupom {
+    width: 100%; box-sizing: border-box;
+    display: flex; align-items: center; gap: 28px;
+    padding: 24px 30px; border: 2px solid #E5A444;
+    border-radius: 30px; background: #FFF0C3;
+    box-shadow: 0 9px 17px rgba(92,58,46,.13);
+    color: #5C3A2E;
+}
+.cupom-ilustracao {
+    flex: 0 0 126px; display: grid; place-items: center;
+    border-right: 2px solid #DDA24D; padding-right: 22px;
+    min-height: 106px; font-size: 3rem; font-weight: 800;
+    color: #FFE49A; text-shadow: 1px 2px #3F2418;
+}
+.cupom-ilustracao::first-letter { color: #FFE49A; }
+.cupom-conteudo { flex: 1; min-width: 0; }
+.cupom-conteudo h3 { margin: 0 0 5px; font-size: 1.4rem; color: #5C3A2E; }
+.cupom-subtitulo { margin: 0 0 15px; line-height: 1.5; }
+.cupom-acoes { display: flex; align-items: stretch; gap: 16px; }
+#cupom {
+    flex: 1; min-width: 0; padding: 14px 18px;
+    border: 1px solid #E6B974; border-radius: 18px;
+    background: #FFF9E9; box-shadow: inset 3px 4px 9px rgba(92,58,46,.10);
+    color: #5C3A2E; font: inherit;
+}
+#aplicarCupom {
+    border: 0; border-radius: 999px; padding: 12px 24px;
+    background: linear-gradient(145deg,#754A35,#3F2418);
+    color: #FFE49A; font: inherit; font-weight: 700;
+    box-shadow: 4px 6px 12px rgba(92,58,46,.25); cursor: pointer;
+}
+#aplicarCupom:hover { transform: translateY(-2px); }
+#cupomFeedback { margin: 8px 0 0; font-size: .88rem; }
+#cupomFeedback:empty { display: none; }
+@media(max-width: 700px) {
+    .cartao-cupom { padding: 18px; gap: 12px; }
+    .cupom-ilustracao { flex-basis: 42px; padding-right: 12px; font-size: 2rem; }
+    .cupom-acoes { flex-direction: column; }
+    #aplicarCupom { width: 100%; }
+}
+/* Resumo: separar descrição e preço, inclusive em telas pequenas. */
+#resumo > .item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+}
+#resumo > .item > span:first-child {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+#resumo > .item > span:last-child {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    font-weight: 700;
+    text-align: right;
+}

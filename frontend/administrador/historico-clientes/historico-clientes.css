@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&display=swap');
+:root{--mel:#FFE49A;--creme:#FFF3D1;--chocolate:#5C3A2E;--cafe:#3F2418}*{box-sizing:border-box}body{margin:0;background:var(--mel);color:var(--cafe);font-family:Jost,Arial,sans-serif}header{display:flex;align-items:center;justify-content:space-between;padding:15px max(4%,20px)}.logo img{height:75px;width:95px;object-fit:contain}.botao{background:linear-gradient(145deg,#754A35,#4A2D22);color:var(--mel);padding:12px 22px;border-radius:30px;text-decoration:none;font-weight:700;box-shadow:0 8px 16px #3f241840}.botao:hover{transform:translateY(-2px)}main{max-width:1200px;margin:15px auto 65px;padding:0 20px}.titulo{text-align:center;margin-bottom:28px}.titulo p:first-child{font-size:13px;font-weight:700;letter-spacing:2px}.titulo h1{color:var(--chocolate);font-size:clamp(28px,4vw,42px);margin:8px}.painel{background:var(--creme);border-radius:22px;padding:24px;margin-bottom:23px;box-shadow:6px 6px 15px #b973194d,-6px -6px 15px #fffbe4e6}.filtros{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}label{display:flex;flex-direction:column;gap:8px;font-weight:700;color:var(--chocolate)}select{width:100%;padding:13px;border:2px solid #e6c87c;border-radius:12px;background:#fff9e8;color:var(--cafe);font:inherit}.indicadores{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;margin-bottom:23px}.indicadores article{background:linear-gradient(145deg,#754A35,#4A2D22);border-radius:18px;color:var(--mel);padding:22px 12px;text-align:center;box-shadow:0 8px 16px #3f241840}.indicadores span{display:block;font-size:14px}.indicadores strong{display:block;font-size:clamp(21px,3vw,31px);margin-top:8px}h2{color:var(--chocolate);margin:0 0 8px}.dica{margin:0 0 15px;color:#79553c}.rolagem{overflow-x:auto}table{width:100%;border-collapse:collapse;text-align:left;min-width:600px}th{background:var(--chocolate);color:var(--mel);padding:13px}td{padding:12px;border-bottom:1px solid #dec48c}tbody tr:nth-child(even){background:#ffe9ad}#ranking tr{cursor:pointer}#ranking tr:hover{background:#f4d28d}#aviso{text-align:center;font-weight:700}@media(max-width:800px){.filtros{grid-template-columns:1fr}.indicadores{grid-template-columns:repeat(2,1fr)}}@media(max-width:430px){.indicadores{grid-template-columns:1fr}header{gap:10px}.logo img{width:70px}.botao{font-size:12px}}
+
+
+/* Padronização visual com o CRUD de Usuários */
+.logo img {
+    display: block;
+    width: 165px;
+    max-width: 35vw;
+    height: auto;
+    object-fit: contain;
+}
+
+/* Cantos arredondados das tabelas de ranking e histórico */
+.rolagem {
+    border-radius: 16px;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+.rolagem table {
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 16px;
+    overflow: hidden;
+}
+.rolagem thead th:first-child { border-top-left-radius: 16px; }
+.rolagem thead th:last-child { border-top-right-radius: 16px; }
+.rolagem tbody tr:last-child td:first-child { border-bottom-left-radius: 16px; }
+.rolagem tbody tr:last-child td:last-child { border-bottom-right-radius: 16px; }
+
+@media (max-width: 430px) {
+    .logo img { width: 130px; max-width: 40vw; height: auto; }
+}

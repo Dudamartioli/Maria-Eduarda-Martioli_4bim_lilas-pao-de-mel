@@ -326,79 +326,75 @@ main {
 }
 
 
-/* Tabela com rolagem interna */
-
+/* Tabela no mesmo padrão visual do gerenciamento de fretes */
 .tabela-rolagem {
     width: 100%;
-
     min-height: 200px;
     max-height: 470px;
-
     overflow: auto;
-
+    border: 1px solid rgba(92, 58, 46, .15);
     border-radius: 20px;
-
-    background: var(--base);
-
-    box-shadow: var(--afundado);
+    background: #FFF3D1;
+    box-shadow: 4px 5px 14px rgba(185, 115, 25, .15);
 }
 
 table {
     width: 100%;
     min-width: 750px;
-
     border-collapse: separate;
     border-spacing: 0;
-
-    color: var(--chocolate);
+    font-size: .93rem;
+    color: #5C3A2E;
 }
-
-
-/* Cabeçalho fixo */
 
 thead th {
     position: sticky;
     top: 0;
     z-index: 2;
-
-    padding: 15px;
-
-    background: #f3d88d;
-
-    color: var(--chocolate);
-
+    padding: 17px 18px;
+    background: #5C3A2E;
+    color: #FFE49A;
+    font-size: .9rem;
     font-weight: 700;
     text-align: left;
+    white-space: nowrap;
 }
-
-
-/* Células */
-
-tbody td {
-    padding: 14px 15px;
-
-    border-bottom:
-        1px solid rgba(154, 79, 14, 0.15);
-}
-
-
-/* Destaca o nome do produto */
-
-td:nth-child(2) {
-    font-weight: 600;
-}
-
-
-/* Linha selecionável */
 
 tbody tr {
-    cursor: pointer;
+    background: #FFF3D1;
+    cursor: pointer; /* Clicar na linha continua selecionando o produto */
+    transition: background .2s ease;
+}
 
-    transition: background 0.2s ease;
+tbody tr:nth-child(even) {
+    background: #F8E5B7;
 }
 
 tbody tr:hover {
-    background: rgba(255, 255, 255, 0.4);
+    background: #F3D68E;
+}
+
+tbody td {
+    padding: 15px 18px;
+    border-bottom: 1px solid rgba(92, 58, 46, .12);
+    color: #5C3A2E;
+    vertical-align: middle;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Código, nome, preço e status em destaque */
+tbody td:first-child,
+tbody td:nth-child(2),
+tbody td:nth-child(5),
+tbody td:nth-child(7) {
+    font-weight: 700;
+}
+
+tbody td:nth-child(5) {
+    color: #9A4F0E;
 }
 
 
@@ -655,4 +651,74 @@ tbody tr:hover {
         margin-right: 8px;
         font-size: 0.8rem;
     }
+}
+
+/* Cabeçalho unificado com o Gerenciamento de Pedidos */
+.cabecalho{min-height:78px;padding:8px clamp(18px,4vw,55px);background:#FFE49A}
+.cabecalho .logo img{width:135px;max-width:35vw}
+.cabecalho .botao-voltar{padding:12px 24px;background:#5C3A2E;color:#FFE49A;font-weight:700;box-shadow:0 5px 0 #3F2418,0 9px 16px rgba(63,36,24,.2)}
+.cabecalho .botao-voltar:hover{color:#FFE49A;transform:translateY(-2px);box-shadow:0 7px 0 #3F2418,0 12px 20px rgba(63,36,24,.24)}
+.apresentacao{width:100%;padding:13px 20px;margin:0 0 16px;border-radius:22px;background:linear-gradient(145deg,#754A35,#4A2D22);box-shadow:0 6px 15px rgba(63,36,24,.19);text-align:center}
+.apresentacao .subtitulo{margin:0 0 2px;color:#FFE49A;font-size:.72rem;font-weight:700;letter-spacing:.18em}
+.apresentacao h1{margin:0 0 3px;color:#FFE49A;font-size:clamp(1.45rem,2.3vw,2rem);font-weight:700}
+.apresentacao > p:last-child,.apresentacao .descricao{margin:0;color:#FFF3D1;font-size:.88rem;letter-spacing:normal}
+main#conteudo{justify-content:flex-start;padding-top:12px}
+
+/* Botão Voltar: mesmo efeito original do Gerenciamento de Usuários */
+.cabecalho .botao-voltar,
+.cabecalho-lilas .voltar-lilas {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    padding: 0.75rem 1.4rem;
+    border: none;
+    border-radius: 999px;
+    background: #5C3A2E;
+    color: #FFE49A;
+    font-family: 'Jost', sans-serif;
+    font-size: .9rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 5px 0 #3F2418, 0 9px 16px rgba(63,36,24,.22);
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+.cabecalho .botao-voltar:hover,
+.cabecalho-lilas .voltar-lilas:hover {
+    transform: translateY(-3px);
+    color: #fff;
+    box-shadow: 0 0 0 5px rgba(184,120,57,.35), 0 7px 0 #3F2418, 0 12px 22px rgba(63,36,24,.25);
+}
+.cabecalho .botao-voltar:active,
+.cabecalho-lilas .voltar-lilas:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #3F2418, 0 4px 9px rgba(63,36,24,.2);
+}
+/* BOTÃO VOLTAR À ADMINISTRAÇÃO */
+
+.voltar-admin {
+    background: #5C3A2E;
+    color: #FFE49A;
+    border: none;
+    border-radius: 50px;
+    padding: 15px 28px;
+
+    font-weight: 700;
+    text-decoration: none;
+
+    box-shadow: 0 8px 16px rgba(70, 40, 25, 0.22);
+
+    transition: transform 0.25s ease,
+                box-shadow 0.25s ease;
+}
+
+.voltar-admin:hover {
+    transform: translateY(-5px);
+
+    box-shadow: 0 13px 22px rgba(70, 40, 25, 0.28);
+}
+
+.voltar-admin:active {
+    transform: translateY(-1px);
 }

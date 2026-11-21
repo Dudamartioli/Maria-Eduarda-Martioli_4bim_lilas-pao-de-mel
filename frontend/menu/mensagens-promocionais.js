@@ -1,0 +1,14 @@
+(async()=>{try{
+  // Não exibir promoções ao retornar à loja de outras páginas internas.
+  // Recarregamento (F5) e entrada direta continuam seguindo a frequência cadastrada.
+  const navegacao = performance.getEntriesByType('navigation')[0];
+  const tipo = navegacao?.type;
+  if (tipo === 'back_forward') return;
+  if (tipo !== 'reload' && document.referrer) {
+    try {
+      const origem = new URL(document.referrer);
+      if (origem.origin === location.origin &&
+          origem.pathname !== location.pathname) return;
+    } catch (_) {}
+  }
+  const r=await fetch('/mensagens/publicas');if(!r.ok)return;const d=await r.json();if(!d.sucesso)return;let m=null;for(const x of d.mensagens){const chave='lilas-promo-v1-'+x.id_mensagem+'-'+x.criado_em;let ja=false;try{ja=x.frequencia==='primeira'?localStorage.getItem(chave)==='1':x.frequencia==='sessao'?sessionStorage.getItem(chave)==='1':false;}catch(e){}if(!ja){m=x;break;}}if(!m)return;const fundo=document.createElement('div');fundo.id='promoFundo';fundo.setAttribute('role','presentation');const caixa=document.createElement('section');caixa.id='promoCaixa';caixa.setAttribute('role','dialog');caixa.setAttribute('aria-modal','true');caixa.setAttribute('aria-labelledby','promoTitulo');const fechar=document.createElement('button');fechar.id='promoFechar';fechar.textContent='×';fechar.setAttribute('aria-label','Fechar mensagem');const marca=document.createElement('strong');marca.textContent='🍯 Lila’s — Pão de Mel';const titulo=document.createElement('h2');titulo.id='promoTitulo';titulo.textContent=m.titulo;const desc=document.createElement('p');desc.textContent=m.descricao;const codigo=document.createElement('span');codigo.id='promoCodigo';codigo.textContent=m.cupom?'Cupom: '+m.cupom:'';codigo.hidden=!m.cupom;const acao=document.createElement('a');acao.id='promoAcao';acao.textContent=m.texto_botao;acao.href=({produtos:'#catalogo',carrinho:'../carrinho/carrinho.html',login:'../login/login.html'})[m.destino]||'#catalogo';caixa.append(fechar,marca,titulo,desc,codigo,acao);fundo.append(caixa);document.body.append(fundo);const chave='lilas-promo-v1-'+m.id_mensagem+'-'+m.criado_em;try{if(m.frequencia==='primeira')localStorage.setItem(chave,'1');if(m.frequencia==='sessao')sessionStorage.setItem(chave,'1');}catch(e){}const anterior=document.activeElement;fechar.focus();function encerrar(){fundo.remove();document.removeEventListener('keydown',tecla);anterior?.focus?.();}function tecla(e){if(e.key==='Escape')encerrar();if(e.key==='Tab'){const foco=e.shiftKey?acao:fechar;if(document.activeElement===(e.shiftKey?fechar:acao)){e.preventDefault();foco.focus();}}}document.addEventListener('keydown',tecla);acao.addEventListener('click',()=>{if(m.destino==='produtos')encerrar();});fechar.onclick=encerrar;fundo.onclick=e=>{if(e.target===fundo)encerrar();};}catch(e){console.warn('Mensagem promocional indisponível',e);}})();

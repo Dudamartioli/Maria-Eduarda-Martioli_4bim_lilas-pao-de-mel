@@ -1,0 +1,2 @@
+@import url("../despesas/despesas.css");
+.pagina-despesas{max-width:1150px}.campos{grid-template-columns:repeat(3,minmax(0,1fr))}.tabela table{min-width:800px}.indicadores{grid-template-columns:repeat(4,minmax(0,1fr))}@media(max-width:750px){.campos,.indicadores{grid-template-columns:repeat(2,minmax(0,1fr))}}

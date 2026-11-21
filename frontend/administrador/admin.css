@@ -787,3 +787,33 @@ footer p {
 .boas-vindas #nomeAdministrador {
     color: #FFF3D1;
 }
+
+
+/* ==========================================
+   RODAPÉ
+   ========================================== */
+
+footer {
+    width: 100%;
+    background: #5C3A2E;
+    color: #FFE49A;
+    text-align: center;
+    padding: 18px 20px;
+    box-sizing: border-box;
+}
+
+footer p {
+    margin: 0 0 8px;
+    font-size: 16px;
+    line-height: 1.4;
+    color: #FFE49A;
+}
+
+footer p:last-child {
+    margin-bottom: 0;
+}
+
+footer strong {
+    font-weight: 700;
+    color: #FFE49A;
+}

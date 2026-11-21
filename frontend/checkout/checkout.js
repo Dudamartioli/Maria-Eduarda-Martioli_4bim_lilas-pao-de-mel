@@ -6,6 +6,36 @@ const botao = document.getElementById("enviar");
 let itens = [];
 let idPedidoPix = null;
 let comprovanteJaEnviado = false;
+const CHAVE_FORM = "lilas_checkout_formulario";
+let restaurando = false;
+function guardarFormulario() {
+    if (restaurando) return;
+    const dados = {};
+    for (const el of form.querySelectorAll("input, select, textarea")) {
+        if (el.type === "radio") { if (el.checked) dados[el.name] = el.value; }
+        else if (el.id) dados[el.id] = el.value;
+    }
+    sessionStorage.setItem(CHAVE_FORM, JSON.stringify(dados));
+}
+async function restaurarFormulario() {
+    const dados = JSON.parse(sessionStorage.getItem(CHAVE_FORM) || "null");
+    if (!dados) return;
+    restaurando = true;
+    try {
+        for (const [id, v] of Object.entries(dados)) {
+            if (id === "bairro") continue;
+            if (id === "modalidade") {
+                const radio = [...form.querySelectorAll('input[name="modalidade"]')].find(x => x.value === v);
+                if (radio) radio.checked = true;
+            } else { const el = document.getElementById(id); if (el) el.value = v; }
+        }
+        atualizarModalidade();
+        await carregarBairrosFrete();
+        if (dados.bairro) bairroFrete.value = dados.bairro;
+    } finally { restaurando = false; }
+}
+form.addEventListener("input", guardarFormulario);
+form.addEventListener("change", guardarFormulario);
 const valor = n => Number(n).toLocaleString("pt-BR", { style:"currency", currency:"BRL" });
 const campo = id => document.getElementById(id).value.trim();
 
@@ -60,7 +90,7 @@ async function carregarBairrosFrete() {
         if (!d.bairros.length) inicial.textContent = "Nenhum bairro disponível";
     } catch (erro) { inicial.textContent = "Erro ao consultar bairros"; console.error(erro); }
 }
-cidadeFrete.addEventListener("change", carregarBairrosFrete);
+cidadeFrete.addEventListener("change", async () => { await carregarBairrosFrete(); guardarFormulario(); });
 carregarBairrosFrete();
 
 async function iniciar() {
@@ -160,6 +190,7 @@ if (dadosSessao.usuario.tipo_usuario === "admin") {
 form.addEventListener("submit", async evento => {
     evento.preventDefault();
     if (!itens.length) return;
+    guardarFormulario();
     botao.disabled=true; mensagem.textContent="Preparando pagamento Pix...";
     const entrega = form.elements.modalidade.value === "entrega";
     const corpo = {
@@ -171,7 +202,10 @@ form.addEventListener("submit", async evento => {
         referencia:entrega?campo("referencia"):null, cupom:campo("cupom")
     };
     try {
-        const resposta=await fetch(API+"/checkout/solicitar",{method:"POST",credentials:"include",
+        const pedidoExistente = Number(sessionStorage.getItem("lilas_pedido_pix_pendente"));
+        const editando = Number.isSafeInteger(pedidoExistente) && pedidoExistente > 0;
+        const url = editando ? `${API}/checkout/pedidos/${pedidoExistente}/editar` : API+"/checkout/solicitar";
+        const resposta=await fetch(url,{method:editando ? "PUT" : "POST",credentials:"include",
             headers:{"Content-Type":"application/json"},body:JSON.stringify(corpo)});
         const dados=await resposta.json();
         if (!resposta.ok || !dados.sucesso) throw new Error(dados.mensagem || "Erro ao enviar solicitação.");
@@ -190,6 +224,7 @@ form.addEventListener("submit", async evento => {
         form.hidden=true;
         mensagem.textContent=`Pedido #${dados.id_pedido} registrado! Aguardando pagamento e conferência manual pela Lila's.`;
         document.getElementById('pixArea').hidden=false;
+        document.getElementById('btnEditarEntrega').hidden = false;
         document.getElementById('pixTotal').textContent=valor(dados.total);
         document.getElementById('pixFrete').textContent=valor(dados.frete);
         document.getElementById('pixDesconto').textContent=valor(dados.desconto);
@@ -222,6 +257,7 @@ async function recuperarPedidoPendente() {
         idPedidoPix = id;
         form.hidden = true;
         document.getElementById("pixArea").hidden = false;
+        document.getElementById("btnEditarEntrega").hidden = false;
         document.getElementById("pixTotal").textContent = valor(dados.total);
         document.getElementById("pixFrete").textContent = valor(dados.frete);
         document.getElementById("pixDesconto").textContent = valor(dados.desconto);
@@ -245,8 +281,9 @@ async function recuperarPedidoPendente() {
 async function iniciarCheckout() {
     // Verificar sessão e carregar produtos normalmente.
     await iniciar();
-    // Se já existe um Pix pendente, recuperar sem gerar novo pedido.
-    await recuperarPedidoPendente();
+    await restaurarFormulario();
+    // O carrinho sempre abre o formulário; o Pix só aparece ao avançar.
+    // O ID pendente é mantido para editar o mesmo pedido, sem duplicá-lo.
 }
 iniciarCheckout();
 
@@ -441,6 +478,7 @@ btnFinalizarPagamento.addEventListener(
             }
             sessionStorage.removeItem("lilas_pedido_pix_pendente");
             sessionStorage.removeItem("lilas_carrinho_do_pedido");
+            sessionStorage.removeItem(CHAVE_FORM);
 
             window.location.href =
                 "resumo.html?id=" + idPedidoPix;
@@ -464,3 +502,25 @@ let agendaPublica=[];
 fetch(API+'/agenda/indisponiveis').then(r=>r.json()).then(d=>{if(d.sucesso)agendaPublica=d.bloqueios;}).catch(console.error);
 const dataCheckout=document.getElementById('data');
 dataCheckout.addEventListener('change',()=>{const dia=dataCheckout.value;const b=agendaPublica.find(x=>x.data===dia&&['entrega','ambos'].includes(x.tipo));if(b){dataCheckout.setCustomValidity('Data indisponível para entregas e retiradas.');dataCheckout.reportValidity();dataCheckout.value='';}else dataCheckout.setCustomValidity('');});
+
+// Voltar do Pix para corrigir endereço, data, modalidade ou cupom.
+document.getElementById('btnEditarEntrega')?.addEventListener('click', () => {
+    document.getElementById('pixArea').hidden = true;
+    document.getElementById('btnEditarEntrega').hidden = true;
+    form.hidden = false;
+    botao.disabled = false;
+    botao.textContent = 'Continuar para pagamento';
+    mensagem.textContent = 'Revise os dados e avance novamente para atualizar o Pix deste pedido.';
+    form.scrollIntoView({behavior:'smooth'});
+});
+
+// O cupom é validado pelo servidor ao continuar para o pagamento.
+document.getElementById('aplicarCupom')?.addEventListener('click', () => {
+    const codigo = document.getElementById('cupom').value.trim();
+    document.getElementById('cupomFeedback').textContent = codigo
+        ? 'Cupom informado. O desconto será verificado ao continuar para pagamento.'
+        : 'Digite um código de cupom para continuar.';
+});
+document.getElementById('cupom')?.addEventListener('input', () => {
+    document.getElementById('cupomFeedback').textContent = '';
+});

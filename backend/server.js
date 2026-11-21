@@ -44,9 +44,12 @@ const checkoutRoutes = require("./routes/checkoutRoutes");
 const freteRoutes = require("./routes/freteRoutes");
 const pagamentosAdminRoutes = require("./routes/pagamentosAdminRoutes");
 const agendaRoutes = require("./routes/agendaRoutes");
+const despesaRoutes = require("./routes/despesaRoutes");
+const financeiroRoutes = require("./routes/financeiroRoutes");
 
 // Listagem pública dos banners
 app.use("/banner", bannerRoutes);
+app.use("/mensagens", require("./routes/mensagensRoutes"));
 
 // Solicitações de encomenda (checkout)
 app.use("/checkout", checkoutRoutes);
@@ -66,6 +69,9 @@ app.use("/admin", administradorRoutes);
 app.use("/recuperacao", recuperacaoRoutes);
 
 app.use("/agenda", agendaRoutes);
+app.use("/despesas", despesaRoutes);
+app.use("/financeiro", financeiroRoutes);
+app.use("/reservas", require("./routes/reservaRoutes"));
 
 // ========================================
 // FRONTEND DA LILA'S

@@ -64,8 +64,8 @@ async function salvarPedidoManual(req,res,edicao) {
     if (edicao) {
       const atual=await c.query('SELECT * FROM pedido_encomenda WHERE id_pedido=$1 FOR UPDATE',[id]);
       if (!atual.rowCount) throw new Error('Pedido não encontrado.');
-      if (!atual.rows[0].status === 'Aguardando pagamento' ||
-          atual.rows[0].pagamento_status!=='Pendente' || atual.rows[0].comprovante_caminho || atual.rows[0].pix_copia_cola)
+      if (atual.rows[0].status !== 'Aguardando pagamento' ||
+          !['Pendente', 'Aguardando pagamento'].includes(atual.rows[0].pagamento_status) || atual.rows[0].comprovante_caminho || atual.rows[0].pix_copia_cola)
         throw new Error('Este pedido já possui pagamento, Pix gerado ou andamento iniciado. Não é seguro editar seus valores.');
       const reservas=await c.query('SELECT COALESCE(SUM(quantidade_reservada),0)::int AS total FROM item_encomenda WHERE id_pedido=$1',[id]);
       if(reservas.rows[0].total>0) throw new Error('Pedido com estoque reservado não pode ser editado por este formulário.');
@@ -213,7 +213,7 @@ router.patch("/pedidos/:id/confirmar-pix", async (req, res) => {
     const r = await c.query(
       `UPDATE pedido_encomenda SET status='Confirmado', pagamento_status='Confirmado', confirmado_em=NOW()
    WHERE id_pedido=$1 AND status = 'Aguardando pagamento'
-     AND pagamento_status='Pendente' RETURNING id_pedido,cupom_codigo`,
+     AND pagamento_status IN ('Pendente', 'Aguardando pagamento') RETURNING id_pedido,cupom_codigo`,
       [id],
     );
     if (!r.rowCount) {
@@ -222,6 +222,20 @@ router.patch("/pedidos/:id/confirmar-pix", async (req, res) => {
         sucesso: false,
         mensagem: "Pedido não está aguardando pagamento.",
       });
+    }
+    // Número sequencial anual, atribuído somente ao confirmar a venda.
+    const anoVenda = new Date().getFullYear();
+    const seq = await c.query(`INSERT INTO numeracao_venda(ano,ultimo_numero) VALUES($1,1)
+      ON CONFLICT(ano) DO UPDATE SET ultimo_numero=numeracao_venda.ultimo_numero+1 RETURNING ultimo_numero`,[anoVenda]);
+    await c.query('UPDATE pedido_encomenda SET numero_venda_ano=$1 WHERE id_pedido=$2',[seq.rows[0].ultimo_numero,id]);
+    const cfg = await c.query('SELECT ativa,tipo,valor FROM reserva_configuracao WHERE id=1');
+    if(cfg.rows[0]?.ativa){
+      const pedido = await c.query('SELECT total FROM pedido_encomenda WHERE id_pedido=$1',[id]);
+      const total = Number(pedido.rows[0].total);
+      const cgf = cfg.rows[0];
+      const reservado = Math.round(Math.min(total,cgf.tipo==='percentual'?total*Number(cgf.valor)/100:Number(cgf.valor))*100)/100;
+      if(reservado>0) await c.query(`INSERT INTO reserva_movimentacao(id_pedido,tipo,origem,valor,motivo)
+        VALUES($1,'entrada','automatica',$2,'Reserva automática da venda') ON CONFLICT DO NOTHING`,[id,reservado]);
     }
     if (r.rows[0].cupom_codigo) {
       await c.query("UPDATE cupom SET usos=usos+1 WHERE codigo=$1", [
@@ -340,7 +354,6 @@ router.patch("/pedidos/:id/status", async (req, res) => {
         "Pronto": ["Concluído"],
         "Concluído": [],
         "Cancelado": [],
-        "Pendente": [],
         "Aguardando pagamento": []
     };
 
@@ -654,13 +667,15 @@ function validar(d) {
   const tipo = d.tipo;
   const valor = Number(d.valor);
   const limite = d.limite_usos == null ? null : Number(d.limite_usos);
+  const minimo = Number(d.valor_minimo_pedido ?? 0);
   if (
     !/^[A-Z0-9_-]{3,30}$/.test(codigo) ||
     !["percentual", "fixo"].includes(tipo) ||
     !Number.isFinite(valor) ||
     valor <= 0 ||
     (tipo === "percentual" && valor > 100) ||
-    (limite !== null && (!Number.isSafeInteger(limite) || limite < 1))
+    (limite !== null && (!Number.isSafeInteger(limite) || limite < 1)) ||
+    !Number.isFinite(minimo) || minimo < 0 || Math.round(minimo*100)/100 !== minimo
   )
     return null;
   return {
@@ -669,6 +684,7 @@ function validar(d) {
     valor,
     validade: d.validade || null,
     limite,
+    minimo,
     ativo: d.ativo !== false,
   };
 }
@@ -681,8 +697,8 @@ router.post("/cupons", async (req, res) => {
     });
   try {
     await pool.query(
-      "INSERT INTO cupom(codigo,tipo,valor,validade,limite_usos,ativo) VALUES($1,$2,$3,$4,$5,$6)",
-      [d.codigo, d.tipo, d.valor, d.validade, d.limite, d.ativo],
+      "INSERT INTO cupom(codigo,tipo,valor,validade,limite_usos,ativo,valor_minimo_pedido) VALUES($1,$2,$3,$4,$5,$6,$7)",
+      [d.codigo, d.tipo, d.valor, d.validade, d.limite, d.ativo, d.minimo],
     );
     res.status(201).json({ sucesso: true });
   } catch (e) {
@@ -701,8 +717,8 @@ router.put("/cupons/:id", async (req, res) => {
       .json({ sucesso: false, mensagem: "Dados inválidos." });
   try {
     const r = await pool.query(
-      "UPDATE cupom SET codigo=$1,tipo=$2,valor=$3,validade=$4,limite_usos=$5,ativo=$6 WHERE id_cupom=$7 RETURNING id_cupom",
-      [d.codigo, d.tipo, d.valor, d.validade, d.limite, d.ativo, req.params.id],
+      "UPDATE cupom SET codigo=$1,tipo=$2,valor=$3,validade=$4,limite_usos=$5,ativo=$6,valor_minimo_pedido=$8 WHERE id_cupom=$7 RETURNING id_cupom",
+      [d.codigo, d.tipo, d.valor, d.validade, d.limite, d.ativo, req.params.id, d.minimo],
     );
     res.status(r.rowCount ? 200 : 404).json({
       sucesso: !!r.rowCount,
@@ -716,19 +732,52 @@ router.put("/cupons/:id", async (req, res) => {
     falha(res, e);
   }
 });
-router.delete("/cupons/:id", async (req, res) => {
+// Desabilita sem remover o cupom.
+router.patch("/cupons/:id/desabilitar", async (req,res) => {
+  const id = Number(req.params.id);
+  if (!Number.isSafeInteger(id) || id <= 0) return res.status(400).json({sucesso:false,mensagem:"Cupom inválido."});
   try {
-    const r = await pool.query(
-      "UPDATE cupom SET ativo=FALSE WHERE id_cupom=$1 RETURNING id_cupom",
-      [req.params.id],
-    );
-    res.status(r.rowCount ? 200 : 404).json({
-      sucesso: !!r.rowCount,
-      mensagem: r.rowCount ? "Cupom desativado" : "Cupom não encontrado",
-    });
-  } catch (e) {
-    falha(res, e);
+    const r = await pool.query("UPDATE cupom SET ativo=FALSE WHERE id_cupom=$1 AND ativo=TRUE RETURNING id_cupom", [id]);
+    return res.status(r.rowCount ? 200 : 404).json({sucesso:!!r.rowCount,mensagem:r.rowCount?"Cupom desabilitado.":"Cupom ativo não encontrado."});
+  } catch(e) { falha(res,e); }
+});
+// Exclusão definitiva explícita, inclusive para cupons ativos.
+router.delete("/cupons/:id/definitivo", async (req,res) => {
+  const id = Number(req.params.id);
+  if (!Number.isSafeInteger(id) || id <= 0) return res.status(400).json({sucesso:false,mensagem:"Cupom inválido."});
+  try {
+    const r = await pool.query("DELETE FROM cupom WHERE id_cupom=$1 RETURNING id_cupom", [id]);
+    return res.status(r.rowCount ? 200 : 404).json({sucesso:!!r.rowCount,mensagem:r.rowCount?"Cupom excluído definitivamente.":"Cupom não encontrado."});
+  } catch(e) {
+    if(e.code === "23503") return res.status(409).json({sucesso:false,mensagem:"Este cupom está vinculado a registros existentes e não pode ser excluído definitivamente."});
+    falha(res,e);
   }
+});
+// Primeira ação: desabilitar. A exclusão definitiva é permitida apenas depois.
+router.delete("/cupons/:id", async (req, res) => {
+  const id = Number(req.params.id);
+  if (!Number.isSafeInteger(id) || id <= 0) return res.status(400).json({sucesso:false,mensagem:"Cupom inválido."});
+  try {
+    const r = await pool.query("SELECT ativo FROM cupom WHERE id_cupom=$1", [id]);
+    if (!r.rowCount) return res.status(404).json({sucesso:false,mensagem:"Cupom não encontrado."});
+    if (r.rows[0].ativo) {
+      await pool.query("UPDATE cupom SET ativo=FALSE WHERE id_cupom=$1", [id]);
+      return res.json({sucesso:true,mensagem:"Cupom desabilitado. Agora é possível excluí-lo definitivamente."});
+    }
+    await pool.query("DELETE FROM cupom WHERE id_cupom=$1 AND ativo=FALSE", [id]);
+    return res.json({sucesso:true,mensagem:"Cupom excluído definitivamente."});
+  } catch (e) {
+    if (e.code === "23503") return res.status(409).json({sucesso:false,mensagem:"Este cupom possui vínculos com registros existentes e não pode ser excluído definitivamente."});
+    falha(res,e);
+  }
+});
+router.patch("/cupons/:id/reativar", async (req,res) => {
+  const id = Number(req.params.id);
+  if (!Number.isSafeInteger(id) || id <= 0) return res.status(400).json({sucesso:false,mensagem:"Cupom inválido."});
+  try {
+    const r=await pool.query("UPDATE cupom SET ativo=TRUE WHERE id_cupom=$1 AND ativo=FALSE RETURNING id_cupom",[id]);
+    res.status(r.rowCount?200:404).json({sucesso:!!r.rowCount,mensagem:r.rowCount?"Cupom reativado.":"Cupom inativo não encontrado."});
+  } catch(e) {falha(res,e);}
 });
 // Abrir comprovante somente para usuário autenticado com perfil administrador.
 router.get("/pedidos/:id/comprovante", async (req, res) => {

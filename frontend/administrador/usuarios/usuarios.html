@@ -34,9 +34,11 @@
 
 
   <main id="conteudo" hidden>
-    <p class="subtitulo">ADMINISTRAÇÃO DA LILA'S</p>
-    <h1>Gerenciamento de Usuários</h1>
-    <p class="introducao">Consulte, cadastre e atualize os usuários da Lila's.</p>
+    <section class="apresentacao">
+      <p class="subtitulo">ADMINISTRAÇÃO DA LILA'S</p>
+      <h1>Gerenciamento de Usuários 👤</h1>
+      <p class="introducao">Consulte, cadastre e atualize os usuários da Lila's.</p>
+    </section>
     <div class="layout">
       <section class="painel" aria-label="Formulário de usuário">
         <div class="linha-busca">
@@ -52,6 +54,7 @@
         </div>
         <div class="acoes" id="acoesIniciais"><button type="button" id="btnInserir">Inserir</button><button type="button" id="btnAlterar">Alterar</button></div>
         <div class="acoes" id="acoesEdicao" hidden><button type="button" id="btnSalvar">Salvar</button><button type="button" id="btnExcluir">Excluir</button><button type="button" id="btnCancelar">Cancelar</button></div>
+        <div class="acoes"><a class="botao-historico" href="../historico-clientes/historico-clientes.html">Histórico de Clientes</a></div>
         <p id="mensagem" role="status" aria-live="polite"></p>
       </section>
       <section class="painel lista" aria-label="Usuários cadastrados">
@@ -62,6 +65,6 @@
     </div>
   </main>
   <p id="avisoAcesso" role="status">Verificando permissão administrativa...</p>
-  <footer>© Lila's - Todos os direitos reservados</footer>
+  
 </body>
 </html>

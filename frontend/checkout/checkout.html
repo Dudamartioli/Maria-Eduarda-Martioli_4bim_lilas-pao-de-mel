@@ -31,10 +31,14 @@
         </a>
 
         <!-- Botão voltar à direita -->
-        <a href="../carrinho/carrinho.html"
-           class="botao-voltar">
-            ← Voltar ao carrinho
-        </a>
+        <nav class="acoes-topo" aria-label="Navegação do checkout">
+            <button type="button" id="btnEditarEntrega" class="botao-voltar" hidden>
+                ← Voltar para entrega ou retirada
+            </button>
+            <a href="../carrinho/carrinho.html" class="botao-voltar">
+                ← Voltar ao carrinho
+            </a>
+        </nav>
 
     </header>
 
@@ -293,9 +297,18 @@
                    role="status"
                    aria-live="polite"></p>
 
-                <label class="campo">Cupom de desconto (opcional)
-                    <input id="cupom" maxlength="30" placeholder="Digite seu cupom">
-                </label>
+                <section class="cartao-cupom" aria-labelledby="tituloCupom">
+                    <div class="cupom-ilustracao" aria-hidden="true">%</div>
+                    <div class="cupom-conteudo">
+                        <h3 id="tituloCupom">Cupom de desconto</h3>
+                        <p class="cupom-subtitulo">Possui um cupom? Digite o código abaixo para aplicar o desconto no seu pedido.</p>
+                        <div class="cupom-acoes">
+                            <input id="cupom" maxlength="30" placeholder="Digite seu cupom" aria-label="Código do cupom">
+                            <button id="aplicarCupom" type="button">Aplicar cupom ✓</button>
+                        </div>
+                        <p id="cupomFeedback" role="status" aria-live="polite"></p>
+                    </div>
+                </section>
                 <button id="enviar" type="submit">Continuar para pagamento</button>
 
                 <p class="aviso-final">

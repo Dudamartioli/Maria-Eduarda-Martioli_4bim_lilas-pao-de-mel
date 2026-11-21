@@ -178,7 +178,7 @@ function mostrarResumo(pedido) {
 async function procurar(id) {
 
     if (!id || Number(id) <= 0) {
-        alert("Informe um ID válido.");
+        await LilaAvisos.alerta("Informe um ID válido.");
         return;
     }
 
@@ -191,7 +191,7 @@ async function procurar(id) {
         mostrarDetalhes(dados.pedido);
 
     } catch (erro) {
-        alert(erro.message);
+        await LilaAvisos.alerta(erro.message);
     }
 }
 
@@ -260,6 +260,30 @@ card.append(areaProdutos);
         elemento("p", `Andamento: ${pedido.status}`)
     );
 
+    // Resumo do reembolso: visível inclusive quando a devolução já foi concluída.
+    if (pedido.status === "Cancelado") {
+        const resumoReembolso = document.createElement("section");
+        resumoReembolso.className = "resumo-reembolso";
+        resumoReembolso.append(elemento("h3", "Situação do reembolso"));
+        if (pedido.reembolso_status === "Pendente") {
+            resumoReembolso.append(
+                elemento("p", "Status: Aguardando devolução do Pix"),
+                elemento("p", `Valor a devolver: ${moeda(pedido.valor_reembolso)}`),
+                elemento("small", "Devolva o dinheiro pelo banco antes de marcar como realizado. O sistema não transfere Pix.")
+            );
+        } else if (pedido.reembolso_status === "Realizado") {
+            const data = pedido.reembolsado_em ? new Date(pedido.reembolsado_em).toLocaleString("pt-BR") : "Não registrada";
+            resumoReembolso.append(
+                elemento("p", "Status: Reembolso realizado"),
+                elemento("p", `Valor devolvido: ${moeda(pedido.valor_reembolso)}`),
+                elemento("p", `Registrado em: ${data}`)
+            );
+        } else {
+            resumoReembolso.append(elemento("p", "Sem reembolso: não havia pagamento confirmado no cancelamento."));
+        }
+        card.append(resumoReembolso);
+    }
+
     // Comprovante enviado pelo cliente, sem confirmar Pix automaticamente.
     const areaComprovante = document.createElement("section");
     areaComprovante.className = "area-comprovante-admin";
@@ -293,7 +317,7 @@ card.append(areaProdutos);
                 }
             } catch (erro) {
                 if (aba) aba.close();
-                alert(erro.message);
+                await LilaAvisos.alerta(erro.message);
             }
         });
         areaComprovante.append(
@@ -308,7 +332,7 @@ card.append(areaProdutos);
     card.append(areaComprovante);
 
     // Confirmar Pix somente após conferir no banco.
-    if (pedido.status === "Aguardando pagamento" && pedido.pagamento_status === "Pendente") {
+    if (pedido.status === "Aguardando pagamento" && ["Pendente", "Aguardando pagamento"].includes(pedido.pagamento_status)) {
 
         const confirmar = elemento(
             "button",
@@ -317,7 +341,7 @@ card.append(areaProdutos);
 
         confirmar.onclick = async () => {
 
-            const resposta = confirm(
+            const resposta = await LilaAvisos.confirmar(
                 `Você conferiu no aplicativo bancário o recebimento de ${moeda(pedido.total)} referente ao pedido #${pedido.id_pedido}?`
             );
 
@@ -330,11 +354,11 @@ card.append(areaProdutos);
                     { method: "PATCH" }
                 );
 
-                alert(dados.mensagem);
+                await LilaAvisos.alerta(dados.mensagem);
                 procurar(pedido.id_pedido);
 
             } catch (erro) {
-                alert(erro.message);
+                await LilaAvisos.alerta(erro.message);
             }
         };
 
@@ -359,7 +383,7 @@ card.append(areaProdutos);
 
         atualizar.onclick = async () => {
 
-            if (!confirm(`Alterar o pedido para ${proximoStatus}?`)) {
+            if (!await LilaAvisos.confirmar(`Alterar o pedido para ${proximoStatus}?`)) {
                 return;
             }
 
@@ -375,11 +399,11 @@ card.append(areaProdutos);
                     }
                 );
 
-                alert(dados.mensagem);
+                await LilaAvisos.alerta(dados.mensagem);
                 procurar(pedido.id_pedido);
 
             } catch (erro) {
-                alert(erro.message);
+                await LilaAvisos.alerta(erro.message);
             }
         };
 
@@ -438,14 +462,14 @@ if (
 
     cancelar.onclick = async () => {
 
-        const motivo = prompt(
+        const motivo = await LilaAvisos.perguntar(
             "Informe o motivo do cancelamento:"
         );
 
         if (motivo === null) return;
 
         if (motivo.trim().length < 5) {
-            alert("Informe um motivo com pelo menos 5 caracteres.");
+            await LilaAvisos.alerta("Informe um motivo com pelo menos 5 caracteres.");
             return;
         }
 
@@ -455,7 +479,7 @@ if (
             ? "Este pedido já foi pago. Ao cancelar, será registrado um REEMBOLSO PENDENTE. Deseja continuar?"
             : "Deseja realmente cancelar este pedido?";
 
-        if (!confirm(mensagem)) return;
+        if (!await LilaAvisos.confirmar(mensagem)) return;
 
         try {
 
@@ -469,13 +493,13 @@ if (
                 }
             );
 
-            alert(dados.mensagem);
+            await LilaAvisos.alerta(dados.mensagem);
 
             // Atualizar os detalhes.
             await procurar(pedido.id_pedido);
 
         } catch (erro) {
-            alert(erro.message);
+            await LilaAvisos.alerta(erro.message);
         }
     };
 
@@ -506,7 +530,7 @@ if (
 
     reembolsar.onclick = async () => {
 
-        const confirmou = confirm(
+        const confirmou = await LilaAvisos.confirmar(
             "Você já devolveu o dinheiro ao cliente? " +
             "Este botão NÃO realiza uma transferência Pix."
         );
@@ -522,11 +546,11 @@ if (
                 }
             );
 
-            alert(dados.mensagem);
+            await LilaAvisos.alerta(dados.mensagem);
             await procurar(pedido.id_pedido);
 
         } catch (erro) {
-            alert(erro.message);
+            await LilaAvisos.alerta(erro.message);
         }
     };
 
@@ -720,7 +744,7 @@ const avisoManual=document.getElementById('avisoManual');
 const campoManual=(nome)=>formManual.elements.namedItem(nome);
 function podeEditarPedidoManual(pedido) {
  return pedido.status === 'Aguardando pagamento' &&
-        pedido.pagamento_status === 'Pendente' &&
+        ['Pendente', 'Aguardando pagamento'].includes(pedido.pagamento_status) &&
         !pedido.pix_copia_cola && !pedido.comprovante_caminho &&
         !(pedido.itens || []).some(i => Number(i.quantidade_reservada) > 0);
 }
@@ -823,7 +847,7 @@ async function editarPedidoManual(id, permitirEdicao = true){
   calcularManual();definirModoManual(permitirEdicao ? 'alterar' : null);
   avisoManual.textContent = permitirEdicao ? 'Edição liberada. Faça as alterações e clique em Salvar.' : 'Pedido encontrado. Clique em Alterar para liberar os campos, se permitido.';
   secaoCadastro.scrollIntoView({behavior:'smooth',block:'start'});
- }catch(e){alert(e.message)}
+ }catch(e){await LilaAvisos.alerta(e.message)}
 }
 formManual.onsubmit=async e=>{
  e.preventDefault();avisoManual.textContent='Salvando...';

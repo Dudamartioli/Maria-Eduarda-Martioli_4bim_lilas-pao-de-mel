@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&display=swap');
+:root{--mel:#FFE49A;--marrom:#5C3A2E;--cafe:#3F2418;--relevo:6px 6px 14px rgba(185,115,25,.32),-6px -6px 14px rgba(255,251,228,.95)}
+*{box-sizing:border-box}body{margin:0;background:var(--mel);font-family:Jost,'Segoe UI',sans-serif;color:var(--cafe)}.cabecalho{display:flex;align-items:center;justify-content:space-between;padding:12px clamp(18px,4vw,55px);gap:20px;min-height:100px}.logo img{width:165px;max-width:35vw}.botao-voltar,button{background:linear-gradient(145deg,#754A35,#4A2D22);color:#ffe49a;border:0;border-radius:50px;padding:12px 21px;font:600 .95rem Jost,sans-serif;text-decoration:none;cursor:pointer;box-shadow:0 8px 16px rgba(63,36,24,.28)}button:hover,.botao-voltar:hover{transform:translateY(-2px)}.pagina{max-width:1250px;margin:auto;padding:10px 25px 55px}.apresentacao{text-align:center;margin:0 0 25px}.subtitulo{font-size:.75rem;letter-spacing:.2em;color:#9A4F0E;font-weight:700;margin:0}.apresentacao h1{font-size:clamp(1.8rem,3vw,2.5rem);color:var(--marrom);margin:6px}.apresentacao>p:last-child{color:#79553c;margin:0}.painel,.indicador{border-radius:25px;background:var(--mel);box-shadow:var(--relevo);overflow:hidden}.titulo-painel{padding:16px 23px;background:linear-gradient(145deg,#754A35,#4A2D22);color:#ffe49a}.titulo-painel h2{font-size:1.2rem;margin:0}.conteudo{padding:24px}.filtros{display:grid;grid-template-columns:1fr 1fr 1fr auto;align-items:end;gap:15px}.filtros label{display:flex;flex-direction:column;gap:7px;font-weight:600;color:var(--marrom)}input,select{width:100%;border:0;background:#ffe49a;border-radius:12px;padding:12px;font:inherit;box-shadow:inset 4px 4px 10px rgba(185,115,25,.3),inset -4px -4px 10px #fff9dc}.indicadores{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:24px 0}.indicador{padding:21px;display:flex;flex-direction:column;gap:7px}.indicador span{color:#7b503b;font-size:.88rem;font-weight:600}.indicador strong{font-size:clamp(1.3rem,2.5vw,2rem);color:var(--marrom)}.indicador.destaque{background:linear-gradient(145deg,#754A35,#4A2D22)}.indicador.destaque span,.indicador.destaque strong{color:#ffe49a}.grade{display:grid;grid-template-columns:1fr 1fr;gap:22px}.largura-total{grid-column:1/-1}.grafico{overflow-x:auto;min-height:310px}.grafico svg{display:block;width:100%;min-width:560px;height:auto;max-height:340px}.legenda{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin:8px 0;font-size:.83rem}.legenda span{display:flex;align-items:center;gap:7px}.legenda i{display:inline-block;width:12px;height:12px;border-radius:3px}#aviso{text-align:center;font-weight:600;color:var(--marrom);margin-top:22px}.nota{font-size:.82rem;color:#79553c;line-height:1.5;margin-top:20px}@media(max-width:900px){.filtros{grid-template-columns:repeat(2,1fr)}.grade{grid-template-columns:1fr}.indicadores{grid-template-columns:repeat(2,1fr)}}@media(max-width:550px){.cabecalho{min-height:75px}.logo img{width:115px}.botao-voltar{font-size:.8rem;padding:10px}.pagina{padding:10px 15px 35px}.filtros{grid-template-columns:1fr}.indicadores{gap:12px}.indicador{padding:15px}.indicador strong{font-size:1.25rem}.conteudo{padding:16px}}
+
+/* Botão Voltar: mesmo efeito original do Gerenciamento de Usuários */
+.cabecalho .botao-voltar,
+.cabecalho-lilas .voltar-lilas {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    padding: 0.75rem 1.4rem;
+    border: none;
+    border-radius: 999px;
+    background: #5C3A2E;
+    color: #FFE49A;
+    font-family: 'Jost', sans-serif;
+    font-size: .9rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 5px 0 #3F2418, 0 9px 16px rgba(63,36,24,.22);
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+.cabecalho .botao-voltar:hover,
+.cabecalho-lilas .voltar-lilas:hover {
+    transform: translateY(-3px);
+    color: #fff;
+    box-shadow: 0 0 0 5px rgba(184,120,57,.35), 0 7px 0 #3F2418, 0 12px 22px rgba(63,36,24,.25);
+}
+.cabecalho .botao-voltar:active,
+.cabecalho-lilas .voltar-lilas:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #3F2418, 0 4px 9px rgba(63,36,24,.2);
+}
+/* BOTÃO VOLTAR À ADMINISTRAÇÃO */
+
+.voltar-admin {
+    background: #5C3A2E;
+    color: #FFE49A;
+    border: none;
+    border-radius: 50px;
+    padding: 15px 28px;
+
+    font-weight: 700;
+    text-decoration: none;
+
+    box-shadow: 0 8px 16px rgba(70, 40, 25, 0.22);
+
+    transition: transform 0.25s ease,
+                box-shadow 0.25s ease;
+}
+
+.voltar-admin:hover {
+    transform: translateY(-5px);
+
+    box-shadow: 0 13px 22px rgba(70, 40, 25, 0.28);
+}
+
+.voltar-admin:active {
+    transform: translateY(-1px);
+}
+/* Destaques financeiros: dois cartões ocupam a largura de três colunas. */
+@media (min-width: 901px) {
+    .indicadores { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+    .indicadores > .indicador { grid-column: span 2; }
+    .indicadores > .indicador-principal { grid-column: span 3; }
+}

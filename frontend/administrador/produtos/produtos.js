@@ -171,6 +171,37 @@ function visibilidadeDosBotoes(editando) {
     atualizarEdicaoImagens();
 }
 
+// Atualiza o quadro de informações na prévia do produto.
+function atualizarResumoProduto(produto = null) {
+    const texto = (id, valor) => {
+        const elemento = document.getElementById(id);
+        if (elemento) elemento.textContent = valor;
+    };
+
+    if (!produto) {
+        texto("previaNome", "Nenhum produto selecionado");
+        texto("previaPreco", "—");
+        texto("previaCategoria", "—");
+        texto("previaSabor", "—");
+        texto("previaDisponibilidade", "—");
+        return;
+    }
+
+    const nomeOpcao = (select, valor, alternativa) => {
+        const opcao = Array.from(select.options).find(o => String(o.value) === String(valor));
+        return opcao ? opcao.textContent : (alternativa || "—");
+    };
+
+    texto("previaNome", produto.nome_produto || "—");
+    const preco = Number(produto.preco);
+    texto("previaPreco", Number.isFinite(preco)
+        ? preco.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }) : "—");
+    texto("previaCategoria", nomeOpcao(campoCategoria, produto.id_categoria, produto.nome_categoria));
+    texto("previaSabor", nomeOpcao(campoSabor, produto.id_sabor, produto.nome_sabor));
+    texto("previaDisponibilidade", produto.disponivel === true || produto.disponivel === "true" || produto.disponivel === 1
+        ? "Disponível" : "Indisponível");
+}
+
 // ==========================================
 // LIMPAR CAMPOS
 // ==========================================
@@ -188,6 +219,7 @@ function limparCampos() {
     campoEstoque.value = "0";
 
     produtoSelecionado = null;
+    atualizarResumoProduto();
     limparGaleria();
 }
 
@@ -210,6 +242,7 @@ function preencherCampos(produto) {
         produto.disponivel ? "true" : "false";
 
     produtoSelecionado = Number(produto.id_produto);
+    atualizarResumoProduto(produto);
 
     bloquearAtributos(true);
 

@@ -36,6 +36,56 @@ router.get("/verificar", (req, res) => {
     });
 });
 
+// Histórico de clientes: somente administradores autenticados.
+router.get('/historico-clientes', async (req, res) => {
+    const pool = require('../database');
+    const ano = req.query.ano ? Number(req.query.ano) : null;
+    if (ano !== null && (!Number.isInteger(ano) || ano < 2000 || ano > 2100))
+        return res.status(400).json({ sucesso: false, mensagem: 'Ano inválido.' });
+    try {
+        const resultado = await pool.query(`
+            SELECT u.id_usuario, u.nome, u.email,
+              COUNT(p.id_pedido) FILTER (WHERE p.status = 'Concluído')::int AS pedidos_finalizados,
+              COALESCE(SUM(p.total) FILTER (WHERE p.status = 'Concluído'),0)::numeric AS total_gasto,
+              COALESCE(SUM(it.unidades) FILTER (WHERE p.status = 'Concluído'),0)::int AS unidades,
+              COUNT(p.id_pedido) FILTER (WHERE p.status NOT IN ('Concluído','Cancelado'))::int AS em_andamento
+            FROM usuario u
+            LEFT JOIN pedido_encomenda p ON p.id_usuario=u.id_usuario
+              AND ($1::int IS NULL OR EXTRACT(YEAR FROM p.criado_em)::int=$1)
+            LEFT JOIN LATERAL (SELECT SUM(quantidade)::int AS unidades FROM item_encomenda
+                               WHERE id_pedido=p.id_pedido) it ON TRUE
+            WHERE u.tipo_usuario IN ('cliente','ambos') OR p.id_pedido IS NOT NULL
+            GROUP BY u.id_usuario, u.nome, u.email
+            ORDER BY pedidos_finalizados DESC, total_gasto DESC, u.nome`, [ano]);
+        res.json({ sucesso: true, clientes: resultado.rows });
+    } catch (erro) {
+        console.error('Histórico de clientes:', erro);
+        res.status(500).json({ sucesso: false, mensagem: 'Erro ao consultar histórico.' });
+    }
+});
+
+router.get('/historico-clientes/:id/pedidos', async (req, res) => {
+    const pool = require('../database');
+    if (!/^[1-9]\d*$/.test(req.params.id))
+        return res.status(400).json({ sucesso: false, mensagem: 'Cliente inválido.' });
+    const ano = req.query.ano ? Number(req.query.ano) : null;
+    if (ano !== null && (!Number.isInteger(ano) || ano < 2000 || ano > 2100))
+        return res.status(400).json({ sucesso: false, mensagem: 'Ano inválido.' });
+    try {
+        const resultado = await pool.query(`
+            SELECT p.id_pedido, p.criado_em, p.status, p.total,
+                   COALESCE(SUM(i.quantidade),0)::int AS unidades
+            FROM pedido_encomenda p
+            LEFT JOIN item_encomenda i ON i.id_pedido=p.id_pedido
+            WHERE p.id_usuario=$1 AND ($2::int IS NULL OR EXTRACT(YEAR FROM p.criado_em)::int=$2)
+            GROUP BY p.id_pedido ORDER BY p.criado_em DESC, p.id_pedido DESC`, [req.params.id,ano]);
+        res.json({ sucesso: true, pedidos: resultado.rows });
+    } catch (erro) {
+        console.error('Pedidos do cliente:', erro);
+        res.status(500).json({ sucesso: false, mensagem: 'Erro ao consultar pedidos.' });
+    }
+});
+
 // ==========================================
 // CRUD DE CATEGORIAS
 // ==========================================

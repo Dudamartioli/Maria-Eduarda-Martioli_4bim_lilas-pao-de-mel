@@ -1,5 +1,5 @@
 
-const URL_API = window.location.origin; //"http://localhost:3001";
+const URL_API = "http://localhost:3001";
 
 // Procura o formulário de recuperação
 const formRecuperar = document.getElementById("formRecuperar");

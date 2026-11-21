@@ -88,33 +88,10 @@ header {
 
 nav {
     display: grid;
-    grid-template-columns: auto auto 1fr auto auto;
+    grid-template-columns: auto 1fr auto auto;
     align-items: center;
     gap: 0.9rem;
     padding: 1.2rem clamp(1rem, 4vw, 2.5rem) 0.4rem;
-}
-
-/* botão do menu (hambúrguer): bolinha em relevo */
-#btnMenu {
-    width: 50px;
-    height: 50px;
-    border: 0;
-    border-radius: 50%;
-    background: var(--base);
-    color: var(--chocolate);
-    font-size: 1.3rem;
-    line-height: 1;
-    cursor: pointer;
-    box-shadow: var(--relevo-pequeno);
-    transition: box-shadow 0.2s ease, color 0.2s ease;
-}
-
-#btnMenu:hover {
-    color: var(--doce-de-leite);
-}
-
-#btnMenu:active {
-    box-shadow: var(--afundado);
 }
 
 /* links da barra: pílulas em relevo */
@@ -505,11 +482,6 @@ footer p {
 
     nav h1 {
         grid-area: logo;
-    }
-
-    #btnMenu {
-        grid-area: menu;
-        justify-self: start;
     }
 
     nav > a:first-of-type {
@@ -1315,3 +1287,33 @@ footer p:last-child {
 .lilas-foto-area { position: relative; width: 100%; }
 .lilas-foto-area > img { display: block; width: 100%; height: 220px; object-fit: cover; }
 .lilas-foto-area > .lilas-sem-foto { min-height: 220px; }
+
+/* Centraliza a logo em relação à largura inteira do cabeçalho. */
+@media (min-width: 681px) {
+    nav h1 {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
+/* Apenas a logo centralizada; redes sociais continuam à direita. */
+@media (min-width: 681px) {
+    header nav {
+        display: flex;
+        align-items: center;
+    }
+    header nav #areaUsuario {
+        margin-right: auto;
+    }
+    header nav h1 {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        margin: 0;
+    }
+    header nav #linkInstagram,
+    header nav #linkWhatsapp {
+        flex-shrink: 0;
+    }
+}

@@ -137,3 +137,8 @@ CREATE TABLE IF NOT EXISTS agenda_bloqueio (
  motivo VARCHAR(500) NOT NULL DEFAULT '',
  criado_em TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+-- Executar uma única vez no PostgreSQL antes de iniciar o backend atualizado.
+ALTER TABLE cupom
+  ADD COLUMN IF NOT EXISTS valor_minimo_pedido NUMERIC(10,2) NOT NULL DEFAULT 0
+  CHECK (valor_minimo_pedido >= 0);

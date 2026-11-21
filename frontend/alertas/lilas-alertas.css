@@ -11,3 +11,6 @@
 .lilas-aviso-botao:focus-visible{outline:3px solid #d4a044;outline-offset:3px}
 .lilas-aviso-cancelar{background:#f2dfb5;color:#59351f}
 @media(max-width:480px){.lilas-aviso-caixa{padding:24px 18px}.lilas-aviso-botao{flex:1;min-width:100px}}
+
+.lilas-aviso-entrada:not([hidden]){display:block;box-sizing:border-box;width:100%;min-height:90px;resize:vertical;margin:-4px 0 20px;padding:12px 14px;border:2px solid #d7a642;border-radius:14px;background:#fffdf5;color:#583017;font:inherit;outline-offset:3px}
+.lilas-aviso-entrada:focus{outline:2px solid #b98531}

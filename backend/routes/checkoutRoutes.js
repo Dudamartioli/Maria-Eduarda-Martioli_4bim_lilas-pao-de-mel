@@ -25,6 +25,10 @@ router.post(
 );
 
 
+// Editar pedido pendente com as mesmas validações de preço, agenda e estoque.
+router.put('/pedidos/:id/editar', verificarAutenticacao, checkoutController.solicitar);
+
+
 // =====================================================
 // FINALIZAR ETAPA DE PAGAMENTO
 // =====================================================

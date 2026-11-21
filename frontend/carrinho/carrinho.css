@@ -1153,3 +1153,37 @@ main.pagina-carrinho {
 @media (max-width: 650px) {
     #listaItens .lilas-sem-foto-carrinho { width: 90px; min-height: 90px; }
 }
+
+/* ==========================================
+   RODAPÉ DO CARRINHO
+   ========================================== */
+
+footer {
+    width: 100%;
+    background: #5C3A2E !important;
+    color: #FFE49A !important;
+    text-align: center;
+    padding: 18px 20px;
+    box-sizing: border-box;
+}
+
+footer p,
+footer span,
+footer strong,
+footer a {
+    color: #FFE49A !important;
+}
+
+footer p {
+    margin: 0 0 8px;
+    font-size: 16px;
+    line-height: 1.4;
+}
+
+footer p:last-child {
+    margin-bottom: 0;
+}
+
+footer strong {
+    font-weight: 700;
+}

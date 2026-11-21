@@ -332,3 +332,166 @@ main > section > h2 { margin: -20px -22px 18px; padding: 14px 22px; }
         align-self: center;
     }
 }
+
+/* Cabeçalho unificado com o Gerenciamento de Pedidos */
+.cabecalho-lilas{position:relative;display:flex;align-items:center;justify-content:space-between;min-height:90px;padding:8px clamp(18px,4vw,55px);background:#FFE49A;box-shadow:none;text-align:left}
+.cabecalho-lilas .logo-lilas{display:block;position:static;padding:0;background:transparent;border:0;box-shadow:none}
+.cabecalho-lilas .logo-lilas img{display:block;width:135px;max-height:75px;object-fit:contain}
+.cabecalho-lilas .voltar-lilas{display:inline-flex;position:static;align-items:center;justify-content:center;padding:12px 24px;border:0;border-radius:999px;background:#5C3A2E;color:#FFE49A;font-weight:700;text-decoration:none;box-shadow:0 5px 0 #3F2418,0 9px 16px rgba(63,36,24,.2);transition:transform .2s,box-shadow .2s}
+.cabecalho-lilas .voltar-lilas:hover{transform:translateY(-2px);box-shadow:0 7px 0 #3F2418,0 12px 20px rgba(63,36,24,.24)}
+.apresentacao-lilas{width:calc(100% - 48px);max-width:1710px;margin:12px auto 16px;padding:13px 20px;border-radius:22px;background:linear-gradient(145deg,#754A35,#4A2D22);box-shadow:0 6px 15px rgba(63,36,24,.19);text-align:center}
+.apresentacao-lilas .subtitulo-lilas{margin:0 0 2px;color:#FFE49A;font-size:.72rem;font-weight:700;letter-spacing:.18em}
+.apresentacao-lilas h1{margin:0 0 3px;color:#FFE49A;font-size:clamp(1.45rem,2.3vw,2rem);font-weight:700}
+.apresentacao-lilas .descricao-lilas{margin:0;color:#FFF3D1;font-size:.88rem;letter-spacing:normal}
+@media(max-width:550px){.cabecalho-lilas{gap:12px;padding:12px 16px}.cabecalho-lilas .logo-lilas img{width:100px}.cabecalho-lilas .voltar-lilas{padding:10px 13px;font-size:.8rem}.apresentacao-lilas{width:calc(100% - 28px)}}
+
+/* Botão Voltar: mesmo efeito original do Gerenciamento de Usuários */
+.cabecalho .botao-voltar,
+.cabecalho-lilas .voltar-lilas {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    padding: 0.75rem 1.4rem;
+    border: none;
+    border-radius: 999px;
+    background: #5C3A2E;
+    color: #FFE49A;
+    font-family: 'Jost', sans-serif;
+    font-size: .9rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 5px 0 #3F2418, 0 9px 16px rgba(63,36,24,.22);
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+.cabecalho .botao-voltar:hover,
+.cabecalho-lilas .voltar-lilas:hover {
+    transform: translateY(-3px);
+    color: #fff;
+    box-shadow: 0 0 0 5px rgba(184,120,57,.35), 0 7px 0 #3F2418, 0 12px 22px rgba(63,36,24,.25);
+}
+.cabecalho .botao-voltar:active,
+.cabecalho-lilas .voltar-lilas:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #3F2418, 0 4px 9px rgba(63,36,24,.2);
+}
+/* BOTÃO VOLTAR À ADMINISTRAÇÃO */
+
+.voltar-admin {
+    background: #5C3A2E;
+    color: #FFE49A;
+    border: none;
+    border-radius: 50px;
+    padding: 15px 28px;
+
+    font-weight: 700;
+    text-decoration: none;
+
+    box-shadow: 0 8px 16px rgba(70, 40, 25, 0.22);
+
+    transition: transform 0.25s ease,
+                box-shadow 0.25s ease;
+}
+
+.voltar-admin:hover {
+    transform: translateY(-5px);
+
+    box-shadow: 0 13px 22px rgba(70, 40, 25, 0.28);
+}
+
+.voltar-admin:active {
+    transform: translateY(-1px);
+}
+/* Explicação das regras reais de bloqueio da agenda */
+.guia-bloqueios{width:calc(100% - 48px);max-width:1710px;margin:18px auto 38px;padding:24px;background:#5C3A2E;border-radius:25px;box-shadow:7px 7px 18px rgba(135,80,31,.18),-6px -6px 18px rgba(255,251,228,.8)}
+.guia-bloqueios h2{margin:0 0 5px;text-align:center;color:#FFE49A;font-size:1.5rem}
+.guia-bloqueios>p{text-align:center;margin:0 0 20px; color: #FFE49A;}
+.guia-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+.guia-cards article{padding:20px;background:#FFF3D1;border-radius:19px;box-shadow:inset 0 0 0 1px rgba(117,74,53,.12),4px 5px 12px rgba(93,58,46,.12)}
+.guia-cards h3,.guia-exemplo h3{color:#5C3A2E;margin:0 0 9px;font-size:1.1rem}
+.guia-cards p,.guia-exemplo p{margin:0;line-height:1.55}
+.guia-exemplo{margin-top:17px;padding:18px 20px;background:#F5D88E;border-left:5px solid #754A35;border-radius:16px}
+.guia-exemplo .guia-nota{margin-top:12px;font-size:.9rem;color:#65412F}
+@media(max-width:800px){.guia-cards{grid-template-columns:1fr}.guia-bloqueios{width:calc(100% - 28px);padding:16px}}
+
+/* Layout aprovado: calendário amplo e painel lateral estreito, com alturas iguais. */
+@media (min-width: 981px) {
+    main {
+        display: grid;
+        width: min(1580px, 100%);
+        max-width: none;
+        grid-template-columns: minmax(0, 1.75fr) minmax(0, 1fr);
+        gap: 18px;
+        align-items: stretch;
+        justify-content: stretch;
+        min-height: 0;
+        padding: 24px 28px 28px;
+    }
+    main > section,
+    main > article {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 690px;
+        min-height: 0;
+        margin: 0;
+        align-self: stretch;
+        padding: 24px 26px;
+        border-radius: 30px;
+    }
+    main > section:first-child .mes {
+        flex: 0 0 auto;
+        margin: 0 0 14px;
+    }
+    .mes h2 { font-size: clamp(1.5rem, 2.5vw, 2.1rem); }
+    .mes button { flex-basis: 54px; height: 54px; font-size: 2rem; }
+    main > section:first-child .calendario {
+        display: grid;
+        flex: 1 1 auto;
+        min-height: 0;
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+        grid-auto-rows: minmax(0, 1fr);
+        gap: 7px;
+        margin: 0;
+    }
+    .calendario .dia-semana { align-self: center; padding: 0; font-size: 1rem; }
+    .calendario button, .calendario .vazio {
+        width: 100%; height: 100%; min-height: 0;
+        border-radius: 16px; font-size: 1.4rem;
+    }
+    main > section:first-child .calendario + p {
+        flex: 0 0 auto;
+        margin: 14px 0 0;
+        padding: 12px 10px;
+        border-radius: 17px;
+        font-size: clamp(.73rem, .9vw, .92rem);
+        text-align: center;
+        line-height: 1.6;
+    }
+    main > section:nth-child(2) > h2 {
+        flex: 0 0 auto;
+        margin: -24px -26px 20px;
+        padding: 18px 26px;
+        font-size: 1.45rem;
+    }
+    main > section:nth-child(2) #form {
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
+        min-height: 0;
+    }
+    #form label { flex: 0 0 auto; margin: 0 0 22px; font-size: 1.05rem; }
+    #form select { min-height: 58px; margin-top: 10px; }
+    #form label:has(textarea) { display: flex; flex: 1 1 auto; min-height: 0; flex-direction: column; }
+    #form textarea { flex: 1 1 auto; min-height: 130px; resize: none; margin-top: 10px; }
+    #form .acoes { flex: 0 0 auto; margin-top: auto; gap: 10px; }
+    #form .acoes button { min-height: 60px; padding: 10px 8px; font-size: clamp(.8rem, 1vw, 1.04rem); }
+    #mensagem { flex: 0 0 auto; margin-top: 10px; }
+}
+@media (min-width: 981px) and (max-height: 750px) {
+    main > section, main > article { height: 620px; }
+    .mes button { flex-basis: 45px; height: 45px; }
+    main > section:nth-child(2) > h2 { margin-bottom: 14px; }
+    #form label { margin-bottom: 14px; }
+}

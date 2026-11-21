@@ -179,6 +179,34 @@ exports.solicitar = async (req, res) => {
 
         await conexao.query("BEGIN");
 
+        // Ao editar, bloquear o pedido e devolver temporariamente sua reserva
+        // dentro da mesma transação. Um erro reverte tudo automaticamente.
+        const idEdicao = Number(req.params.id || 0);
+        let pedidoAnterior = null;
+        if (idEdicao) {
+            const existente = await conexao.query(`
+                SELECT * FROM pedido_encomenda
+                WHERE id_pedido = $1 AND id_usuario = $2 FOR UPDATE
+            `, [idEdicao, req.usuario.id_usuario]);
+            pedidoAnterior = existente.rows[0];
+            if (!pedidoAnterior || pedidoAnterior.status !== 'Aguardando pagamento' ||
+                pedidoAnterior.pagamento_status !== 'Aguardando pagamento' ||
+                pedidoAnterior.pagamento_finalizado_em || pedidoAnterior.comprovante_caminho) {
+                await conexao.query('ROLLBACK');
+                return res.status(409).json({sucesso:false,mensagem:'Este pedido não pode mais ser alterado. Se já pagou, fale com a administradora.'});
+            }
+            const reservas = await conexao.query(`
+                SELECT id_produto, quantidade_reservada FROM item_encomenda
+                WHERE id_pedido = $1
+            `, [idEdicao]);
+            for (const r of reservas.rows) {
+                if (Number(r.quantidade_reservada) > 0) {
+                    await conexao.query('UPDATE produto SET estoque_pronto = estoque_pronto + $1 WHERE id_produto = $2',
+                        [r.quantidade_reservada, r.id_produto]);
+                }
+            }
+        }
+
         // Preços e estoque vêm sempre do PostgreSQL.
         const consulta = await conexao.query(`
             SELECT
@@ -323,6 +351,15 @@ exports.solicitar = async (req, res) => {
 
             const c = resultadoCupom.rows[0];
 
+            const minimoCentavos = Math.round(Number(c.valor_minimo_pedido || 0) * 100);
+            if (totalCentavos < minimoCentavos) {
+                await conexao.query("ROLLBACK");
+                return res.status(400).json({
+                    sucesso: false,
+                    mensagem: `Este cupom exige um pedido mínimo de R$ ${(minimoCentavos / 100).toFixed(2).replace('.', ',')} em produtos. Adicione mais produtos ao carrinho para utilizá-lo ou remova o cupom e continue sem desconto.`
+                });
+            }
+
             // Calcular a economia oferecida pelo cupom.
             const economia = c.tipo === "percentual"
                 ? Math.round(
@@ -414,6 +451,29 @@ exports.solicitar = async (req, res) => {
         // INSERIR PEDIDO NO BANCO
         // =================================================
 
+        let idPedido;
+        if (pedidoAnterior) {
+            idPedido = idEdicao;
+            await conexao.query(`
+                UPDATE pedido_encomenda SET
+                    modalidade=$2, cidade=$3, cep=$4, rua=$5, numero=$6,
+                    complemento=$7, bairro=$8, referencia=$9, data_desejada=$10,
+                    horario_desejado=$11, observacao=$12, subtotal=$13,
+                    frete=$14, desconto=$15, total=$16, cupom_codigo=$17
+                WHERE id_pedido=$1
+            `, [idPedido, modalidade,
+                modalidade === 'entrega' ? cidade : null,
+                modalidade === 'entrega' ? cep : null,
+                modalidade === 'entrega' ? rua : null,
+                modalidade === 'entrega' ? numero : null,
+                modalidade === 'entrega' ? complemento : null,
+                modalidade === 'entrega' ? bairro : null,
+                modalidade === 'entrega' ? referencia : null,
+                data_desejada, horario_desejado, observacao || null,
+                totalCentavos / 100, freteCentavos / 100,
+                descontoCentavos / 100, totalFinalCentavos / 100, cupomAplicado]);
+            await conexao.query('DELETE FROM item_encomenda WHERE id_pedido=$1', [idPedido]);
+        } else {
         const pedido = await conexao.query(`
             INSERT INTO pedido_encomenda
             (
@@ -466,7 +526,8 @@ exports.solicitar = async (req, res) => {
             cupomAplicado
         ]);
 
-        const idPedido = pedido.rows[0].id_pedido;
+            idPedido = pedido.rows[0].id_pedido;
+        }
 
         // =================================================
         // INSERIR ITENS E REGISTRAR RESERVA DE ESTOQUE

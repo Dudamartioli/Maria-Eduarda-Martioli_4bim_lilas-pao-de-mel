@@ -162,7 +162,7 @@ O projeto contempla autenticação com cookies, verificação de sessão, autori
 - **Disciplina:** Desenvolvimento Web 1
 - **Período:** 4º bimestre de 2026
 - **Projeto:** Aplicação web para gerenciamento de uma loja de pães de mel
-- **Desenvolvimento:** Maria Eduarda Martioli
+- **Desenvolvimento:** Maria Eduarda Brito Lucheti Martioli
 
 Este projeto representa a aplicação prática de conceitos de desenvolvimento web, banco de dados, autenticação, interfaces e levantamento de requisitos em uma solução pensada para uma necessidade real.
 

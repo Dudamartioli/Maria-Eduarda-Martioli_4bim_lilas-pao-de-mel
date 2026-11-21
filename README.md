@@ -91,6 +91,139 @@ O desenvolvimento envolveu compreender as necessidades da usuária, definir regr
 
 </details>
 
+
+<!-- ======================================== -->
+<!--        GALERIA DO PROJETO LILA'S        -->
+<!-- ======================================== -->
+
+<h2 align="center">📸 Galeria do Projeto</h2>
+
+<p align="center">
+  Conheça as principais telas da <b>Lila's – Pão de Mel</b>,
+  acompanhando a jornada do cliente e o gerenciamento da loja.
+</p>
+
+<br>
+
+<h3 align="center">🍯 Experiência do Cliente</h3>
+
+<p align="center">
+  Da escolha dos produtos à finalização do pedido.
+</p>
+
+<br>
+
+<h4 align="center">01 • Página Inicial</h4>
+<p align="center">
+  Apresentação da loja, banners e catálogo de produtos.
+</p>
+<p align="center">
+  <img src="screenshots/pagina-inicial.png" alt="Página inicial da Lila's" width="850">
+</p>
+
+<br>
+
+<h4 align="center">02 • Detalhes do Produto</h4>
+<p align="center">
+  Visualização do produto, escolha do sabor e quantidade.
+</p>
+<p align="center">
+  <img src="screenshots/produto.png" alt="Detalhes do produto" width="850">
+</p>
+
+<br>
+
+<h4 align="center">03 • Carrinho de Compras</h4>
+<p align="center">
+  Organização dos itens, quantidades e valores do pedido.
+</p>
+<p align="center">
+  <img src="screenshots/carrinho.png" alt="Carrinho de compras" width="850">
+</p>
+
+<br>
+
+<h4 align="center">04 • Login</h4>
+<p align="center">
+  Autenticação para acessar as funcionalidades da loja.
+</p>
+<p align="center">
+  <img src="screenshots/login.png" alt="Tela de login" width="850">
+</p>
+
+<br>
+
+<details>
+  <summary><b>🔐 Recuperação de Senha</b></summary>
+  <br>
+  <p align="center">
+    Recurso para recuperar o acesso à conta.
+  </p>
+  <p align="center">
+    <img src="screenshots/recuperar-senha.png" alt="Recuperação de senha" width="850">
+  </p>
+</details>
+
+<br>
+
+<h4 align="center">05 • Checkout</h4>
+<p align="center">
+  Definição da modalidade, endereço e dados do pedido.
+</p>
+<p align="center">
+  <img src="screenshots/checkout.png" alt="Checkout" width="850">
+</p>
+
+<br>
+
+<h4 align="center">06 • Pagamento</h4>
+<p align="center">
+  Finalização do pedido e orientações para pagamento via Pix.
+</p>
+<p align="center">
+  <img src="screenshots/pagamento.png" alt="Pagamento via Pix" width="850">
+</p>
+
+<br>
+
+---
+
+<h3 align="center">⚙️ Experiência Administrativa</h3>
+
+<p align="center">
+  Ferramentas para organizar, administrar e acompanhar a loja.
+</p>
+
+<br>
+
+<h4 align="center">07 • Painel Administrativo</h4>
+<p align="center">
+  Acesso centralizado aos módulos de gerenciamento.
+</p>
+<p align="center">
+  <img src="screenshots/painel-admin.png" alt="Painel administrativo" width="850">
+</p>
+
+<br>
+
+<h4 align="center">08 • Relatórios</h4>
+<p align="center">
+  Visualização de indicadores e resultados da loja.
+</p>
+<p align="center">
+  <img src="screenshots/relatorios.png" alt="Relatórios administrativos" width="850">
+</p>
+
+<br>
+
+<p align="center">
+  <i>🍯 Lila's – Pão de Mel | Do pedido à gestão, tudo em um só lugar.</i>
+</p>
+
+<!-- ======================================== -->
+<!--             FIM DA GALERIA              -->
+<!-- ======================================== -->
+
 ## 🛠️ Tecnologias e arquitetura
 
 | Camada | Tecnologias |

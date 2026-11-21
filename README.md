@@ -265,9 +265,31 @@ npm install
 
 Crie um banco PostgreSQL e execute os scripts SQL disponibilizados no repositório, seguindo a ordem indicada neles.
 
-### 4. Configurar o ambiente
+### 4. Configurar as variáveis de ambiente
 
-Configure o arquivo `.env` do backend com as variáveis exigidas pelo projeto. **Não publique credenciais reais nem o arquivo `.env` no GitHub.**
+Crie um arquivo `.env` na raiz do projeto, com os dados do seu ambiente local:
+
+```env
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=trabalho-dw1-2bimestre
+DB_USER=postgres
+DB_PASSWORD=sua_senha
+PORT=3001
+
+JWT_SECRET=coloque_uma_Senha_longa_e_secreta
+
+EMAIL_USUARIO=seu_usuario@gmail.com
+EMAIL_SENHA=senha_gerada_pelo_google
+URL_FRONTEND=http://localhost:5500
+
+# PIX REAL
+PIX_CHAVE=sua_chave
+PIX_NOME=nome_do_pix
+PIX_CIDADE=cidade_que_você_mora
+```
+
+> **Segurança:** não publique seu arquivo `.env` com senhas reais. Inclua `.env` no `.gitignore` e, se desejar, disponibilize um `.env.example` sem credenciais.
 
 ### 5. Iniciar o servidor
 

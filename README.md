@@ -58,9 +58,6 @@ O desenvolvimento envolveu compreender as necessidades da usuária, definir regr
 </tr>
 </table>
 
-> [!NOTE]
-> Algumas funcionalidades podem variar conforme a versão do projeto publicada neste repositório.
-
 ## 🧩 Regras de negócio
 
 <details>

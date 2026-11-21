@@ -91,22 +91,6 @@ O desenvolvimento envolveu compreender as necessidades da usuária, definir regr
 
 </details>
 
-## 🖼️ Galeria do projeto
-
-Adicione imagens reais das telas à pasta `docs/imagens/` e substitua os espaços abaixo:
-
-| Loja virtual | Painel administrativo |
-|:---:|:---:|
-| `docs/imagens/loja.png` | `docs/imagens/admin.png` |
-
-| Carrinho e checkout | Gerenciamento de pedidos |
-|:---:|:---:|
-| `docs/imagens/checkout.png` | `docs/imagens/pedidos.png` |
-
-<!-- Quando adicionar as capturas de tela, substitua os caminhos acima por:
-<img src="docs/imagens/loja.png" alt="Página inicial da loja" width="100%">
--->
-
 ## 🛠️ Tecnologias e arquitetura
 
 | Camada | Tecnologias |

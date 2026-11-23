@@ -272,7 +272,7 @@ Crie um arquivo `.env` na raiz do projeto, com os dados do seu ambiente local:
 ```env
 DB_HOST=localhost
 DB_PORT=5432
-DB_NAME=trabalho-dw1-2bimestre
+DB_NAME=trabalho-dw1-4bimestre
 DB_USER=postgres
 DB_PASSWORD=sua_senha
 PORT=3001

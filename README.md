@@ -214,6 +214,14 @@ O desenvolvimento envolveu compreender as necessidades da usuária, definir regr
   <img src="screenshots/relatorios.png" alt="Relatórios administrativos" width="850">
 </p>
 
+<h4 align="center">09 • Agenda</h4>
+<p align="center">
+  Organizador de dias disponíveis para entrega e retirada.
+</p>
+<p align="center">
+  <img src="screenshots/agenda.png" alt="agenda" width="850">
+</p>
+
 <br>
 
 <p align="center">

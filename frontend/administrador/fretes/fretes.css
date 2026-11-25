@@ -796,3 +796,38 @@ header > a.voltar-fretes {
 main {
     margin-top: 0;
 }
+/* Rolagem interna com cabeçalho fixo */
+.rolagem {max-height:360px; overflow:auto; scrollbar-gutter:stable; scrollbar-color:#8b654a #f6e3a4;}
+.rolagem > table {border-collapse:separate; border-spacing:0;}
+.rolagem > table > thead > tr > th {position:sticky;top:0;z-index:3;background:#5C3A2E;color:#FFE49A;}
+
+
+/* Indicadores de disponibilidade — padrão Produtos */
+.etiqueta-disponivel,
+.etiqueta-indisponivel {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 8px 16px;
+    border-radius: 999px;
+
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+
+    border: none;
+    transition: all 0.2s ease;
+}
+
+/* PRODUTO DISPONÍVEL - VERDE */
+.etiqueta-disponivel {
+    background: #D6E9B5;
+    color: #476B38;
+}
+
+/* PRODUTO INDISPONÍVEL - VERMELHO */
+.etiqueta-indisponivel {
+    background: #F4C6BC;
+    color: #963C30;
+}

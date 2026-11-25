@@ -887,3 +887,29 @@ table tbody button:active {
     color: #963C30;
 }
 
+
+/* Rolagem interna com cabeçalho fixo */
+.tabela-rolagem {max-height:360px; overflow:auto; scrollbar-gutter:stable; scrollbar-color:#8b654a #f6e3a4;}
+.tabela-rolagem > table {border-collapse:separate; border-spacing:0;}
+.tabela-rolagem > table > thead > tr > th {position:sticky;top:0;z-index:3;background:#5C3A2E;color:#FFE49A;}
+
+/* Organização em três linhas, mantendo o estilo existente. */
+.area-gerenciamento { grid-template-columns: minmax(0, 1fr); align-items: start; }
+.area-gerenciamento > .cartao:first-child,
+.area-gerenciamento > .cartao:nth-child(2),
+.area-gerenciamento > .cartao:nth-child(3) { grid-column: 1; grid-row: auto; }
+.cartao-dados { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 22px; align-items: start; }
+.cartao-dados > h2, .cartao-dados > .campo-descricao-geral,
+.cartao-dados > .botoes, .cartao-dados > #mensagem { grid-column: 1 / -1; }
+.cartao-dados > .campo { min-width: 0; margin-bottom: 12px; }
+.cartao-dados .campo textarea { min-height: 70px; }
+.cartao-dados .linha-procura input { min-width: 0; }
+.cartao-dados > #mensagem:empty { display: none; }
+.cartao-previa { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); column-gap: 22px; align-items: start; }
+.cartao-previa > h2, .cartao-previa > .dica { grid-column: 1 / -1; }
+.cartao-previa .resumo-produto, .cartao-previa .area-imagens { margin-top: 12px; min-width: 0; }
+.cartao-previa:has(.area-imagens[hidden]) .resumo-produto { grid-column: 1 / -1; }
+.tabela-rolagem > table { overflow: visible; }
+@media (max-width: 700px) {
+    .cartao-dados, .cartao-previa { grid-template-columns: minmax(0, 1fr); }
+}

@@ -129,7 +129,7 @@ function renderizarLista() {
         const titulo = document.createElement("strong");
         titulo.textContent = banner.titulo;
         const detalhe = document.createElement("small");
-        detalhe.textContent = "Código " + banner.id + " · Ordem " + banner.ordem + " · " + (banner.ativo ? "Ativo" : "Inativo");
+        detalhe.textContent = "Código " + banner.id + " · Ordem " + banner.ordem + " · "; const etiqueta = document.createElement("span"); etiqueta.className = banner.ativo ? "etiqueta-disponivel" : "etiqueta-indisponivel"; etiqueta.textContent = banner.ativo ? "Ativo" : "Inativo"; detalhe.append(etiqueta);
         botao.append(foto, titulo, detalhe);
         botao.addEventListener("click", () => selecionarBanner(banner.id));
         lista.appendChild(botao);

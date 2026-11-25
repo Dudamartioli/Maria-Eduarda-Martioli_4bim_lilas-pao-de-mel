@@ -986,3 +986,34 @@ main#conteudo {
         margin: 0 20px 20px;
     }
 }
+
+
+/* Indicadores de disponibilidade — padrão Produtos */
+.etiqueta-disponivel,
+.etiqueta-indisponivel {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 8px 16px;
+    border-radius: 999px;
+
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+
+    border: none;
+    transition: all 0.2s ease;
+}
+
+/* PRODUTO DISPONÍVEL - VERDE */
+.etiqueta-disponivel {
+    background: #D6E9B5;
+    color: #476B38;
+}
+
+/* PRODUTO INDISPONÍVEL - VERMELHO */
+.etiqueta-indisponivel {
+    background: #F4C6BC;
+    color: #963C30;
+}

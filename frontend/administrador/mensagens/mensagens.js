@@ -380,7 +380,7 @@ function montarTabela() {
         const status = document.createElement('span');
 
         status.className =
-            'status ' + (m.ativo ? 'ativa' : 'inativa');
+            m.ativo ? 'etiqueta-disponivel' : 'etiqueta-indisponivel';
 
         status.textContent =
             m.ativo ? 'Ativa' : 'Desativada';

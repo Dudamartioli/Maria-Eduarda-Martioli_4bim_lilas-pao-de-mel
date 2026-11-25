@@ -543,9 +543,10 @@ exports.solicitar = async (req, res) => {
                 Math.round(preco * 100) *
                 item.quantidade / 100;
 
-            // Somente pedidos rápidos reservam estoque pronto.
-            const quantidadeReservada = pedidoRapido
-                ? item.quantidade
+            // Reservar o estoque pronto do sabor, mesmo em encomendas.
+            const produto = mapa.get(item.id_produto);
+            const quantidadeReservada = String(produto.nome_categoria).toLowerCase().includes("normal")
+                ? Math.min(item.quantidade, Number(produto.estoque_pronto))
                 : 0;
 
             await conexao.query(`
@@ -567,27 +568,8 @@ exports.solicitar = async (req, res) => {
                 subtotalItem,
                 quantidadeReservada
             ]);
-        }
-
-        // =================================================
-        // DESCONTAR ESTOQUE DOS PEDIDOS RÁPIDOS
-        // =================================================
-
-        // O estoque foi bloqueado com FOR UPDATE.
-        // Assim, dois clientes não reservam as mesmas unidades.
-
-        if (pedidoRapido) {
-
-            for (const item of itens) {
-
-                await conexao.query(`
-                    UPDATE produto
-                    SET estoque_pronto = estoque_pronto - $1
-                    WHERE id_produto = $2
-                `, [
-                    item.quantidade,
-                    item.id_produto
-                ]);
+            if (quantidadeReservada > 0) {
+                await conexao.query(`UPDATE produto SET estoque_pronto = estoque_pronto - $1 WHERE id_produto = $2`, [quantidadeReservada, item.id_produto]);
             }
         }
 

@@ -398,13 +398,11 @@ card.append(areaProdutos);
 
         atualizar.onclick = async () => {
 
-            if (!await LilaAvisos.confirmar(`Alterar o pedido para ${proximoStatus}?`)) {
-                return;
-            }
+            atualizar.disabled = true;
 
             try {
 
-                const dados = await requisicao(
+                await requisicao(
                     `/pagamentos-admin/pedidos/${pedido.id_pedido}/status`,
                     {
                         method: "PATCH",
@@ -414,11 +412,12 @@ card.append(areaProdutos);
                     }
                 );
 
-                await LilaAvisos.alerta(dados.mensagem);
-                procurar(pedido.id_pedido);
+                await procurar(pedido.id_pedido);
 
             } catch (erro) {
                 await LilaAvisos.alerta(erro.message);
+            } finally {
+                atualizar.disabled = false;
             }
         };
 

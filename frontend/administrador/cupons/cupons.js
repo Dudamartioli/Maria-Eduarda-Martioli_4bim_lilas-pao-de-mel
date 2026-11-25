@@ -21,7 +21,7 @@ async function carregar() {
     lista.replaceChildren();
     for (const c of dados.cupons || []) {
       const a = document.createElement('article');
-      a.append(document.createTextNode(`${c.codigo} — ${c.tipo} ${c.valor} | Mínimo: R$ ${Number(c.valor_minimo_pedido || 0).toFixed(2).replace('.', ',')} | Usos: ${c.usos} | ${c.ativo ? 'Ativo' : 'Inativo'} `));
+      a.append(document.createTextNode(`${c.codigo} — ${c.tipo} ${c.valor} | Mínimo: R$ ${Number(c.valor_minimo_pedido || 0).toFixed(2).replace('.', ',')} | Usos: ${c.usos} | `)); const etiqueta = document.createElement('span'); etiqueta.className = c.ativo ? 'etiqueta-disponivel' : 'etiqueta-indisponivel'; etiqueta.textContent = c.ativo ? 'Ativo' : 'Inativo'; a.append(etiqueta);
       const e = document.createElement('button');
       e.textContent = 'Editar';
       e.onclick = () => {

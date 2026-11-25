@@ -68,14 +68,17 @@ async function salvarPedidoManual(req,res,edicao) {
       if (atual.rows[0].status !== 'Aguardando pagamento' ||
           !['Pendente', 'Aguardando pagamento'].includes(atual.rows[0].pagamento_status) || atual.rows[0].comprovante_caminho || atual.rows[0].pix_copia_cola)
         throw new Error('Este pedido já possui pagamento, Pix gerado ou andamento iniciado. Não é seguro editar seus valores.');
-      const reservas=await c.query('SELECT COALESCE(SUM(quantidade_reservada),0)::int AS total FROM item_encomenda WHERE id_pedido=$1',[id]);
-      if(reservas.rows[0].total>0) throw new Error('Pedido com estoque reservado não pode ser editado por este formulário.');
+      const reservas=await c.query('SELECT id_produto, quantidade_reservada FROM item_encomenda WHERE id_pedido=$1 ORDER BY id_produto',[id]);
+      for (const r of reservas.rows) {
+        if (Number(r.quantidade_reservada)>0) await c.query('UPDATE produto SET estoque_pronto=estoque_pronto+$1 WHERE id_produto=$2',[r.quantidade_reservada,r.id_produto]);
+      }
     }
     const ids=[...new Set(itens.map(i=>Number(i.id_produto)))];
 const produtos = await c.query(
     `SELECT id_produto, preco, disponivel
      FROM produto
      WHERE id_produto = ANY($1::int[])
+     ORDER BY id_produto
      FOR UPDATE`,
     [ids]
 );
@@ -185,7 +188,13 @@ if (indisponiveis.length > 0) {
       const novo=await c.query(`INSERT INTO pedido_encomenda (id_usuario,modalidade,cidade,cep,rua,numero,complemento,bairro,referencia,data_desejada,horario_desejado,observacao,subtotal,frete,total,status,pagamento_status) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,'Aguardando pagamento','Pendente') RETURNING id_pedido`,campos);
       pedidoId=novo.rows[0].id_pedido;
     }
-    for(const x of linhas) await c.query('INSERT INTO item_encomenda (id_pedido,id_produto,quantidade,preco_unitario,subtotal) VALUES ($1,$2,$3,$4,$5)',[pedidoId,x.produto,x.quantidade,x.preco,x.subtotal]);
+    for(const x of linhas) {
+      const produto = detalhesMapa.get(x.produto);
+      const reserva = String(produto.nome_categoria).toLowerCase().includes('normal')
+        ? Math.min(x.quantidade, Number(produto.estoque_pronto)) : 0;
+      await c.query('INSERT INTO item_encomenda (id_pedido,id_produto,quantidade,preco_unitario,subtotal,quantidade_reservada) VALUES ($1,$2,$3,$4,$5,$6)',[pedidoId,x.produto,x.quantidade,x.preco,x.subtotal,reserva]);
+      if (reserva > 0) await c.query('UPDATE produto SET estoque_pronto=estoque_pronto-$1 WHERE id_produto=$2',[reserva,x.produto]);
+    }
     await c.query('COMMIT');
     res.status(edicao?200:201).json({sucesso:true,id_pedido:pedidoId,mensagem:edicao?'Pedido alterado com sucesso.':'Pedido cadastrado com sucesso.'});
   } catch(e) {await c.query('ROLLBACK');if(e.message.startsWith('Erro'))return falha(res,e);console.error('Cadastro manual:',e);res.status(400).json({sucesso:false,mensagem:e.message||'Não foi possível salvar.'});}

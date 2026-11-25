@@ -48,3 +48,8 @@ tbody tr:hover{background:#f8d98b}
 tbody tr:last-child td{border-bottom:0}
 #avisoAcesso{text-align:center;color:var(--chocolate);font-weight:600;padding:20px}
 @media(max-width:650px){.cabecalho{min-height:75px;padding:12px 15px}.logo img{width:120px;max-width:40vw}.botao-voltar{padding:10px 12px;font-size:.78rem;text-align:center}#conteudo{padding:15px 15px 35px}.painel{padding:20px 16px;border-radius:22px}.painel::before{margin:-20px -16px 20px;padding:18px 16px}.titulo-lista{margin:-20px -16px 0;padding:18px 16px}.campos{grid-template-columns:1fr;gap:18px}.linha-busca{gap:8px}.linha-busca button{padding:10px 13px}.titulo-lista h2{font-size:1.1rem}th,td{padding:12px 10px}.acoes{gap:8px}}
+
+/* Rolagem interna com cabeçalho fixo */
+.tabela-rolagem {max-height:360px; overflow:auto; scrollbar-gutter:stable; scrollbar-color:#8b654a #f6e3a4;}
+.tabela-rolagem > table {border-collapse:separate; border-spacing:0;}
+.tabela-rolagem > table > thead > tr > th {position:sticky;top:0;z-index:3;background:#5C3A2E;color:#FFE49A;}

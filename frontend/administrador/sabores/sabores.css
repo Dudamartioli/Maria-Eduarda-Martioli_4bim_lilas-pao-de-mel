@@ -165,3 +165,9 @@ main#conteudo{padding-top:12px;padding-bottom:48px}
 .tabela-rolagem tbody tr:hover{background:#f8d98b}
 [hidden]{display:none!important}
 @media(max-width:700px){.area-gerenciamento>.cartao{padding:0 16px 20px}.area-gerenciamento>.cartao>h2{margin:0 -16px 20px;padding:17px 16px}.area-gerenciamento>.cartao>.cabecalho-listagem{margin:0 -16px 18px;padding:17px 16px}}
+
+/* Rolagem interna com cabeçalho fixo */
+/*.tabela-rolagem {max-height:360px; overflow:auto; scrollbar-gutter:stable; scrollbar-color:#8b654a #f6e3a4;}
+.tabela-rolagem > table {border-collapse:separate; border-spacing:0;}
+.tabela-rolagem > table > thead > tr > th {position:sticky;top:0;z-index:3;background:#5C3A2E;color:#FFE49A;}
+*/

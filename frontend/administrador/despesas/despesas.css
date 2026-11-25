@@ -154,3 +154,8 @@ button:focus-visible,.botao-voltar:focus-visible { outline:3px solid var(--mel);
 }
 /* Campos adicionais e indicadores financeiros */
 .campos{grid-template-columns:repeat(4,minmax(0,1fr))}.indicadores{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:24px}.indicadores>div{padding:18px;border-radius:18px;background:linear-gradient(145deg,#754A35,#4A2D22);color:#FFF1CF;font-weight:600}.indicadores strong{display:block;margin-top:9px;font-size:1.35rem;color:#FFE49A}.tabela table{min-width:1300px}.tabela th,.tabela td{padding:12px 13px}@media(max-width:900px){.campos,.indicadores{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:540px){.campos,.indicadores{grid-template-columns:1fr}}
+
+/* Rolagem interna com cabeçalho fixo */
+.tabela {max-height:360px; overflow:auto; scrollbar-gutter:stable; scrollbar-color:#8b654a #f6e3a4;}
+.tabela > table {border-collapse:separate; border-spacing:0;}
+.tabela > table > thead > tr > th {position:sticky;top:0;z-index:3;background:#5C3A2E;color:#FFE49A;}

@@ -91,57 +91,54 @@ const URL_IMAGENS = "http://localhost:3001";
 // Guarda as imagens já consultadas para não repetir requisições.
 const cacheFotos = new Map();
 
-async function obterPrimeiraFoto(produto) {
-    const id = Number(produto.id_produto);
-
-    if (cacheFotos.has(id)) {
-        return cacheFotos.get(id);
-    }
-
-    // Sem foto cadastrada, não usamos imagens antigas como alternativa.
-    let caminho = "";
-
+async function obterFotosDoId(id) {
+    if (cacheFotos.has(id)) return cacheFotos.get(id);
     try {
-        const resposta = await fetch(
-            URL_IMAGENS + "/produto/" + id + "/imagens"
-        );
-
-        if (resposta.ok) {
-            const dados = await resposta.json();
-
-            if (dados.sucesso && Array.isArray(dados.imagens) && dados.imagens.length) {
-                // O backend ordena os nomes das fotos: foto1 vem primeiro.
-                const primeira = dados.imagens[0];
-                caminho = new URL(primeira, URL_IMAGENS).href;
-            }
-        }
+        const resposta = await fetch(URL_IMAGENS + "/produto/" + id + "/imagens", { cache: "no-store" });
+        if (!resposta.ok) return [];
+        const dados = await resposta.json();
+        const fotos = dados.sucesso && Array.isArray(dados.imagens)
+            ? dados.imagens.map(caminho => new URL(caminho, URL_IMAGENS).href)
+            : [];
+        if (fotos.length) cacheFotos.set(id, fotos);
+        return fotos;
     } catch (erro) {
-        console.warn("Não foi possível consultar a foto do produto:", id, erro);
+        console.warn("Não foi possível consultar as fotos:", id, erro);
+        return [];
     }
+}
 
-    cacheFotos.set(id, caminho);
-    return caminho;
+async function obterFotosDoProduto(produto) {
+    const id = Number(produto.id_produto);
+    const semelhantes = produtos.filter(p => Number(p.id_produto) !== id &&
+        p.nome_produto === produto.nome_produto);
+    const grupos = await Promise.all([produto, ...semelhantes].map(p => obterFotosDoId(Number(p.id_produto))));
+    return [...new Set(grupos.flat())];
 }
 
 // Preenche a imagem sem impedir o funcionamento do carrinho.
 async function carregarFotoDoItem(imagem, produto, aviso) {
     if (!produto) return;
-    const caminho = await obterPrimeiraFoto(produto);
+    const fotos = await obterFotosDoProduto(produto);
     if (!imagem.isConnected) return;
-    if (!caminho) {
-        imagem.hidden = true;
-        aviso.hidden = false;
-        return;
-    }
+    let indice = 0;
     imagem.onload = function() {
         imagem.hidden = false;
         aviso.hidden = true;
     };
-    imagem.onerror = function() {
-        imagem.hidden = true;
-        aviso.hidden = false;
-    };
-    imagem.src = caminho;
+    function tentarFoto() {
+        if (!imagem.isConnected) return;
+        if (indice < fotos.length) {
+            imagem.hidden = false;
+            aviso.hidden = true;
+            imagem.src = fotos[indice++];
+        } else {
+            imagem.hidden = true;
+            aviso.hidden = false;
+        }
+    }
+    imagem.onerror = tentarFoto;
+    tentarFoto();
 }
 
 // =============================================
@@ -332,7 +329,7 @@ function renderizar() {
         const imagem = document.createElement("img");
         imagem.className = "imagem-item";
         imagem.alt = "Foto de " + nome.textContent;
-        imagem.loading = "lazy";
+        imagem.loading = "eager";
         imagem.hidden = true;
 
 
@@ -344,10 +341,10 @@ function renderizar() {
 
         // Insere antes de consultar, para manter o aviso no lugar correto.
         linha.prepend(imagem, avisoFoto);
-        carregarFotoDoItem(imagem, produto, avisoFoto);
         linha.append(descricao, controles, subtotal);
 
         lista.append(linha);
+        carregarFotoDoItem(imagem, produto, avisoFoto);
     });
 
     // Atualiza o total.

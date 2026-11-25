@@ -266,11 +266,12 @@
                     </label>
 
                     <label class="campo">
-                        Horário desejado
+                        Horário previsto de retirada ou entrega *
 
                         <input id="horario"
-                               type="time"
+                               type="time" min="08:00" max="20:00" step="60"
                                required>
+                        <small>* Informe o horário em que precisa estar com o pedido em mãos (das 08h às 20h). Se for para um evento, considere o horário de início. Esse horário é uma referência, não um horário exato de entrega ou retirada. Buscaremos disponibilizar seu pedido antes, mediante combinação.</small>
                     </label>
 
                     <label class="campo campo-largo">

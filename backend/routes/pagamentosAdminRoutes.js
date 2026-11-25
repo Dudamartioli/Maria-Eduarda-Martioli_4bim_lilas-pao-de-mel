@@ -44,6 +44,7 @@ async function salvarPedidoManual(req,res,edicao) {
   const itens=d.itens;
   const data=String(d.data_desejada||'');
   const horario=String(d.horario_desejado||'');
+  if (!/^(?:(?:0[89]|1[0-9]):[0-5]\d|20:00)$/.test(horario)) return res.status(400).json({sucesso:false,mensagem:'Escolha um horário entre 08:00 e 20:00.'});
   const modalidade=d.modalidade;
   const texto=(v,max)=>String(v??'').trim().slice(0,max)||null;
   if ((edicao&&(!Number.isSafeInteger(id)||id<1)) || !Number.isSafeInteger(usuario)||usuario<1 ||
@@ -324,6 +325,7 @@ router.get("/pedidos/:id", async (req, res) => {
             sucesso: true,
             pedido: {
                 ...resultado.rows[0],
+                chave_pix_loja: String(process.env.PIX_CHAVE || "").trim(),
                 itens: itens.rows
             }
         });

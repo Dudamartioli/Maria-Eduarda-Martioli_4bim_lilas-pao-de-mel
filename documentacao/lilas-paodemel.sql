@@ -32,7 +32,7 @@ CREATE TABLE usuario (
     id_usuario SERIAL PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
-    senha_hash VARCHAR(255) NOT NULL,
+    senha_hash VARCHAR(255),
     telefone VARCHAR(20),
     tipo_usuario VARCHAR(20) NOT NULL
         CHECK (tipo_usuario IN ('admin', 'cliente')),

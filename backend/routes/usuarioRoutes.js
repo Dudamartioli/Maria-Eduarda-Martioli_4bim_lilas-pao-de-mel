@@ -17,6 +17,8 @@ router.post("/login", usuarioController.login);
 // Rota para verificar o usuário logado
 router.get("/verificar", verificarAutenticacao, usuarioController.verificar);
 
+router.post("/alterar-senha", verificarAutenticacao, usuarioController.alterarSenha);
+
 // Rota para sair da conta
 router.post("/logout", usuarioController.logout);
 

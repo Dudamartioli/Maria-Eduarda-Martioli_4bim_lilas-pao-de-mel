@@ -48,7 +48,7 @@ async function carregar() {
       const excluir = document.createElement('button');
       excluir.textContent = 'Excluir cupom';
       excluir.onclick = async () => {
-        if (!await LilaAvisos.confirmar(`Excluir DEFINITIVAMENTE o cupom ${c.codigo}? Esta ação não pode ser desfeita.`)) return;
+        
         try {
           const d = await requisitar(API + '/cupons/' + c.id_cupom + '/definitivo', {method:'DELETE'});
           if (d) { msg.textContent = d.mensagem; await carregar(); }

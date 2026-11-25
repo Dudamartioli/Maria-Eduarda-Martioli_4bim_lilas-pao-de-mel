@@ -271,11 +271,7 @@ function editarMensagem(m) {
    ========================================== */
 
 async function excluirMensagem(m) {
-    const confirmou = await LilaAvisos.confirmar(
-        'Excluir esta mensagem promocional?'
-    );
 
-    if (!confirmou) return;
 
     try {
         const resultado = await req('/' + m.id_mensagem, {

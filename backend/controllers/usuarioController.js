@@ -121,11 +121,11 @@ const login = async (req, res) => {
         // Verifica os campos
         if (typeof email !== "string" ||
             typeof senha !== "string" ||
-            !email || !senha) {
+            !email.trim()) {
 
             return res.status(400).json({
                 sucesso: false,
-                mensagem: "Informe o e-mail e a senha."
+                mensagem: "Informe o e-mail."
             });
         }
 
@@ -146,6 +146,10 @@ const login = async (req, res) => {
 
         // Guarda o usuário encontrado
         const usuario = resultado.rows[0];
+
+        if (usuario.senha_hash === null) {
+            return res.status(403).json({ sucesso: false, senhaNaoDefinida: true, mensagem: "Sua conta ainda não possui senha." });
+        }
 
         // Compara a senha com o hash
         const senhaCorreta = await bcrypt.compare(
@@ -275,9 +279,35 @@ const logout = (req, res) => {
 };
 
 
+
+// Alteração de senha autenticada: exige a senha atual.
+const alterarSenha = async (req, res) => {
+    try {
+        const { senhaAtual, novaSenha } = req.body || {};
+        if (typeof senhaAtual !== "string" || typeof novaSenha !== "string" || !senhaAtual || novaSenha.length < 6 || novaSenha.length > 72) {
+            return res.status(400).json({ sucesso: false, mensagem: "Informe a senha atual e uma nova senha de 6 a 72 caracteres." });
+        }
+        const resultado = await pool.query("SELECT senha_hash FROM usuario WHERE id_usuario = $1", [req.usuario.id_usuario]);
+        if (!resultado.rows.length) return res.status(401).json({ sucesso: false, mensagem: "Conta não encontrada." });
+        if (!(await bcrypt.compare(senhaAtual, resultado.rows[0].senha_hash))) {
+            return res.status(400).json({ sucesso: false, mensagem: "A senha atual está incorreta." });
+        }
+        if (await bcrypt.compare(novaSenha, resultado.rows[0].senha_hash)) {
+            return res.status(400).json({ sucesso: false, mensagem: "A nova senha precisa ser diferente da atual." });
+        }
+        const hash = await bcrypt.hash(novaSenha, 10);
+        await pool.query("UPDATE usuario SET senha_hash = $1 WHERE id_usuario = $2", [hash, req.usuario.id_usuario]);
+        return res.json({ sucesso: true, mensagem: "Senha alterada com sucesso!" });
+    } catch (erro) {
+        console.error("Erro ao alterar senha:", erro);
+        return res.status(500).json({ sucesso: false, mensagem: "Não foi possível alterar a senha." });
+    }
+};
+
 module.exports = {
     cadastrar,
     login,
     verificar,
-    logout
+    logout,
+    alterarSenha
 };

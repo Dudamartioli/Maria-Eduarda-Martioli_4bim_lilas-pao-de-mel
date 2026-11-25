@@ -6,8 +6,6 @@ const nome = document.getElementById('nome');
 const email = document.getElementById('email');
 const telefone = document.getElementById('telefone');
 const tipo = document.getElementById('tipo_usuario');
-const senha = document.getElementById('senha');
-const areaSenha = document.getElementById('areaSenha');
 const mensagem = document.getElementById('mensagem');
 const acoesIniciais = document.getElementById('acoesIniciais');
 const acoesEdicao = document.getElementById('acoesEdicao');
@@ -23,10 +21,10 @@ async function requisicao(caminho, opcoes = {}) {
     if (!resposta.ok || !dados.sucesso) throw new Error(dados.mensagem || 'Não foi possível completar a operação.');
     return dados;
 }
-function informar(texto) { mensagem.textContent = texto; if (texto) LilaAvisos.alerta(texto); }
+function informar(texto) { mensagem.textContent = texto;  }
 function limpar() {
     id.value = ''; nome.value = ''; email.value = ''; telefone.value = '';
-    tipo.value = 'cliente'; senha.value = ''; usuarioCarregado = null;
+    tipo.value = 'cliente'; usuarioCarregado = null;
 }
 // Controla campos e botões de acordo com a operação.
 function definirModo(novoModo) {
@@ -37,8 +35,6 @@ function definirModo(novoModo) {
     document.getElementById('btnBuscar').disabled = editando;
     acoesIniciais.hidden = editando;
     acoesEdicao.hidden = !editando;
-    areaSenha.hidden = modo !== 'inserir';
-    senha.disabled = modo !== 'inserir';
     btnExcluir.disabled = modo !== 'alterar';
 }
 function preencher(usuario) {
@@ -97,9 +93,7 @@ function alterar() {
 function cancelar() { limpar(); definirModo('consulta'); informar('Operação cancelada.'); }
 async function salvar() {
     if (!nome.value.trim() || !email.value.trim()) return informar('Preencha nome e e-mail.');
-    if (modo === 'inserir' && senha.value.length < 6) return informar('A senha inicial precisa ter pelo menos 6 caracteres.');
     const corpo = { nome: nome.value.trim(), email: email.value.trim(), telefone: telefone.value.trim(), tipo_usuario: tipo.value };
-    if (modo === 'inserir') corpo.senha = senha.value;
     const caminho = modo === 'inserir' ? '/admin/usuario' : '/admin/usuario/' + id.value;
     const metodo = modo === 'inserir' ? 'POST' : 'PUT';
     if (modo === 'consulta') return;
@@ -111,7 +105,7 @@ async function salvar() {
 }
 async function excluir() {
     if (modo !== 'alterar' || !usuarioCarregado) return;
-    if (!await LilaAvisos.confirmar('Tem certeza que deseja excluir o usuário ' + usuarioCarregado.nome + '?')) return;
+    
     try {
         const dados = await requisicao('/admin/usuario/' + id.value, {method:'DELETE'});
         limpar(); definirModo('consulta'); informar(dados.mensagem || 'Usuário excluído.');

@@ -66,3 +66,15 @@
     .indicadores > .indicador { grid-column: span 2; }
     .indicadores > .indicador-principal { grid-column: span 3; }
 }
+
+/* Ranking horizontal: nomes completos, sabores e quantidades. */
+#graficoProdutos{min-height:0;overflow:visible}
+.ranking-produtos{display:grid;gap:0}
+.ranking-linha{display:grid;grid-template-columns:minmax(0, 1fr) minmax(0, 2fr) minmax(95px,auto);gap:18px;align-items:center;padding:16px 0;border-bottom:1px solid rgba(92,58,46,.16)}
+.ranking-linha:last-child{border-bottom:0}
+.ranking-nome{display:flex;flex-direction:column;gap:3px;overflow-wrap:anywhere;color:var(--marrom)}
+.ranking-nome span{font-size:.88rem;color:#79553c}
+.ranking-trilho{height:26px;background:rgba(92,58,46,.09);border-radius:7px;overflow:hidden}
+.ranking-barra{height:100%;background:linear-gradient(145deg,#754A35,#4A2D22);border-radius:7px}
+.ranking-valor{color:var(--marrom);text-align:right;font-variant-numeric:tabular-nums}
+@media(max-width:650px){.ranking-linha{grid-template-columns:minmax(0,1fr) auto;gap:8px 12px}.ranking-nome{grid-column:1/-1}.ranking-trilho{height:20px}}

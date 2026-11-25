@@ -1,6 +1,5 @@
 // CRUD administrativo de usuários - Lila's Pão de Mel
 const pool = require('../database');
-const bcrypt = require('bcryptjs');
 
 // Campos públicos: nunca retornar senha_hash.
 const campos = 'id_usuario, nome, email, telefone, tipo_usuario, data_cadastro';
@@ -34,19 +33,18 @@ const procurar = async (req, res) => {
 
 // POST /admin/usuario - somente administradores podem escolher o tipo.
 const inserir = async (req, res) => {
-    const { nome, email, telefone, senha, tipo_usuario } = req.body || {};
+    const { nome, email, telefone, tipo_usuario } = req.body || {};
     if (typeof nome !== 'string' || !nome.trim() || nome.trim().length > 100 ||
         typeof email !== 'string' || !emailValido(email.trim()) || email.trim().length > 100 ||
-        typeof senha !== 'string' || senha.length < 6 || !tipos.includes(tipo_usuario) ||
+        !tipos.includes(tipo_usuario) ||
         (telefone != null && (typeof telefone !== 'string' || telefone.length > 20))) {
-        return res.status(400).json({ sucesso: false, mensagem: 'Confira nome, e-mail, senha (mínimo 6 caracteres), telefone e tipo.' });
+        return res.status(400).json({ sucesso: false, mensagem: 'Confira nome, e-mail, telefone e tipo.' });
     }
     try {
-        const hash = await bcrypt.hash(senha, 10);
         const resultado = await pool.query(
             `INSERT INTO usuario (nome, email, telefone, senha_hash, tipo_usuario)
              VALUES ($1, $2, $3, $4, $5) RETURNING ${campos}`,
-            [nome.trim(), email.trim().toLowerCase(), telefone?.trim() || null, hash, tipo_usuario]
+            [nome.trim(), email.trim().toLowerCase(), telefone?.trim() || null, null, tipo_usuario]
         );
         res.status(201).json({ sucesso: true, mensagem: 'Usuário cadastrado.', usuario: resultado.rows[0] });
     } catch (erro) { erroServidor(res, erro); }

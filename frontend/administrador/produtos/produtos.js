@@ -138,7 +138,7 @@ let salvando = false;
 function mostrarAviso(texto) {
 
     mensagem.textContent = texto;
-    if (texto) LilaAvisos.alerta(texto);
+    
 }
 
 // ==========================================
@@ -405,12 +405,23 @@ async function listar() {
 
                 celula.textContent = valor;
 
-                if (indice === 6) {
+                
+            if (indice === 6) {
 
-                    celula.className = produto.disponivel
-                        ? "status-disponivel"
-                        : "status-indisponivel";
-                }
+                const etiqueta = document.createElement("span");
+
+                etiqueta.className = produto.disponivel
+                    ? "etiqueta-disponivel"
+                    : "etiqueta-indisponivel";
+
+                etiqueta.textContent = produto.disponivel
+                    ? "Disponível"
+                    : "Indisponível";
+
+                celula.textContent = "";
+                celula.appendChild(etiqueta);
+            }
+
 
                 linha.appendChild(celula);
             });
@@ -544,13 +555,7 @@ async function excluir() {
         return;
     }
 
-    const confirmou = await LilaAvisos.confirmar(
-        "Deseja realmente excluir este produto?"
-    );
 
-    if (!confirmou) {
-        return;
-    }
 
     oQueEstaFazendo = "excluir";
 

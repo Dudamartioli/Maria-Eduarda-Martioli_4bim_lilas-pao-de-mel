@@ -135,6 +135,37 @@ if (formLogin) {
             // Recebe a resposta
             const dados = await resposta.json();
 
+            if (dados.senhaNaoDefinida) {
+                document.getElementById("senha").value = "";
+                formLogin.hidden = true;
+                formLogin.style.display = "none";
+                mensagem.textContent = "";
+                const painel = document.getElementById("definirSenha");
+                painel.hidden = false;
+                const botao = document.getElementById("enviarLinkSenha");
+                botao.disabled = false;
+                document.getElementById("voltarLogin").onclick = () => {
+                    painel.hidden = true;
+                    formLogin.hidden = false;
+                    formLogin.style.display = "";
+                    mensagem.textContent = "";
+                };
+                botao.onclick = async () => {
+                    botao.disabled = true;
+                    mensagem.textContent = "Enviando link...";
+                    try {
+                        const r = await fetch(URL_API + "/recuperacao/solicitar", {
+                            method: "POST", headers: {"Content-Type": "application/json"},
+                            body: JSON.stringify({email, primeiroAcesso: true})
+                        });
+                        const d = await r.json();
+                        mensagem.textContent = d.mensagem;
+                    } catch (erro) {
+                        mensagem.textContent = "Não foi possível conectar ao servidor.";
+                    } finally { botao.disabled = false; }
+                };
+                return;
+            }
             // Verifica se o login foi autorizado
             if (resposta.ok && dados.sucesso) {
 

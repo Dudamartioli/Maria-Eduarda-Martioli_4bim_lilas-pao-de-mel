@@ -100,8 +100,16 @@ function configurarBotoes() {
     // Configura a alteração de senha
     btnAlterarSenha.onclick = function() {
 
-        LilaAvisos.alerta("Em breve você poderá alterar sua senha por aqui!");
+        document.getElementById("formSenha").reset();
+        document.getElementById("erroSenha").textContent = "";
+        document.getElementById("modalSenha").hidden = false;
+        document.getElementById("senhaAtual").focus();
     };
+
+    document.getElementById("cancelarSenha").onclick = () => {
+        document.getElementById("modalSenha").hidden = true;
+    };
+    document.getElementById("formSenha").addEventListener("submit", salvarNovaSenha);
 
     // Configura o histórico de pedidos
     btnPedidos.onclick = function() {
@@ -192,5 +200,35 @@ async function logout() {
 
         // Informa o problema
         LilaAvisos.alerta("Não foi possível sair da conta.");
+    }
+}
+
+async function salvarNovaSenha(evento) {
+    evento.preventDefault();
+    const senhaAtual = document.getElementById("senhaAtual").value;
+    const novaSenha = document.getElementById("novaSenha").value;
+    const confirmacao = document.getElementById("confirmarSenha").value;
+    const erro = document.getElementById("erroSenha");
+    const botao = document.getElementById("salvarSenha");
+    erro.textContent = "";
+    if (novaSenha !== confirmacao) {
+        erro.textContent = "As novas senhas não coincidem.";
+        return;
+    }
+    botao.disabled = true;
+    try {
+        const resposta = await fetch(URL_API + "/usuario/alterar-senha", {
+            method: "POST", credentials: "include",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ senhaAtual, novaSenha })
+        });
+        const dados = await resposta.json();
+        if (!resposta.ok || !dados.sucesso) throw new Error(dados.mensagem || "Erro ao alterar senha.");
+        document.getElementById("modalSenha").hidden = true;
+        document.getElementById("formSenha").reset();
+    } catch (e) {
+        erro.textContent = e.message || "Não foi possível alterar a senha.";
+    } finally {
+        botao.disabled = false;
     }
 }

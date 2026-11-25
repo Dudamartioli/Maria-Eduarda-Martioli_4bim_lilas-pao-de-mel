@@ -19,13 +19,31 @@ function graficoBarras(id, dados, series, formatar=moeda) {
  alvo.appendChild(svg);
  const legenda=document.createElement('div');legenda.className='legenda';series.forEach(s=>{const item=document.createElement('span');const ponto=document.createElement('i');ponto.style.background=s.cor;item.append(ponto,document.createTextNode(s.nome));legenda.appendChild(item);});alvo.appendChild(legenda);
 }
+function graficoProdutos(dados) {
+ const alvo=$('graficoProdutos'); alvo.replaceChildren();
+ const itens=dados.map(p=>({...p,quantidade:Number(p.quantidade)||0})).filter(p=>p.quantidade>0).sort((a,b)=>b.quantidade-a.quantidade);
+ if(!itens.length){alvo.textContent='Nenhum dado neste período.';return;}
+ const max=itens[0].quantidade;
+ const lista=document.createElement('div'); lista.className='ranking-produtos';
+ for(const p of itens){
+  const linha=document.createElement('div');linha.className='ranking-linha';
+  const nome=document.createElement('div');nome.className='ranking-nome';
+  const produto=document.createElement('strong');produto.textContent=p.produto||'Produto';
+  const sabor=document.createElement('span');sabor.textContent='Sabor: '+(p.sabor||'Não informado');nome.append(produto,sabor);
+  const trilho=document.createElement('div');trilho.className='ranking-trilho';
+  const barra=document.createElement('div');barra.className='ranking-barra';barra.style.width=(100*p.quantidade/max)+'%';trilho.append(barra);
+  const valor=document.createElement('strong');valor.className='ranking-valor';valor.textContent=p.quantidade.toLocaleString('pt-BR')+(p.quantidade===1?' unidade':' unidades');
+  linha.append(nome,trilho,valor);lista.append(linha);
+ }
+ alvo.append(lista);
+}
 async function carregar(){ $('aviso').textContent='Carregando dados reais do PostgreSQL…';const params=new URLSearchParams({ano:$('ano').value});if($('tipo').value==='mensal')params.set('mes',$('mes').value);
  try{const resp=await fetch('/financeiro/resumo?'+params,{credentials:'include'});const d=await resp.json();if(!resp.ok)throw Error(d.mensagem||'Falha ao consultar.');
  for(const campo of ['receitas','despesas','reembolsos','resultado'])$(campo).textContent=moeda(d[campo]);$('vendas').textContent=d.vendas;$('unidades').textContent=d.unidades;$('pedidosCancelados').textContent=d.pedidosCancelados;$('unidadesCanceladas').textContent=d.unidadesCanceladas;
  const serie=[{campo:'receitas',nome:'Receitas',cor:'#bc782d'},{campo:'despesas',nome:'Despesas',cor:'#9a5545'},{campo:'resultado',nome:'Resultado',cor:'#5c3a2e'}];
  graficoBarras('graficoPrincipal',d.meses.map(m=>({...m,rotulo:meses[m.mes-1].slice(0,3)})),serie);
  graficoBarras('graficoCategorias',d.categorias.map(c=>({rotulo:c.nome,valor:c.valor})),[{campo:'valor',nome:'Gastos',cor:'#b77b3f'}]);
- graficoBarras('graficoProdutos',d.produtos.map(p=>({rotulo:p.produto+' / '+p.sabor,quantidade:p.quantidade})),[{campo:'quantidade',nome:'Unidades',cor:'#5c3a2e'}],v=>`${v} unidades`);
+ graficoProdutos(d.produtos);
  $('aviso').textContent='Dados atualizados.';
  }catch(e){$('aviso').textContent=e.message;for(const id of ['graficoPrincipal','graficoCategorias','graficoProdutos'])$(id).replaceChildren();}}
 $('tipo').onchange=()=>{$('campoMes').hidden=$('tipo').value==='anual';carregar();};$('consultar').onclick=carregar;carregar();

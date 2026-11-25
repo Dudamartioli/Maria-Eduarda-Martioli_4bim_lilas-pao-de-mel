@@ -35,7 +35,7 @@
             <!-- Logo da Lila's -->
             <a href="../menu/menu.html" class="logo-conta">
 
-                <img src="../menu/logo-lilas.jpg"
+                <img src="../imagens/Logo.png"
                      alt="Logo da Lila's">
 
             </a>
@@ -134,6 +134,27 @@
         </section>
 
     </main>
+
+
+    <div id="modalSenha" class="modal-senha" hidden>
+      <section class="painel-senha" role="dialog" aria-modal="true" aria-labelledby="tituloSenha">
+        <h2 id="tituloSenha">Alterar senha</h2>
+        <p>Para sua segurança, confirme a senha atual.</p>
+        <form id="formSenha">
+          <label for="senhaAtual">Senha atual</label>
+          <input id="senhaAtual" type="password" autocomplete="current-password" required>
+          <label for="novaSenha">Nova senha</label>
+          <input id="novaSenha" type="password" autocomplete="new-password" minlength="6" maxlength="72" required>
+          <label for="confirmarSenha">Confirmar nova senha</label>
+          <input id="confirmarSenha" type="password" autocomplete="new-password" required>
+          <p id="erroSenha" class="erro-senha" role="alert" aria-live="polite"></p>
+          <div class="acoes-senha">
+            <button type="button" id="cancelarSenha">Cancelar</button>
+            <button type="submit" id="salvarSenha">Salvar senha</button>
+          </div>
+        </form>
+      </section>
+    </div>
 
 </body>
 </html>

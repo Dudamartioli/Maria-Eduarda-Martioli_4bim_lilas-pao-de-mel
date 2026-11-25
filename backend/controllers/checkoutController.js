@@ -109,13 +109,13 @@ exports.solicitar = async (req, res) => {
 
     // Validar horário.
     if (
-        !/^([01]\d|2[0-3]):[0-5]\d$/.test(
+        !/^(?:(?:0[89]|1[0-9]):[0-5]\d|20:00)$/.test(
             horario_desejado || ""
         )
     ) {
         return res.status(400).json({
             sucesso: false,
-            mensagem: "Informe um horário válido."
+            mensagem: "Escolha um horário entre 08:00 e 20:00."
         });
     }
 

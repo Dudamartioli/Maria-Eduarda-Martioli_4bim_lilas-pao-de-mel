@@ -5,6 +5,10 @@ const URL_API = "http://localhost:3001";
 // Recebe os parâmetros do link
 const parametros = new URLSearchParams(window.location.search);
 
+if (parametros.get("primeiroAcesso") === "1") {
+    document.querySelector(".cartaoLogin h2").textContent = "Cadastre sua senha";
+    document.querySelector(".cartaoLogin p").textContent = "Defina e confirme a senha da sua conta.";
+}
 // Pega o token enviado pelo e-mail
 const token = parametros.get("token");
 

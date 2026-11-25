@@ -16,7 +16,7 @@ const solicitarRecuperacao = async (req, res) => {
     try {
 
         // Recebe o e-mail digitado
-        const { email } = req.body;
+        const { email, primeiroAcesso } = req.body;
 
         // Verifica se o e-mail foi informado
         if (typeof email !== "string" || !email) {
@@ -33,7 +33,7 @@ const solicitarRecuperacao = async (req, res) => {
 
         // Procura o usuário no banco
         const resultado = await pool.query(
-            "SELECT id_usuario, email FROM usuario WHERE email = $1",
+            "SELECT id_usuario, email, senha_hash FROM usuario WHERE email = $1",
             [email.trim().toLowerCase()]
         );
 
@@ -49,6 +49,9 @@ const solicitarRecuperacao = async (req, res) => {
         // Guarda os dados do usuário
         const usuario = resultado.rows[0];
 
+        if (primeiroAcesso && usuario.senha_hash !== null) return res.json({ sucesso: true, mensagem });
+        const recente = await pool.query(`SELECT 1 FROM recuperacao_senha WHERE id_usuario = $1 AND utilizado = FALSE AND data_expiracao > NOW() + INTERVAL '14 minutes' LIMIT 1`, [usuario.id_usuario]);
+        if (recente.rowCount) return res.json({ sucesso: true, mensagem: "Aguarde um minuto antes de solicitar outro link." });
         // Gera um token aleatório
         const token = crypto.randomBytes(32).toString("hex");
 
@@ -86,8 +89,8 @@ const solicitarRecuperacao = async (req, res) => {
         // Monta o link para a página de redefinição
         const link =
             process.env.URL_FRONTEND +
-            "/frontend/login/redefinir-senha.html?token=" +
-            token;
+            "/login/redefinir-senha.html?token=" +
+            token + (primeiroAcesso ? "&primeiroAcesso=1" : "");
 
         // Envia o link por e-mail
         await enviarEmailRecuperacao(
@@ -98,7 +101,7 @@ const solicitarRecuperacao = async (req, res) => {
         // Retorna a mensagem
         res.json({
             sucesso: true,
-            mensagem: mensagem
+            mensagem: primeiroAcesso ? "Confira seu e-mail para cadastrar sua senha." : mensagem
         });
 
     } catch (erro) {

@@ -70,7 +70,7 @@ function mostrarAviso(texto) {
 
     // Mostra a mensagem na tela
     mensagem.textContent = texto;
-    if (texto) LilaAvisos.alerta(texto);
+    
 }
 
 
@@ -393,15 +393,7 @@ async function excluir() {
         return;
     }
 
-    // Confirma a exclusão
-    const confirmou = await LilaAvisos.confirmar(
-        "Deseja realmente excluir este sabor?"
-    );
 
-    // Cancela se o usuário desistir
-    if (!confirmou) {
-        return;
-    }
 
     // Define a operação
     oQueEstaFazendo = "excluir";

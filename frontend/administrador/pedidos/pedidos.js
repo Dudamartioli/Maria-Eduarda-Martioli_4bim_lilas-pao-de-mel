@@ -191,7 +191,11 @@ async function procurar(id) {
         mostrarDetalhes(dados.pedido);
 
     } catch (erro) {
-        await LilaAvisos.alerta(erro.message);
+        if (/pedido n[aã]o encontrado/i.test(erro.message)) {
+            lista.replaceChildren(elemento("p", "Pedido não encontrado."));
+        } else {
+            await LilaAvisos.alerta(erro.message);
+        }
     }
 }
 
@@ -225,7 +229,7 @@ function mostrarDetalhes(pedido) {
         elemento("p", `Rua: ${pedido.rua || "-"}`),
         elemento("p", `Número: ${pedido.numero || "-"}`),
         elemento("p", `Entrega: ${String(pedido.data_desejada).slice(0, 10)}`),
-        elemento("p", `Horário: ${pedido.horario_desejado}`),
+        elemento("p", `Horário previsto de retirada ou entrega: ${pedido.horario_desejado}`),
         elemento("p", `Observações: ${pedido.observacao || "-"}`),
         elemento("h3", "Produtos do pedido")
     );
@@ -264,7 +268,18 @@ card.append(areaProdutos);
     if (pedido.status === "Cancelado") {
         const resumoReembolso = document.createElement("section");
         resumoReembolso.className = "resumo-reembolso";
-        resumoReembolso.append(elemento("h3", "Situação do reembolso"));
+        const dataCancelamento = pedido.cancelado_em
+            ? new Date(pedido.cancelado_em).toLocaleString("pt-BR")
+            : "Não registrada";
+        const motivoCancelamento = elemento("p", `Motivo do cancelamento: ${pedido.motivo_cancelamento || "Não registrado"}`);
+        motivoCancelamento.style.whiteSpace = "pre-wrap";
+        motivoCancelamento.style.overflowWrap = "anywhere";
+        resumoReembolso.append(
+            elemento("h3", "Informações do cancelamento"),
+            motivoCancelamento,
+            elemento("p", `Data e horário do cancelamento: ${dataCancelamento}`),
+            elemento("h3", "Situação do reembolso")
+        );
         if (pedido.reembolso_status === "Pendente") {
             resumoReembolso.append(
                 elemento("p", "Status: Aguardando devolução do Pix"),
@@ -410,39 +425,54 @@ card.append(areaProdutos);
         card.append(atualizar);
     }
 
-    // WhatsApp apenas abre a conversa.
-    // Nunca confirma o pagamento.
-    const telefone = String(
-        pedido.cliente_telefone || ""
-    ).replace(/\D/g, "");
-
-    if (telefone.length >= 10 && telefone.length <= 13) {
-
-        const whatsapp = elemento(
-            "button",
-            "Enviar atualização pelo WhatsApp"
-        );
-
+    // WhatsApp: texto em Unicode e envio manual pela administradora.
+    const telefone = String(pedido.cliente_telefone || "").replace(/\D/g, "");
+    const numero = [10, 11].includes(telefone.length) ? "55" + telefone : telefone;
+    if (/^55\d{10,11}$/.test(numero)) {
+        const whatsapp = elemento("button", "Enviar atualização pelo WhatsApp");
+        whatsapp.type = "button";
         whatsapp.onclick = () => {
-
-            const numero = telefone.startsWith("55")
-                ? telefone
-                : "55" + telefone;
-
-            const mensagem =
-                `Olá! 🍯 Seu pedido #${pedido.id_pedido} ` +
-                `na Lila's está com status: ${pedido.status}.`;
-
-            window.open(
-                `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`,
-                "_blank",
-                "noopener"
-            );
+            const nome = String(pedido.cliente_nome || "").trim().split(/\s+/)[0];
+            const oi = nome ? `Oi, ${nome}!` : "Olá!";
+            const coracao = "\u2665";
+            const mel = "\u2728";
+            const id = `#${pedido.id_pedido}`;
+            let mensagem;
+            switch (pedido.status) {
+                case "Aguardando pagamento": {
+                    const chave = String(pedido.chave_pix_loja || "").trim();
+                    if (!chave || !Number.isFinite(Number(pedido.total)) || Number(pedido.total) <= 0) {
+                        LilaAvisos.alerta("Confira a chave Pix e o valor do pedido antes de enviar a cobrança.");
+                        return;
+                    }
+                    mensagem = `${oi} Tudo bem? ${coracao}\n\nSeu pedido ${id} na Lila's está aguardando pagamento.\n\n*Valor total:* ${moeda(pedido.total)}\n*Chave Pix:* ${chave}\n\nAssim que realizar o pagamento, pode nos enviar o comprovante por aqui. Estamos ansiosas para preparar seus pães de mel! ${mel}`;
+                    break;
+                }
+                case "Confirmado":
+                    mensagem = `${oi} ${coracao}\n\nRecebemos o pagamento do seu pedido ${id} e está tudo confirmado! Seus pães de mel serão preparados com muito carinho. Obrigada por escolher a Lila's!`;
+                    break;
+                case "Em produção":
+                    mensagem = `${oi}\n\nSeu pedido ${id} já está sendo preparado! Estamos cuidando de cada detalhe para deixar seus doces ainda mais especiais. ${mel}`;
+                    break;
+                case "Pronto":
+                    mensagem = `${oi} ${coracao}\n\nSeu pedido ${id} está prontinho! ${pedido.modalidade === "retirada" ? "Você pode retirá-lo no horário combinado." : "Vamos seguir com a entrega conforme combinado."} Esperamos que você adore nossos doces!`;
+                    break;
+                case "Concluído":
+                    mensagem = `${oi} Tudo bem? ${coracao}\n\nSeu pedido ${id} foi finalizado e queremos saber: o que você achou dos nossos pães de mel? Como foi sua experiência comprando pelo site e experimentando nossos doces?\n\nSua opinião é muito importante para nós! Obrigada por adoçar seu dia com a Lila's. Esperamos te ver novamente! ${mel}`;
+                    break;
+                case "Cancelado":
+                    mensagem = `${oi}\n\nSeu pedido ${id} foi cancelado.`;
+                    if (pedido.reembolso_status === "Realizado") mensagem += `\nO reembolso foi realizado. *Valor devolvido:* ${moeda(pedido.valor_reembolso)}.`;
+                    else if (pedido.reembolso_status === "Pendente") mensagem += `\nO reembolso de ${moeda(pedido.valor_reembolso)} está pendente.`;
+                    mensagem += `\n\nCaso tenha dúvidas, estamos à disposição. Agradecemos pela compreensão! ${coracao}`;
+                    break;
+                default:
+                    mensagem = `${oi}\n\nSeu pedido ${id} na Lila's está com status: ${pedido.status}. ${coracao}`;
+            }
+            window.open(`https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`, "_blank", "noopener");
         };
-
         card.append(whatsapp);
     }
-
 
 // ==========================================
 // CANCELAR PEDIDO
@@ -621,7 +651,7 @@ const secaoCadastro=document.createElement('section');
 secaoCadastro.className='cadastro-manual';
 secaoCadastro.innerHTML=`<div class="cadastro-topo"><h2>🍯 Cadastrar ou alterar pedido</h2></div>
 <form id="formManual"><div class="campos-manual">
-<label>ID (para alteração)>
+<label>ID do pedido
     <input
         name="id"
         type="number"
@@ -631,7 +661,7 @@ secaoCadastro.innerHTML=`<div class="cadastro-topo"><h2>🍯 Cadastrar ou altera
 </label><button type="button" id="buscarIdManual" class="buscar-id-manual">Buscar pedido pelo ID</button><label>Cliente<select name="id_usuario" required></select></label>
 <label>Modalidade<select name="modalidade"><option value="retirada">Retirada</option><option value="entrega">Entrega</option></select></label>
 <label>Data desejada<input name="data_desejada" type="date" required></label>
-<label>Horário<input name="horario_desejado" type="time" required></label>
+<label>Horário previsto de retirada ou entrega *<input name="horario_desejado" type="time" min="08:00" max="20:00" step="60" required><small>Horário em que o cliente precisa do pedido (08h às 20h). Pode ser antecipado mediante combinação.</small></label>
 <label>Cidade<input name="cidade" maxlength="60"></label>
 <label>Bairro<input name="bairro" maxlength="100"></label>
 <label>Rua<input name="rua" maxlength="150"></label>

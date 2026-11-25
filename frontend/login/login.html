@@ -47,8 +47,7 @@
 
                 <input type="password"
                        id="senha"
-                       placeholder="Digite sua senha"
-                       required>
+                       placeholder="Digite sua senha">
 
 
                 <!-- Link para recuperar a senha -->
@@ -64,7 +63,13 @@
             </form>
 
             <!-- Mensagem de retorno -->
-            <p id="mensagem"></p>
+            <p id="mensagem" role="status"></p>
+            <div id="definirSenha" hidden>
+                <h2>Cadastre sua senha</h2>
+                <p>Sua conta já está cadastrada, mas você ainda não definiu sua senha. Envie um link ao seu e-mail para cadastrá-la com segurança.</p>
+                <button type="button" id="enviarLinkSenha">Enviar link para cadastrar senha</button>
+                <button type="button" id="voltarLogin">Voltar ao login</button>
+            </div>
 
             <p>
                 Ainda não tem uma conta?

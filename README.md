@@ -21,7 +21,9 @@
 
 A proposta nasceu de uma necessidade real: ajudar uma empreendedora a organizar a venda de pães de mel, reunindo em um único sistema o catálogo, os pedidos, o atendimento e a administração do negócio.
 
-O desenvolvimento envolveu compreender as necessidades da usuária, definir regras de negócio e transformá-las em funcionalidades. Assim, o projeto aproxima o aprendizado de programação das etapas de análise e construção de software para um cliente real.
+O desenvolvimento partiu de uma reunião de levantamento de requisitos com a empreendedora, para compreender sua rotina, identificar necessidades e transformar essas informações em regras de negócio e funcionalidades.
+
+Um dos principais objetivos foi proporcionar **autonomia à administradora**, permitindo que ela gerencie produtos, banners, fretes, cupons e outras operações do dia a dia sem depender de alterações no código-fonte. Assim, o projeto aproxima o aprendizado de programação das etapas de análise e construção de software para um cliente real.
 
 ## ✨ Funcionalidades
 
@@ -57,6 +59,14 @@ O desenvolvimento envolveu compreender as necessidades da usuária, definir regr
 </td>
 </tr>
 </table>
+
+## 🌟 Diferenciais do projeto
+
+Além dos requisitos acadêmicos, a aplicação reúne recursos voltados à rotina da empreendedora, à experiência de compra e à gestão do negócio.
+
+<p align="center">
+  <img src="lilas-diagramas/07-diferenciais.svg" alt="Diferenciais: Pix, recuperação de senha, agenda, gestão financeira, estoque, cupons, histórico de clientes e autonomia administrativa" width="100%">
+</p>
 
 ## 🧩 Regras de negócio
 
@@ -98,6 +108,8 @@ contemplando os relacionamentos exigidos na disciplina
 de Desenvolvimento Web 1.
 
 ### Estrutura do banco de dados
+
+Os diagramas abaixo representam as tabelas do núcleo do sistema presentes no script SQL analisado.
 
 <p align="center">
   <img src="lilas-diagramas/01-banco.svg" width="100%">
@@ -274,6 +286,14 @@ de Desenvolvimento Web 1.
 | Recuperação de senha | Nodemailer |
 
 O sistema separa as responsabilidades do **frontend** e do **backend**, utilizando rotas, controladores e serviços para organizar a lógica da aplicação.
+
+### Arquitetura da aplicação
+
+<p align="center">
+  <img src="lilas-diagramas/08-arquitetura.svg" alt="Arquitetura: cliente e administrador acessam o frontend, que se comunica com o backend Express, PostgreSQL e Nodemailer" width="100%">
+</p>
+
+O frontend apresenta as interfaces da loja e da administração e envia requisições ao backend. O servidor processa as regras de negócio, verifica a autenticação e acessa o PostgreSQL. O Nodemailer é utilizado no envio de e-mails de recuperação de senha.
 
 ## 🚀 Como executar localmente
 

@@ -181,9 +181,6 @@ async function logout() {
         // Verifica se o logout funcionou
         if (resposta.ok && dados.sucesso) {
 
-            // Informa que o usuário saiu da conta
-            LilaAvisos.alerta("Você saiu da sua conta com sucesso!");
-
             // Volta para a página inicial
             window.location.href = "../menu/menu.html";
 

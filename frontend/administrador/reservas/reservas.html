@@ -1,1 +1,131 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Lila's - Reservas</title><link rel="stylesheet" href="reservas.css"></head><body><header class="cabecalho"><a href="../admin.html" class="logo"><img src="../../menu/logo-lilas.jpg" alt="Logo Lila's"></a><a href="../admin.html" class="botao-voltar">Voltar à administração</a></header><main class="pagina-despesas"><section class="apresentacao"><p class="subtitulo">ADMINISTRAÇÃO DA LILA'S</p><h1>Gerenciamento de Reservas 🐷</h1><p class="descricao">Separe dinheiro das vendas e acompanhe o caixa reserva.</p></section><section class="painel-despesas"><div class="titulo-painel"><h2>Resumo da reserva</h2><p>Valores reais registrados no caixa.</p></div><div class="conteudo-painel"><div class="indicadores"><div>Saldo atual<strong id="saldo">—</strong></div><div>Total depositado<strong id="entradas">—</strong></div><div>Total retirado<strong id="saidas">—</strong></div><div>Reserva automática<strong id="automaticas">—</strong></div></div></div></section><section class="painel-despesas"><div class="titulo-painel"><h2>Configuração automática</h2><p>Aplicada às novas vendas quando o Pix for confirmado.</p></div><div class="conteudo-painel"><form id="config"><div class="campos"><label>Reserva ativa<select id="ativa"><option value="false">Não</option><option value="true">Sim</option></select></label><label>Tipo<select id="tipo"><option value="percentual">Porcentagem (%)</option><option value="fixo">Valor fixo (R$)</option></select></label><label>Valor<input id="valor" type="number" min="0" step="0.01" required></label></div><button>Salvar configuração</button></form></div></section><section class="painel-despesas"><div class="titulo-painel"><h2>Depósito ou retirada manual</h2><p>Informe o motivo de cada movimentação.</p></div><div class="conteudo-painel"><form id="movimentar"><div class="campos"><label>Tipo<select id="mov_tipo"><option value="entrada">Depósito</option><option value="saida">Retirada</option></select></label><label>Valor (R$)<input id="mov_valor" type="number" min="0.01" step="0.01" required></label><label>Motivo<input id="motivo" maxlength="300" required placeholder="Ex.: Compra de equipamento"></label></div><button>Registrar movimentação</button></form></div></section><section class="painel-despesas"><div class="titulo-painel"><h2>Histórico de movimentações</h2><p>Depósitos automáticos, depósitos manuais e retiradas.</p></div><div class="conteudo-painel"><div class="acoes"><button id="pdf" type="button">📄 PDF</button><button id="excel" type="button">📊 Excel</button></div><div class="tabela"><table><thead><tr><th>Data</th><th>Venda</th><th>Tipo</th><th>Origem</th><th>Valor</th><th>Motivo</th></tr></thead><tbody id="linhas"></tbody></table></div></div></section><p id="aviso" role="status"></p></main><script src="reservas.js"></script></body></html>
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Lila's - Reservas</title>
+    <link rel="stylesheet" href="reservas.css" />
+  </head>
+  <body>
+    <header class="cabecalho">
+      <a href="../admin.html" class="logo"
+        ><img src="../../menu/logo-lilas.jpg" alt="Logo Lila's" /></a
+      ><a href="../admin.html" class="botao-voltar">Voltar à administração</a>
+    </header>
+    <main class="pagina-despesas">
+      <section class="apresentacao">
+        <p class="subtitulo">ADMINISTRAÇÃO DA LILA'S</p>
+        <h1>Gerenciamento de Reservas 🐷</h1>
+        <p class="descricao">
+          Separe dinheiro das vendas e acompanhe o caixa reserva.
+        </p>
+      </section>
+      <section class="painel-despesas">
+        <div class="titulo-painel">
+          <h2>Resumo da reserva</h2>
+          <p>Valores reais registrados no caixa.</p>
+        </div>
+        <div class="conteudo-painel">
+          <div class="indicadores">
+            <div>Saldo atual<strong id="saldo">—</strong></div>
+            <div>Total depositado<strong id="entradas">—</strong></div>
+            <div>Total retirado<strong id="saidas">—</strong></div>
+            <div>Reserva automática<strong id="automaticas">—</strong></div>
+          </div>
+        </div>
+      </section>
+      <section class="painel-despesas">
+        <div class="titulo-painel">
+          <h2>Configuração automática</h2>
+          <p>Aplicada às novas vendas quando o Pix for confirmado.</p>
+        </div>
+        <div class="conteudo-painel">
+          <form id="config">
+            <div class="campos">
+              <label
+                >Reserva ativa<select id="ativa">
+                  <option value="false">Não</option>
+                  <option value="true">Sim</option>
+                </select></label
+              ><label
+                >Tipo<select id="tipo">
+                  <option value="percentual">Porcentagem (%)</option>
+                  <option value="fixo">Valor fixo (R$)</option>
+                </select></label
+              ><label
+                >Valor<input
+                  id="valor"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  required
+              /></label>
+            </div>
+            <button>Salvar configuração</button>
+          </form>
+        </div>
+      </section>
+      <section class="painel-despesas">
+        <div class="titulo-painel">
+          <h2>Depósito ou retirada manual</h2>
+          <p>Informe o motivo de cada movimentação.</p>
+        </div>
+        <div class="conteudo-painel">
+          <form id="movimentar">
+            <div class="campos">
+              <label
+                >Tipo<select id="mov_tipo">
+                  <option value="entrada">Depósito</option>
+                  <option value="saida">Retirada</option>
+                </select></label
+              ><label
+                >Valor (R$)<input
+                  id="mov_valor"
+                  type="number"
+                  min="0.01"
+                  step="0.01"
+                  required /></label
+              ><label
+                >Motivo<input
+                  id="motivo"
+                  maxlength="300"
+                  required
+                  placeholder="Ex.: Compra de equipamento"
+              /></label>
+            </div>
+            <button>Registrar movimentação</button>
+          </form>
+        </div>
+      </section>
+      <section class="painel-despesas">
+        <div class="titulo-painel">
+          <h2>Histórico de movimentações</h2>
+          <p>Depósitos automáticos, depósitos manuais e retiradas.</p>
+        </div>
+        <div class="conteudo-painel">
+          <div class="acoes">
+            <button id="pdf" type="button">📄 PDF</button
+            ><button id="excel" type="button">📊 Excel</button>
+          </div>
+          <div class="tabela">
+            <table>
+              <thead>
+                <tr>
+                  <th>Data</th>
+                  <th>Venda</th>
+                  <th>Tipo</th>
+                  <th>Origem</th>
+                  <th>Valor</th>
+                  <th>Motivo</th>
+                </tr>
+              </thead>
+              <tbody id="linhas"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+      <p id="aviso" role="status"></p>
+    </main>
+    <script src="reservas.js"></script>
+  </body>
+</html>

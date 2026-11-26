@@ -1,55 +1,397 @@
 @import url("https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&display=swap");
-:root{--base:#FFE49A;--mel:#E08A2E;--doce:#9A4F0E;--chocolate:#5C3A2E;--cafe:#3F2418;--relevo:6px 6px 14px rgba(185,115,25,.32),-6px -6px 14px rgba(255,251,228,.95);--afundado:inset 5px 5px 11px rgba(185,115,25,.32),inset -5px -5px 11px rgba(255,251,228,.95);--botao:linear-gradient(150deg,#7b4f3d,#4a2d22);--sombra-botao:0 10px 18px -6px rgba(63,36,24,.55),inset 0 1px 0 rgba(255,255,255,.28),inset 0 -2px 0 rgba(0,0,0,.22)}
-*,*::before,*::after{box-sizing:border-box}
-html{min-height:100%}
-body{min-height:100vh;margin:0;background:var(--base);color:var(--cafe);font-family:'Jost','Segoe UI',sans-serif}
-.cabecalho{min-height:78px;padding:8px clamp(18px,4vw,55px);display:flex;align-items:center;justify-content:space-between;gap:18px}
-.logo{display:flex;align-items:center}.logo img{display:block;width:135px;max-width:35vw;height:auto;object-fit:contain}
-.botao-voltar{display:inline-flex;align-items:center;justify-content:center;padding:12px 24px;border-radius:999px;background:var(--chocolate);color:var(--base);font-size:.9rem;font-weight:700;text-decoration:none;box-shadow:0 5px 0 var(--cafe),0 9px 16px rgba(63,36,24,.2);transition:transform .2s,box-shadow .2s}
-.botao-voltar:hover{transform:translateY(-3px);color:#fff;box-shadow:0 0 0 5px rgba(184,120,57,.25),0 7px 0 var(--cafe),0 12px 22px rgba(63,36,24,.25)}
-#conteudo{width:min(1100px,100%);margin:0 auto;padding:10px 25px 45px}
-#conteudo[hidden], [hidden]{display:none!important}
-.apresentacao{width:100%;padding:13px 20px;margin:0 0 25px;border-radius:22px;background:linear-gradient(145deg,#754A35,#4A2D22);box-shadow:0 6px 15px rgba(63,36,24,.19);text-align:center}
-.subtitulo{margin:0 0 2px;color:var(--base);font-size:.72rem;font-weight:700;letter-spacing:.18em}
-.apresentacao h1{margin:0 0 3px;color:var(--base);font-size:clamp(1.45rem,2.3vw,2rem);font-weight:700}
-.introducao{margin:0;color:#FFF3D1;font-size:.88rem}
-.layout{display:grid;grid-template-columns:1fr;gap:25px}
-.painel{min-width:0;overflow:hidden;padding:26px 28px 24px;border-radius:28px;background:var(--base);box-shadow:var(--relevo)}
+:root {
+  --base: #ffe49a;
+  --mel: #e08a2e;
+  --doce: #9a4f0e;
+  --chocolate: #5c3a2e;
+  --cafe: #3f2418;
+  --relevo:
+    6px 6px 14px rgba(185, 115, 25, 0.32),
+    -6px -6px 14px rgba(255, 251, 228, 0.95);
+  --afundado:
+    inset 5px 5px 11px rgba(185, 115, 25, 0.32),
+    inset -5px -5px 11px rgba(255, 251, 228, 0.95);
+  --botao: linear-gradient(150deg, #7b4f3d, #4a2d22);
+  --sombra-botao:
+    0 10px 18px -6px rgba(63, 36, 24, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28), inset 0 -2px 0 rgba(0, 0, 0, 0.22);
+}
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html {
+  min-height: 100%;
+}
+body {
+  min-height: 100vh;
+  margin: 0;
+  background: var(--base);
+  color: var(--cafe);
+  font-family: "Jost", "Segoe UI", sans-serif;
+}
+.cabecalho {
+  min-height: 78px;
+  padding: 8px clamp(18px, 4vw, 55px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+.logo {
+  display: flex;
+  align-items: center;
+}
+.logo img {
+  display: block;
+  width: 135px;
+  max-width: 35vw;
+  height: auto;
+  object-fit: contain;
+}
+.botao-voltar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  border-radius: 999px;
+  background: var(--chocolate);
+  color: var(--base);
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow:
+    0 5px 0 var(--cafe),
+    0 9px 16px rgba(63, 36, 24, 0.2);
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+.botao-voltar:hover {
+  transform: translateY(-3px);
+  color: #fff;
+  box-shadow:
+    0 0 0 5px rgba(184, 120, 57, 0.25),
+    0 7px 0 var(--cafe),
+    0 12px 22px rgba(63, 36, 24, 0.25);
+}
+#conteudo {
+  width: min(1100px, 100%);
+  margin: 0 auto;
+  padding: 10px 25px 45px;
+}
+#conteudo[hidden],
+[hidden] {
+  display: none !important;
+}
+.apresentacao {
+  width: 100%;
+  padding: 13px 20px;
+  margin: 0 0 25px;
+  border-radius: 22px;
+  background: linear-gradient(145deg, #754a35, #4a2d22);
+  box-shadow: 0 6px 15px rgba(63, 36, 24, 0.19);
+  text-align: center;
+}
+.subtitulo {
+  margin: 0 0 2px;
+  color: var(--base);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+}
+.apresentacao h1 {
+  margin: 0 0 3px;
+  color: var(--base);
+  font-size: clamp(1.45rem, 2.3vw, 2rem);
+  font-weight: 700;
+}
+.introducao {
+  margin: 0;
+  color: #fff3d1;
+  font-size: 0.88rem;
+}
+.layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 25px;
+}
+.painel {
+  min-width: 0;
+  overflow: hidden;
+  padding: 26px 28px 24px;
+  border-radius: 28px;
+  background: var(--base);
+  box-shadow: var(--relevo);
+}
 /* Faixas marrons iguais às do CRUD de Cupons */
-.painel::before{content:'Cadastrar ou editar usuário';display:block;margin:-26px -28px 23px;padding:19px 28px;background:linear-gradient(145deg,#754A35,#4A2D22);color:var(--base);font-size:1.3rem;font-weight:700}
-.painel.lista::before{content:none}
-.titulo-lista{display:flex;align-items:center;justify-content:space-between;gap:15px;margin:-26px -28px 0;padding:19px 28px;background:linear-gradient(145deg,#754A35,#4A2D22)}
-.titulo-lista h2{margin:0;color:var(--base);font-size:1.3rem;font-weight:700}
-.dica{margin:18px 0 16px;color:var(--chocolate);font-size:.9rem}
-.linha-busca{display:flex;align-items:end;gap:14px;margin-bottom:20px}
-.linha-busca label{flex:1;min-width:0}
-.campos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 22px}
-.painel label{display:flex;flex-direction:column;gap:9px;min-width:0;color:var(--chocolate);font-size:.95rem;font-weight:600}
-.painel input,.painel select{display:block;width:100%;min-width:0;padding:14px 16px;border:0;border-radius:16px;background:var(--base);color:var(--cafe);font:400 .95rem 'Jost','Segoe UI',sans-serif;box-shadow:var(--afundado);outline:none;transition:outline .2s}
-.painel input::placeholder{color:#A17A50}
-.painel input:focus,.painel select:focus{outline:2px solid var(--mel);outline-offset:2px}
-.painel input:disabled,.painel select:disabled{opacity:.7;cursor:not-allowed}
-.painel select option{background:var(--base);color:var(--cafe)}
-.painel button,.botao-historico{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:10px 20px;border:0;border-radius:999px;background:var(--botao);color:var(--base);font:600 .9rem 'Jost','Segoe UI',sans-serif;text-decoration:none;text-align:center;box-shadow:var(--sombra-botao);cursor:pointer;transition:transform .2s,box-shadow .2s}
-.painel button:hover,.botao-historico:hover{transform:translateY(-3px);box-shadow:0 10px 22px -6px rgba(224,138,46,.75),0 0 0 4px rgba(224,138,46,.28)}
-.painel button:disabled{opacity:.55;cursor:not-allowed;transform:none}
-.acoes{display:flex;justify-content:center;gap:12px;margin-top:20px;flex-wrap:wrap}
-#acoesIniciais button{flex:1;max-width:260px}
-#acoesEdicao button{flex:1;min-width:100px;max-width:200px}
-.botao-historico{width:min(1000px,100%);min-height:48px}
-#mensagem{margin:14px 0 0;text-align:center;color:var(--chocolate);font-weight:600}
-#mensagem:empty{display:none}
-.tabela-rolagem{width:100%;overflow:auto;border:1px solid rgba(92,58,46,.13);border-radius:20px;background:var(--base);box-shadow:var(--relevo)}
-table{width:100%;border-collapse:separate;border-spacing:0;text-align:left;font-size:.9rem}
-th{padding:15px 17px;background:var(--chocolate);color:var(--base);font-weight:700;white-space:nowrap}
-td{padding:14px 17px;border-bottom:1px solid rgba(92,58,46,.13);color:var(--cafe);overflow-wrap:anywhere}
-tbody tr{cursor:pointer;transition:background .2s}
-tbody tr:hover{background:#f8d98b}
-tbody tr:last-child td{border-bottom:0}
-#avisoAcesso{text-align:center;color:var(--chocolate);font-weight:600;padding:20px}
-@media(max-width:650px){.cabecalho{min-height:75px;padding:12px 15px}.logo img{width:120px;max-width:40vw}.botao-voltar{padding:10px 12px;font-size:.78rem;text-align:center}#conteudo{padding:15px 15px 35px}.painel{padding:20px 16px;border-radius:22px}.painel::before{margin:-20px -16px 20px;padding:18px 16px}.titulo-lista{margin:-20px -16px 0;padding:18px 16px}.campos{grid-template-columns:1fr;gap:18px}.linha-busca{gap:8px}.linha-busca button{padding:10px 13px}.titulo-lista h2{font-size:1.1rem}th,td{padding:12px 10px}.acoes{gap:8px}}
+.painel::before {
+  content: "Cadastrar ou editar usuário";
+  display: block;
+  margin: -26px -28px 23px;
+  padding: 19px 28px;
+  background: linear-gradient(145deg, #754a35, #4a2d22);
+  color: var(--base);
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+.painel.lista::before {
+  content: none;
+}
+.titulo-lista {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin: -26px -28px 0;
+  padding: 19px 28px;
+  background: linear-gradient(145deg, #754a35, #4a2d22);
+}
+.titulo-lista h2 {
+  margin: 0;
+  color: var(--base);
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+.dica {
+  margin: 18px 0 16px;
+  color: var(--chocolate);
+  font-size: 0.9rem;
+}
+.linha-busca {
+  display: flex;
+  align-items: end;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+.linha-busca label {
+  flex: 1;
+  min-width: 0;
+}
+.campos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px 22px;
+}
+.painel label {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  min-width: 0;
+  color: var(--chocolate);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+.painel input,
+.painel select {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  padding: 14px 16px;
+  border: 0;
+  border-radius: 16px;
+  background: var(--base);
+  color: var(--cafe);
+  font:
+    400 0.95rem "Jost",
+    "Segoe UI",
+    sans-serif;
+  box-shadow: var(--afundado);
+  outline: none;
+  transition: outline 0.2s;
+}
+.painel input::placeholder {
+  color: #a17a50;
+}
+.painel input:focus,
+.painel select:focus {
+  outline: 2px solid var(--mel);
+  outline-offset: 2px;
+}
+.painel input:disabled,
+.painel select:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+.painel select option {
+  background: var(--base);
+  color: var(--cafe);
+}
+.painel button,
+.botao-historico {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 10px 20px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--botao);
+  color: var(--base);
+  font:
+    600 0.9rem "Jost",
+    "Segoe UI",
+    sans-serif;
+  text-decoration: none;
+  text-align: center;
+  box-shadow: var(--sombra-botao);
+  cursor: pointer;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+.painel button:hover,
+.botao-historico:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 10px 22px -6px rgba(224, 138, 46, 0.75),
+    0 0 0 4px rgba(224, 138, 46, 0.28);
+}
+.painel button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+.acoes {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+#acoesIniciais button {
+  flex: 1;
+  max-width: 260px;
+}
+#acoesEdicao button {
+  flex: 1;
+  min-width: 100px;
+  max-width: 200px;
+}
+.botao-historico {
+  width: min(1000px, 100%);
+  min-height: 48px;
+}
+#mensagem {
+  margin: 14px 0 0;
+  text-align: center;
+  color: var(--chocolate);
+  font-weight: 600;
+}
+#mensagem:empty {
+  display: none;
+}
+.tabela-rolagem {
+  width: 100%;
+  overflow: auto;
+  border: 1px solid rgba(92, 58, 46, 0.13);
+  border-radius: 20px;
+  background: var(--base);
+  box-shadow: var(--relevo);
+}
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  text-align: left;
+  font-size: 0.9rem;
+}
+th {
+  padding: 15px 17px;
+  background: var(--chocolate);
+  color: var(--base);
+  font-weight: 700;
+  white-space: nowrap;
+}
+td {
+  padding: 14px 17px;
+  border-bottom: 1px solid rgba(92, 58, 46, 0.13);
+  color: var(--cafe);
+  overflow-wrap: anywhere;
+}
+tbody tr {
+  cursor: pointer;
+  transition: background 0.2s;
+}
+tbody tr:hover {
+  background: #f8d98b;
+}
+tbody tr:last-child td {
+  border-bottom: 0;
+}
+#avisoAcesso {
+  text-align: center;
+  color: var(--chocolate);
+  font-weight: 600;
+  padding: 20px;
+}
+@media (max-width: 650px) {
+  .cabecalho {
+    min-height: 75px;
+    padding: 12px 15px;
+  }
+  .logo img {
+    width: 120px;
+    max-width: 40vw;
+  }
+  .botao-voltar {
+    padding: 10px 12px;
+    font-size: 0.78rem;
+    text-align: center;
+  }
+  #conteudo {
+    padding: 15px 15px 35px;
+  }
+  .painel {
+    padding: 20px 16px;
+    border-radius: 22px;
+  }
+  .painel::before {
+    margin: -20px -16px 20px;
+    padding: 18px 16px;
+  }
+  .titulo-lista {
+    margin: -20px -16px 0;
+    padding: 18px 16px;
+  }
+  .campos {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .linha-busca {
+    gap: 8px;
+  }
+  .linha-busca button {
+    padding: 10px 13px;
+  }
+  .titulo-lista h2 {
+    font-size: 1.1rem;
+  }
+  th,
+  td {
+    padding: 12px 10px;
+  }
+  .acoes {
+    gap: 8px;
+  }
+}
 
 /* Rolagem interna com cabeçalho fixo */
-.tabela-rolagem {max-height:360px; overflow:auto; scrollbar-gutter:stable; scrollbar-color:#8b654a #f6e3a4;}
-.tabela-rolagem > table {border-collapse:separate; border-spacing:0;}
-.tabela-rolagem > table > thead > tr > th {position:sticky;top:0;z-index:3;background:#5C3A2E;color:#FFE49A;}
+.tabela-rolagem {
+  max-height: 360px;
+  overflow: auto;
+  scrollbar-gutter: stable;
+  scrollbar-color: #8b654a #f6e3a4;
+}
+.tabela-rolagem > table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+.tabela-rolagem > table > thead > tr > th {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: #5c3a2e;
+  color: #ffe49a;
+}

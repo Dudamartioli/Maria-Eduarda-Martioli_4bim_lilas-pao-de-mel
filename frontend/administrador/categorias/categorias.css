@@ -843,3 +843,69 @@ main#conteudo{padding-top:12px;padding-bottom:48px}
 .tabela-rolagem > table {border-collapse:separate; border-spacing:0;}
 .tabela-rolagem > table > thead > tr > th {position:sticky;top:0;z-index:3;background:#5C3A2E;color:#FFE49A;}
 */
+/* Ajuste compacto: formulário e tabela visíveis sem rolagem da página */
+@media (min-width: 901px) and (min-height: 650px) {
+  html, body { height: 100%; }
+  body { min-height: 100dvh; overflow: hidden; }
+  .cabecalho { min-height: 70px; padding-top: 5px; padding-bottom: 5px; }
+  .logo img { width: 140px; }
+  main#conteudo { flex: 1 1 auto; min-height: 0; padding-top: 4px; padding-bottom: 12px; overflow: hidden; }
+  .apresentacao { padding-top: 10px; padding-bottom: 10px; margin-bottom: 10px; }
+  .area-gerenciamento { margin-top: 10px; gap: 18px; min-height: 0; flex: 1 1 auto; align-items: stretch; }
+  .area-gerenciamento > .cartao { min-height: 0; padding: 0 20px 12px; }
+  .area-gerenciamento > .cartao > h2 { margin: 0 -20px 10px; padding: 11px 20px; font-size: 1.12rem; }
+  .area-gerenciamento > .cartao > .cabecalho-listagem { margin: 0 -20px 10px; padding: 8px 20px; }
+  .area-gerenciamento > .cartao > .cabecalho-listagem h2 { font-size: 1.12rem; }
+  .campo { margin-bottom: 8px; }
+  .campo label { margin-bottom: 3px; font-size: .91rem; }
+  .campo input, .campo select, .campo textarea, .linha-procura input { min-height: 0; padding: 8px 12px !important; font-size: .92rem; }
+  .campo textarea { height: 54px; min-height: 54px; max-height: 54px; resize: none; }
+  .linha-procura { gap: 8px; }
+  .linha-procura button, .botoes button, .cabecalho-listagem button { padding: 8px 14px; font-size: .9rem; }
+  .botoes { margin-top: 8px; gap: 8px; }
+  .dica { margin: 0 0 8px; font-size: .88rem; }
+  .tabela-rolagem { min-height: 0; overflow: auto; }
+}
+@media (max-height: 649px), (max-width: 900px) {
+  body { overflow-y: auto; }
+}
+
+/* Distribuição vertical: campos confortáveis e cartões preenchidos */
+@media (min-width: 901px) and (min-height: 700px) {
+  .area-gerenciamento > .cartao { padding-bottom: 20px; }
+  .area-gerenciamento > .cartao > h2 { margin-bottom: 16px; }
+  .campo { margin-bottom: 12px; flex-shrink: 0; }
+  .campo label { margin-bottom: 6px; font-size: .95rem; }
+  .campo input, .campo select, .linha-procura input { padding: 12px 14px !important; font-size: 1rem; }
+  .campo textarea { padding: 12px 14px !important; font-size: 1rem; height: 78px; min-height: 78px; max-height: 78px; }
+  .linha-procura button, .botoes button { padding: 12px 16px; }
+  .botoes { margin-top: auto; flex-shrink: 0; padding-top: 8px; }
+  #mensagem { min-height: 20px; flex-shrink: 0; }
+  .tabela-rolagem { flex: 1 1 0; max-height: none; min-height: 0; }
+  .tabela-rolagem th { position: sticky; top: 0; z-index: 1; }
+}
+@media (min-width: 901px) and (min-height: 700px) and (max-height: 760px) {
+  .campo { margin-bottom: 8px; }
+  .campo textarea { height: 66px; min-height: 66px; max-height: 66px; }
+  .campo input, .campo select, .linha-procura input { padding: 10px 14px !important; }
+}
+/* Padronizar os cabeçalhos dos cartões */
+.area-gerenciamento > .cartao > h2,
+.area-gerenciamento > .cartao > .cabecalho-listagem {
+    height: 56px;
+    min-height: 56px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-bottom: 16px;
+}
+
+/* Igualar o tamanho dos títulos */
+.area-gerenciamento > .cartao > h2,
+.area-gerenciamento > .cartao > .cabecalho-listagem h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.2;
+}

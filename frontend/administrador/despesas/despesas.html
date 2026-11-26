@@ -1,64 +1,168 @@
 <!doctype html>
 <html lang="pt-BR">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Lila's - Despesas</title>
-  <link rel="stylesheet" href="despesas.css">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lila's - Despesas</title>
+    <link rel="stylesheet" href="despesas.css" />
 
-    <link rel="stylesheet" href="../../alertas/lilas-alertas.css">
+    <link rel="stylesheet" href="../../alertas/lilas-alertas.css" />
     <script src="../../alertas/lilas-alertas.js" defer></script>
-</head>
-<body>
-  <header class="cabecalho">
-    <a href="../admin.html" class="logo"><img src="../../menu/logo-lilas.jpg" alt="Logo da Lila's"></a>
-    <a href="../admin.html" class="botao-voltar">Voltar à administração</a>
-  </header>
-  <main class="pagina-despesas">
-    <section class="apresentacao">
-      <p class="subtitulo">ADMINISTRAÇÃO DA LILA'S</p>
-      <h1>Gerenciamento de Despesas 🧾</h1>
-      <p class="descricao">Cadastre os gastos e acompanhe as despesas da loja.</p>
-    </section>
-    <section class="painel-despesas">
-      <div class="titulo-painel"><h2>Cadastrar ou alterar despesa</h2><p>Registre os gastos da Lila's de forma organizada.</p></div>
-      <div class="conteudo-painel">
-        <form id="form">
-          <input type="hidden" id="id">
-          <div class="campos">
-            <label>Venda (opcional)<select id="id_pedido"><option value="">Despesa geral / sem venda</option></select></label>
-            <label>Data<input id="data" type="date" required></label>
-            <label>Nome da despesa<input id="nome_despesa" required maxlength="180" placeholder="Ex.: Chocolate"></label>
-            <label>Categoria<select id="categoria" required><option>Ingredientes</option><option>Embalagens</option><option>Transporte</option><option>Energia</option><option>Água</option><option>Equipamentos</option><option>Outros</option></select></label>
-            <label>Descrição<input id="descricao" required maxlength="180" placeholder="Ex.: Chocolate meio amargo"></label>
-            <label>Qtd.<input id="quantidade" type="number" min="0.001" step="0.001" value="1" required></label>
-            <label>Unitário (R$)<input id="valor_unitario" type="number" min="0" step="0.0001" placeholder="0,00"></label>
-            <label>Total (R$)<input id="valor" type="number" min="0" step="0.01" required placeholder="0,00"></label>
-          </div>
-          <label>Observação (opcional)<textarea id="observacao" rows="2" maxlength="3000"></textarea></label>
-          <div class="acoes"><button type="submit" id="salvar">Salvar despesa</button><button type="button" id="limpar" class="secundario">Cancelar edição</button></div>
-        </form>
-      </div>
-    </section>
-    <section class="painel-despesas">
-      <div class="titulo-painel"><h2>Consultar despesas</h2><p>Filtre os lançamentos e exporte seus relatórios.</p></div>
-      <div class="conteudo-painel">
-        <div class="filtros">
-          <label>Período<select id="tipo"><option value="mensal">Mensal</option><option value="anual">Anual</option></select></label>
-          <label id="campoMes">Mês<select id="mes"></select></label>
-          <label>Ano<input id="ano" type="number" min="2000" max="2100"></label>
-          <button id="consultar" type="button">Consultar</button>
+  </head>
+  <body>
+    <header class="cabecalho">
+      <a href="../admin.html" class="logo"
+        ><img src="../../menu/logo-lilas.jpg" alt="Logo da Lila's"
+      /></a>
+      <a href="../admin.html" class="botao-voltar">Voltar à administração</a>
+    </header>
+    <main class="pagina-despesas">
+      <section class="apresentacao">
+        <p class="subtitulo">ADMINISTRAÇÃO DA LILA'S</p>
+        <h1>Gerenciamento de Despesas 🧾</h1>
+        <p class="descricao">
+          Cadastre os gastos e acompanhe as despesas da loja.
+        </p>
+      </section>
+      <section class="painel-despesas">
+        <div class="titulo-painel">
+          <h2>Cadastrar ou alterar despesa</h2>
+          <p>Registre os gastos da Lila's de forma organizada.</p>
         </div>
-        <div class="indicadores"><div>Unidades vendidas<strong id="unidades">—</strong></div><div>Receita<strong id="receitas">—</strong></div><div>Despesas<strong id="total">—</strong></div><div>Lucro / resultado<strong id="resultado">—</strong></div></div>
-        <div class="acoes"><button id="pdf" type="button">📄 Salvar em PDF</button><button id="excel" type="button">📊 Salvar no Excel (.xls)</button></div>
-        <div class="tabela"><table>
-            
-        <thead><tr><th>Venda</th><th>Data</th><th>Nome da despesa</th><th>Categoria</th><th>Descrição</th><th>Qtd.</th><th>Unitário</th><th>Total</th><th>Observações</th><th>Ações</th></tr></thead>
-        <tbody id="linhas"><tr><td colspan="10">Carregando...</td></tr></tbody></table></div>
-      </div>
-    </section>
-    <p id="aviso" role="status"></p>
-  </main>
-  <script src="despesas.js"></script>
-</body>
+        <div class="conteudo-painel">
+          <form id="form">
+            <input type="hidden" id="id" />
+            <div class="campos">
+              <label
+                >Venda (opcional)<select id="id_pedido">
+                  <option value="">Despesa geral / sem venda</option>
+                </select></label
+              >
+              <label>Data<input id="data" type="date" required /></label>
+              <label
+                >Nome da despesa<input
+                  id="nome_despesa"
+                  required
+                  maxlength="180"
+                  placeholder="Ex.: Chocolate"
+              /></label>
+              <label
+                >Categoria<select id="categoria" required>
+                  <option>Ingredientes</option>
+                  <option>Embalagens</option>
+                  <option>Transporte</option>
+                  <option>Energia</option>
+                  <option>Água</option>
+                  <option>Equipamentos</option>
+                  <option>Outros</option>
+                </select></label
+              >
+              <label
+                >Descrição<input
+                  id="descricao"
+                  required
+                  maxlength="180"
+                  placeholder="Ex.: Chocolate meio amargo"
+              /></label>
+              <label
+                >Qtd.<input
+                  id="quantidade"
+                  type="number"
+                  min="0.001"
+                  step="0.001"
+                  value="1"
+                  required
+              /></label>
+              <label
+                >Unitário (R$)<input
+                  id="valor_unitario"
+                  type="number"
+                  min="0"
+                  step="0.0001"
+                  placeholder="0,00"
+              /></label>
+              <label
+                >Total (R$)<input
+                  id="valor"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  required
+                  placeholder="0,00"
+              /></label>
+            </div>
+            <label
+              >Observação (opcional)<textarea
+                id="observacao"
+                rows="2"
+                maxlength="3000"
+              ></textarea>
+            </label>
+            <div class="acoes">
+              <button type="submit" id="salvar">Salvar despesa</button
+              ><button type="button" id="limpar" class="secundario">
+                Cancelar edição
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+      <section class="painel-despesas">
+        <div class="titulo-painel">
+          <h2>Consultar despesas</h2>
+          <p>Filtre os lançamentos e exporte seus relatórios.</p>
+        </div>
+        <div class="conteudo-painel">
+          <div class="filtros">
+            <label
+              >Período<select id="tipo">
+                <option value="mensal">Mensal</option>
+                <option value="anual">Anual</option>
+              </select></label
+            >
+            <label id="campoMes">Mês<select id="mes"></select></label>
+            <label
+              >Ano<input id="ano" type="number" min="2000" max="2100"
+            /></label>
+            <button id="consultar" type="button">Consultar</button>
+          </div>
+          <div class="indicadores">
+            <div>Unidades vendidas<strong id="unidades">—</strong></div>
+            <div>Receita<strong id="receitas">—</strong></div>
+            <div>Despesas<strong id="total">—</strong></div>
+            <div>Lucro / resultado<strong id="resultado">—</strong></div>
+          </div>
+          <div class="acoes">
+            <button id="pdf" type="button">📄 Salvar em PDF</button
+            ><button id="excel" type="button">📊 Salvar no Excel (.xls)</button>
+          </div>
+          <div class="tabela">
+            <table>
+              <thead>
+                <tr>
+                  <th>Venda</th>
+                  <th>Data</th>
+                  <th>Nome da despesa</th>
+                  <th>Categoria</th>
+                  <th>Descrição</th>
+                  <th>Qtd.</th>
+                  <th>Unitário</th>
+                  <th>Total</th>
+                  <th>Observações</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="linhas">
+                <tr>
+                  <td colspan="10">Carregando...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+      <p id="aviso" role="status"></p>
+    </main>
+    <script src="despesas.js"></script>
+  </body>
 </html>

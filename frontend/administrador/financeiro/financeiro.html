@@ -1,30 +1,119 @@
 <!doctype html>
-<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Lila's – Lucros e Relatórios</title><link rel="stylesheet" href="financeiro.css"></head>
-<body>
-<header class="cabecalho"><a href="../admin.html" class="logo"><img src="../../menu/logo-lilas.jpg" alt="Logo da Lila's"></a><a href="../admin.html" class="botao-voltar">Voltar à administração</a></header>
-<main class="pagina">
-<section class="apresentacao"><p class="subtitulo">ADMINISTRAÇÃO DA LILA'S</p><h1>Lucros e Relatórios 📊</h1><p>Acompanhe o desempenho financeiro do seu negócio.</p></section>
-<section class="painel"><div class="titulo-painel"><h2>Período do relatório</h2></div><div class="conteudo filtros">
-<label>Visualização<select id="tipo"><option value="mensal">Mensal</option><option value="anual">Anual</option></select></label>
-<label id="campoMes">Mês<select id="mes"></select></label>
-<label>Ano<input id="ano" type="number" min="2000" max="2100"></label>
-<button id="consultar" type="button">Atualizar gráficos</button></div></section>
-<section class="indicadores">
-<article class="indicador indicador-principal"><span>Receitas recebidas</span><strong id="receitas">—</strong></article>
-<article class="indicador destaque indicador-principal"><span>Resultado financeiro</span><strong id="resultado">—</strong></article>
-<article class="indicador"><span>Despesas</span><strong id="despesas">—</strong></article>
-<article class="indicador"><span>Reembolsos realizados</span><strong id="reembolsos">—</strong></article>
-<article class="indicador"><span>Pedidos pagos no período</span><strong id="vendas">—</strong></article>
-<article class="indicador"><span>Unidades de pedidos não cancelados*</span><strong id="unidades">—</strong></article>
-<article class="indicador"><span>Pedidos pagos depois cancelados*</span><strong id="pedidosCancelados">—</strong></article>
-<article class="indicador"><span>Unidades desses pedidos cancelados*</span><strong id="unidadesCanceladas">—</strong></article>
-</section>
-<section class="grade">
-<article class="painel"><div class="titulo-painel"><h2>Receitas, despesas e resultado</h2></div><div class="conteudo"><div id="graficoPrincipal" class="grafico" role="img" aria-label="Gráfico financeiro"></div></div></article>
-<article class="painel"><div class="titulo-painel"><h2>Despesas por categoria</h2></div><div class="conteudo"><div id="graficoCategorias" class="grafico" role="img" aria-label="Despesas por categoria"></div></div></article>
-<article class="painel largura-total"><div class="titulo-painel"><h2>Produtos e sabores mais vendidos</h2></div><div class="conteudo"><div id="graficoProdutos" class="grafico" role="img" aria-label="Produtos mais vendidos"></div></div></article>
-</section>
-<p id="aviso" role="status"></p>
-<p class="nota">* Pedidos pagos incluem os posteriormente cancelados. Unidades e ranking consideram somente pedidos não cancelados; os cancelados aparecem em indicadores separados. Os indicadores de pedidos usam a data de confirmação do pagamento, não a data do cancelamento. Receitas incluem pagamentos confirmados; reembolsos são abatidos quando realizados. O resultado é simplificado e depende do registro completo das despesas. Vendas presenciais entram quando cadastradas como pedidos e confirmadas como pagas.</p>
-</main><script src="financeiro.js"></script></body></html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lila's – Lucros e Relatórios</title>
+    <link rel="stylesheet" href="financeiro.css" />
+  </head>
+  <body>
+    <header class="cabecalho">
+      <a href="../admin.html" class="logo"
+        ><img src="../../menu/logo-lilas.jpg" alt="Logo da Lila's" /></a
+      ><a href="../admin.html" class="botao-voltar">Voltar à administração</a>
+    </header>
+    <main class="pagina">
+      <section class="apresentacao">
+        <p class="subtitulo">ADMINISTRAÇÃO DA LILA'S</p>
+        <h1>Lucros e Relatórios 📊</h1>
+        <p>Acompanhe o desempenho financeiro do seu negócio.</p>
+      </section>
+      <section class="painel">
+        <div class="titulo-painel"><h2>Período do relatório</h2></div>
+        <div class="conteudo filtros">
+          <label
+            >Visualização<select id="tipo">
+              <option value="mensal">Mensal</option>
+              <option value="anual">Anual</option>
+            </select></label
+          >
+          <label id="campoMes">Mês<select id="mes"></select></label>
+          <label
+            >Ano<input id="ano" type="number" min="2000" max="2100"
+          /></label>
+          <button id="consultar" type="button">Atualizar gráficos</button>
+        </div>
+      </section>
+      <section class="indicadores">
+        <article class="indicador indicador-principal">
+          <span>Receitas recebidas</span><strong id="receitas">—</strong>
+        </article>
+        <article class="indicador destaque indicador-principal">
+          <span>Resultado financeiro</span><strong id="resultado">—</strong>
+        </article>
+        <article class="indicador">
+          <span>Despesas</span><strong id="despesas">—</strong>
+        </article>
+        <article class="indicador">
+          <span>Reembolsos realizados</span><strong id="reembolsos">—</strong>
+        </article>
+        <article class="indicador">
+          <span>Pedidos pagos no período</span><strong id="vendas">—</strong>
+        </article>
+        <article class="indicador">
+          <span>Unidades de pedidos não cancelados*</span
+          ><strong id="unidades">—</strong>
+        </article>
+        <article class="indicador">
+          <span>Pedidos pagos depois cancelados*</span
+          ><strong id="pedidosCancelados">—</strong>
+        </article>
+        <article class="indicador">
+          <span>Unidades desses pedidos cancelados*</span
+          ><strong id="unidadesCanceladas">—</strong>
+        </article>
+      </section>
+      <section class="grade">
+        <article class="painel">
+          <div class="titulo-painel">
+            <h2>Receitas, despesas e resultado</h2>
+          </div>
+          <div class="conteudo">
+            <div
+              id="graficoPrincipal"
+              class="grafico"
+              role="img"
+              aria-label="Gráfico financeiro"
+            ></div>
+          </div>
+        </article>
+        <article class="painel">
+          <div class="titulo-painel"><h2>Despesas por categoria</h2></div>
+          <div class="conteudo">
+            <div
+              id="graficoCategorias"
+              class="grafico"
+              role="img"
+              aria-label="Despesas por categoria"
+            ></div>
+          </div>
+        </article>
+        <article class="painel largura-total">
+          <div class="titulo-painel">
+            <h2>Produtos e sabores mais vendidos</h2>
+          </div>
+          <div class="conteudo">
+            <div
+              id="graficoProdutos"
+              class="grafico"
+              role="img"
+              aria-label="Produtos mais vendidos"
+            ></div>
+          </div>
+        </article>
+      </section>
+      <p id="aviso" role="status"></p>
+      <p class="nota">
+        * Pedidos pagos incluem os posteriormente cancelados. Unidades e ranking
+        consideram somente pedidos não cancelados; os cancelados aparecem em
+        indicadores separados. Os indicadores de pedidos usam a data de
+        confirmação do pagamento, não a data do cancelamento. Receitas incluem
+        pagamentos confirmados; reembolsos são abatidos quando realizados. O
+        resultado é simplificado e depende do registro completo das despesas.
+        Vendas presenciais entram quando cadastradas como pedidos e confirmadas
+        como pagas.
+      </p>
+    </main>
+    <script src="financeiro.js"></script>
+  </body>
+</html>

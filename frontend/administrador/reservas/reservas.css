@@ -1,7 +1,38 @@
 @import url("../despesas/despesas.css");
-.pagina-despesas{max-width:1150px}.campos{grid-template-columns:repeat(3,minmax(0,1fr))}.tabela table{min-width:800px}.indicadores{grid-template-columns:repeat(4,minmax(0,1fr))}@media(max-width:750px){.campos,.indicadores{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.pagina-despesas {
+  max-width: 1150px;
+}
+.campos {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.tabela table {
+  min-width: 800px;
+}
+.indicadores {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+@media (max-width: 750px) {
+  .campos,
+  .indicadores {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
 
 /* Rolagem interna com cabeçalho fixo */
-.tabela {max-height:360px; overflow:auto; scrollbar-gutter:stable; scrollbar-color:#8b654a #f6e3a4;}
-.tabela > table {border-collapse:separate; border-spacing:0;}
-.tabela > table > thead > tr > th {position:sticky;top:0;z-index:3;background:#5C3A2E;color:#FFE49A;}
+.tabela {
+  max-height: 360px;
+  overflow: auto;
+  scrollbar-gutter: stable;
+  scrollbar-color: #8b654a #f6e3a4;
+}
+.tabela > table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+.tabela > table > thead > tr > th {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: #5c3a2e;
+  color: #ffe49a;
+}

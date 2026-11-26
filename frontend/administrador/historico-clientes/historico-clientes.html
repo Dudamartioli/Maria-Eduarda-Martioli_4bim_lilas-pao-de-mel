@@ -1,11 +1,98 @@
-<!DOCTYPE html>
-<html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Lila's - Histórico de Clientes</title><link rel="stylesheet" href="historico-clientes.css"><script src="historico-clientes.js" defer></script>
-    <link rel="stylesheet" href="../../alertas/lilas-alertas.css">
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Lila's - Histórico de Clientes</title>
+    <link rel="stylesheet" href="historico-clientes.css" />
+    <script src="historico-clientes.js" defer></script>
+    <link rel="stylesheet" href="../../alertas/lilas-alertas.css" />
     <script src="../../alertas/lilas-alertas.js" defer></script>
-</head>
-<body><header><a href="../usuarios/usuarios.html" class="logo"><img src="../../menu/logo-lilas.jpg" alt="Logo da Lila's"></a><a class="botao" href="../usuarios/usuarios.html">Voltar aos usuários</a></header>
-<main id="conteudo" hidden><div class="titulo"><p>ADMINISTRAÇÃO DA LILA'S</p><h1>Histórico de Clientes</h1><p>Consulte compras concluídas e descubra seus clientes mais fiéis.</p></div>
-<section class="painel filtros"><label>Selecionar cliente<select id="cliente"><option value="">Todos os clientes</option></select></label><label>Ano<select id="ano"><option value="">Todos os anos</option></select></label><label>Classificar ranking por<select id="criterio"><option value="pedidos_finalizados">Mais pedidos finalizados</option><option value="total_gasto">Maior valor gasto</option><option value="unidades">Mais unidades compradas</option></select></label></section>
-<div class="indicadores"><article><span>Pedidos finalizados</span><strong id="pedidos">0</strong></article><article><span>Total gasto</span><strong id="gasto">R$ 0,00</strong></article><article><span>Unidades compradas</span><strong id="unidades">0</strong></article><article><span>Pedidos em andamento</span><strong id="andamento">0</strong></article></div>
-<section class="painel"><h2>Ranking de clientes</h2><p class="dica">Somente pedidos concluídos entram no ranking.</p><div class="rolagem"><table><thead><tr><th>Posição</th><th>Cliente</th><th>Pedidos finalizados</th><th>Valor gasto</th><th>Unidades</th></tr></thead><tbody id="ranking"></tbody></table></div></section>
-<section class="painel" id="secaoPedidos" hidden><h2>Histórico de pedidos: <span id="nomeCliente"></span></h2><p class="dica">Pedidos cancelados permanecem no histórico, mas não entram no ranking.</p><div class="rolagem"><table><thead><tr><th>Pedido</th><th>Data</th><th>Unidades</th><th>Valor</th><th>Status</th></tr></thead><tbody id="historico"></tbody></table></div></section></main><p id="aviso">Verificando acesso administrativo...</p></body></html>
+  </head>
+  <body>
+    <header>
+      <a href="../usuarios/usuarios.html" class="logo"
+        ><img src="../../menu/logo-lilas.jpg" alt="Logo da Lila's" /></a
+      ><a class="botao" href="../usuarios/usuarios.html">Voltar aos usuários</a>
+    </header>
+    <main id="conteudo" hidden>
+      <div class="titulo">
+        <p>ADMINISTRAÇÃO DA LILA'S</p>
+        <h1>Histórico de Clientes</h1>
+        <p>Consulte compras concluídas e descubra seus clientes mais fiéis.</p>
+      </div>
+      <section class="painel filtros">
+        <label
+          >Selecionar cliente<select id="cliente">
+            <option value="">Todos os clientes</option>
+          </select></label
+        ><label
+          >Ano<select id="ano">
+            <option value="">Todos os anos</option>
+          </select></label
+        ><label
+          >Classificar ranking por<select id="criterio">
+            <option value="pedidos_finalizados">
+              Mais pedidos finalizados
+            </option>
+            <option value="total_gasto">Maior valor gasto</option>
+            <option value="unidades">Mais unidades compradas</option>
+          </select></label
+        >
+      </section>
+      <div class="indicadores">
+        <article>
+          <span>Pedidos finalizados</span><strong id="pedidos">0</strong>
+        </article>
+        <article>
+          <span>Total gasto</span><strong id="gasto">R$ 0,00</strong>
+        </article>
+        <article>
+          <span>Unidades compradas</span><strong id="unidades">0</strong>
+        </article>
+        <article>
+          <span>Pedidos em andamento</span><strong id="andamento">0</strong>
+        </article>
+      </div>
+      <section class="painel">
+        <h2>Ranking de clientes</h2>
+        <p class="dica">Somente pedidos concluídos entram no ranking.</p>
+        <div class="rolagem">
+          <table>
+            <thead>
+              <tr>
+                <th>Posição</th>
+                <th>Cliente</th>
+                <th>Pedidos finalizados</th>
+                <th>Valor gasto</th>
+                <th>Unidades</th>
+              </tr>
+            </thead>
+            <tbody id="ranking"></tbody>
+          </table>
+        </div>
+      </section>
+      <section class="painel" id="secaoPedidos" hidden>
+        <h2>Histórico de pedidos: <span id="nomeCliente"></span></h2>
+        <p class="dica">
+          Pedidos cancelados permanecem no histórico, mas não entram no ranking.
+        </p>
+        <div class="rolagem">
+          <table>
+            <thead>
+              <tr>
+                <th>Pedido</th>
+                <th>Data</th>
+                <th>Unidades</th>
+                <th>Valor</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="historico"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+    <p id="aviso">Verificando acesso administrativo...</p>
+  </body>
+</html>

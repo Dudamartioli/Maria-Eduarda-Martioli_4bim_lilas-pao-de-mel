@@ -1,67 +1,141 @@
 <!doctype html>
 <html lang="pt-BR">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Mensagens promocionais | Lila's</title>
-  <link rel="stylesheet" href="mensagens.css">
-  <link rel="stylesheet" href="../../alertas/lilas-alertas.css">
-  <script src="../../alertas/lilas-alertas.js" defer></script>
-  <script src="mensagens.js" defer></script>
-</head>
-<body>
-  <header class="cabecalho">
-    <a class="logo" href="../cupons/cupons.html" aria-label="Voltar aos cupons"><img src="../../menu/logo-lilas.jpg" alt="Logo da Lila's"></a>
-    <a class="btn voltar" href="../cupons/cupons.html">Voltar aos cupons</a>
-  </header>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mensagens promocionais | Lila's</title>
+    <link rel="stylesheet" href="mensagens.css" />
+    <link rel="stylesheet" href="../../alertas/lilas-alertas.css" />
+    <script src="../../alertas/lilas-alertas.js" defer></script>
+    <script src="mensagens.js" defer></script>
+  </head>
+  <body>
+    <header class="cabecalho">
+      <a
+        class="logo"
+        href="../cupons/cupons.html"
+        aria-label="Voltar aos cupons"
+        ><img src="../../menu/logo-lilas.jpg" alt="Logo da Lila's"
+      /></a>
+      <a class="btn voltar" href="../cupons/cupons.html">Voltar aos cupons</a>
+    </header>
 
-  <main class="pagina">
-    <section class="apresentacao">
-      <p class="sub">ADMINISTRAÇÃO DA LILA'S</p>
-      <h1>Gerenciamento de Mensagens 🍯</h1>
-      <p>Crie avisos para a página inicial.</p>
-    </section>
-
-    <div class="colunas">
-      <section class="cartao">
-        <div class="titulo-cartao"><h2>Cadastrar mensagem</h2><p>Preencha os campos abaixo para criar uma nova mensagem promocional.</p></div>
-        <form id="form" class="formulario">
-          <div class="grade-formulario">
-            <label>Título<input id="titulo" maxlength="120" required placeholder="Ex: Seja bem-vindo(a) à Lila's!"></label>
-            <label>Cupom vinculado<select id="cupom"><option value="">Sem cupom</option></select></label>
-            <label>Mensagem<textarea id="descricao" maxlength="1200" required rows="3" placeholder="Ex: Que bom ter você por aqui!"></textarea></label>
-            <label>Texto do botão<input id="texto" maxlength="60" required value="Aproveitar agora"></label>
-            <label>Destino<select id="destino"><option value="produtos">Produtos</option><option value="carrinho">Carrinho</option><option value="login">Login</option></select></label>
-            <label>Quando mostrar<select id="frequencia"><option value="primeira">Primeira visita durante a campanha</option><option value="sessao">Uma vez por sessão</option><option value="sempre">Toda visita à página inicial</option></select></label>
-            <label>Prioridade (maior aparece primeiro)<input id="prioridade" type="number" min="0" max="9999" value="0"></label>
-            <label>Exibição<select id="ativo"><option value="true">Ativa</option><option value="false">Desativada</option></select></label>
-          </div>
-          <div class="botoes"><button class="btn" type="submit">Salvar mensagem</button><button class="btn" type="button" id="limpar">Novo cadastro</button></div>
-        </form>
-        <p id="aviso" role="status"></p>
+    <main class="pagina">
+      <section class="apresentacao">
+        <p class="sub">ADMINISTRAÇÃO DA LILA'S</p>
+        <h1>Gerenciamento de Mensagens 🍯</h1>
+        <p>Crie avisos para a página inicial.</p>
       </section>
 
-      <section class="cartao">
-        <div class="titulo-cartao"><h2>Pré-visualização</h2></div>
-        <div class="area-previa">
-          <div class="previa">
-            <div class="chocolate-topo" aria-hidden="true"></div>
-            <div class="decor">🍯 Lila's — Pão de Mel</div>
-            <h2 id="prevTitulo">Seja bem-vindo(a) à Lila's!</h2>
-            <p id="prevDescricao">Sua mensagem aparecerá aqui.</p>
-            <div id="prevCupom" class="cupom" hidden></div>
-            <span id="prevBotao" class="btn">Aproveitar agora</span>
-            <div class="chocolate-base" aria-hidden="true"></div>
+      <div class="colunas">
+        <section class="cartao">
+          <div class="titulo-cartao">
+            <h2>Cadastrar mensagem</h2>
+            <p>
+              Preencha os campos abaixo para criar uma nova mensagem
+              promocional.
+            </p>
           </div>
-          <p class="dica"><span aria-hidden="true">ⓘ</span> A primeira visita é identificada neste navegador. Outro navegador ou a limpeza dos dados pode mostrar a mensagem novamente. Mensagens com cupom inativo ou vencido não aparecem.</p>
+          <form id="form" class="formulario">
+            <div class="grade-formulario">
+              <label
+                >Título<input
+                  id="titulo"
+                  maxlength="120"
+                  required
+                  placeholder="Ex: Seja bem-vindo(a) à Lila's!"
+              /></label>
+              <label
+                >Cupom vinculado<select id="cupom">
+                  <option value="">Sem cupom</option>
+                </select></label
+              >
+              <label
+                >Mensagem<textarea
+                  id="descricao"
+                  maxlength="1200"
+                  required
+                  rows="3"
+                  placeholder="Ex: Que bom ter você por aqui!"
+                ></textarea>
+              </label>
+              <label
+                >Texto do botão<input
+                  id="texto"
+                  maxlength="60"
+                  required
+                  value="Aproveitar agora"
+              /></label>
+              <label
+                >Destino<select id="destino">
+                  <option value="produtos">Produtos</option>
+                  <option value="carrinho">Carrinho</option>
+                  <option value="login">Login</option>
+                </select></label
+              >
+              <label
+                >Quando mostrar<select id="frequencia">
+                  <option value="primeira">
+                    Primeira visita durante a campanha
+                  </option>
+                  <option value="sessao">Uma vez por sessão</option>
+                  <option value="sempre">Toda visita à página inicial</option>
+                </select></label
+              >
+              <label
+                >Prioridade (maior aparece primeiro)<input
+                  id="prioridade"
+                  type="number"
+                  min="0"
+                  max="9999"
+                  value="0"
+              /></label>
+              <label
+                >Exibição<select id="ativo">
+                  <option value="true">Ativa</option>
+                  <option value="false">Desativada</option>
+                </select></label
+              >
+            </div>
+            <div class="botoes">
+              <button class="btn" type="submit">Salvar mensagem</button
+              ><button class="btn" type="button" id="limpar">
+                Novo cadastro
+              </button>
+            </div>
+          </form>
+          <p id="aviso" role="status"></p>
+        </section>
+
+        <section class="cartao">
+          <div class="titulo-cartao"><h2>Pré-visualização</h2></div>
+          <div class="area-previa">
+            <div class="previa">
+              <div class="chocolate-topo" aria-hidden="true"></div>
+              <div class="decor">🍯 Lila's — Pão de Mel</div>
+              <h2 id="prevTitulo">Seja bem-vindo(a) à Lila's!</h2>
+              <p id="prevDescricao">Sua mensagem aparecerá aqui.</p>
+              <div id="prevCupom" class="cupom" hidden></div>
+              <span id="prevBotao" class="btn">Aproveitar agora</span>
+              <div class="chocolate-base" aria-hidden="true"></div>
+            </div>
+            <p class="dica">
+              <span aria-hidden="true">ⓘ</span> A primeira visita é identificada
+              neste navegador. Outro navegador ou a limpeza dos dados pode
+              mostrar a mensagem novamente. Mensagens com cupom inativo ou
+              vencido não aparecem.
+            </p>
+          </div>
+        </section>
+      </div>
+
+      <section class="cartao cadastradas">
+        <div class="titulo-cartao">
+          <h2>Mensagens cadastradas</h2>
+          <p>Consulte, edite ou desative suas mensagens promocionais.</p>
         </div>
+        <div id="lista"></div>
       </section>
-    </div>
-
-    <section class="cartao cadastradas">
-      <div class="titulo-cartao"><h2>Mensagens cadastradas</h2><p>Consulte, edite ou desative suas mensagens promocionais.</p></div>
-      <div id="lista"></div>
-    </section>
-  </main>
-</body>
+    </main>
+  </body>
 </html>

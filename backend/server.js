@@ -16,13 +16,12 @@ dotenv.config();
 const app = express();
 
 // Configura o acesso do frontend pelo Live Server
-app.use(cors({
-    origin: [
-        "http://localhost:5500",
-        "http://127.0.0.1:5500"
-    ],
-    credentials: true
-}));
+app.use(
+  cors({
+    origin: ["http://localhost:5500", "http://127.0.0.1:5500"],
+    credentials: true,
+  }),
+);
 
 // Permite receber dados JSON
 app.use(express.json());
@@ -94,54 +93,39 @@ app.use(express.static(pastaFrontend));
 const jwt = require("jsonwebtoken");
 
 // Decide a página inicial
-app.get("/", function(req, res) {
+app.get("/", function (req, res) {
+  // Recupera o token salvo no cookie
+  const token = req.cookies.token;
 
-    // Recupera o token salvo no cookie
-    const token = req.cookies.token;
+  // Visitante sem login: abre a loja
+  if (!token) {
+    return res.redirect("/menu/menu.html");
+  }
 
-    // Visitante sem login: abre a loja
-    if (!token) {
+  try {
+    // Verifica se o token é válido
+    const usuario = jwt.verify(token, process.env.JWT_SECRET);
 
-        return res.redirect("/menu/menu.html");
+    // Administrador: abre o painel
+    if (usuario.tipo_usuario === "admin") {
+      return res.redirect("/administrador/admin.html");
     }
 
-    try {
-
-        // Verifica se o token é válido
-        const usuario = jwt.verify(
-            token,
-            process.env.JWT_SECRET
-        );
-
-        // Administrador: abre o painel
-        if (usuario.tipo_usuario === "admin") {
-
-            return res.redirect(
-                "/administrador/admin.html"
-            );
-        }
-
-        // Usuário com os dois tipos de acesso
-        if (usuario.tipo_usuario === "ambos") {
-
-            return res.redirect(
-                "/escolher-acesso/escolher-acesso.html"
-            );
-        }
-
-        // Cliente: abre a loja
-        return res.redirect("/menu/menu.html");
-
-    } catch (erro) {
-
-        // Token expirado ou inválido
-        res.clearCookie("token");
-
-        // Abre a loja como visitante
-        return res.redirect("/menu/menu.html");
+    // Usuário com os dois tipos de acesso
+    if (usuario.tipo_usuario === "ambos") {
+      return res.redirect("/escolher-acesso/escolher-acesso.html");
     }
+
+    // Cliente: abre a loja
+    return res.redirect("/menu/menu.html");
+  } catch (erro) {
+    // Token expirado ou inválido
+    res.clearCookie("token");
+
+    // Abre a loja como visitante
+    return res.redirect("/menu/menu.html");
+  }
 });
-
 
 // ========================================
 // INICIAR SERVIDOR
@@ -152,10 +136,7 @@ const PORT = 3001;
 
 // Inicia o servidor
 app.listen(PORT, () => {
+  console.log("Servidor executando na porta " + PORT);
 
-    console.log("Servidor executando na porta " + PORT);
-
-    console.log(
-        "Site disponível em http://localhost:" + PORT
-    );
+  console.log("Site disponível em http://localhost:" + PORT);
 });

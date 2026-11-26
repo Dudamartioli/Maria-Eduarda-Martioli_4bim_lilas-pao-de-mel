@@ -178,7 +178,7 @@ function mostrarResumo(pedido) {
 async function procurar(id) {
 
     if (!id || Number(id) <= 0) {
-        botaoProcurar.focus();
+        lista.replaceChildren(elemento("p", "Informe um ID válido."));
         return;
     }
 
@@ -192,7 +192,7 @@ async function procurar(id) {
 
     } catch (erro) {
         if (/pedido n[aã]o encontrado/i.test(erro.message)) {
-            return;
+            lista.replaceChildren(elemento("p", "Pedido não encontrado."));
         } else {
             await LilaAvisos.alerta(erro.message);
         }
@@ -846,16 +846,16 @@ async function carregarOpcoesManuais(){
  d.usuarios.forEach(u=>sel.append(new Option(`${u.nome} (${u.email})`,u.id_usuario)));
 }
 function limparManual(){formManual.reset();campoManual('id').value='';itensManual.replaceChildren();adicionarLinhaManual();avisoManual.textContent='';campoManual('frete').value='0';calcularManual();}
-document.getElementById('inserirManual').onclick=()=>{limparManual();definirModoManual('inserir');};
+document.getElementById('inserirManual').onclick=()=>{limparManual();definirModoManual('inserir');avisoManual.textContent='Novo pedido: preencha os dados e clique em Salvar.';};
 document.getElementById('alterarManual').onclick=async()=>{
  const id=Number(campoManual('id').value);
- if(!Number.isSafeInteger(id)||id<1){campoManual('id').focus();return;}
+ if(!Number.isSafeInteger(id)||id<1){avisoManual.textContent='Digite o ID e clique em Buscar antes de alterar.';campoManual('id').focus();return;}
  await editarPedidoManual(id);
 };
 document.getElementById('cancelarManual').onclick=()=>{limparManual();definirModoManual(null);};
 document.getElementById('buscarIdManual').onclick=async()=>{
  const id=Number(campoManual('id').value);
- if(!Number.isSafeInteger(id)||id<1){campoManual('id').focus();return;}
+ if(!Number.isSafeInteger(id)||id<1){avisoManual.textContent='Digite um ID válido para buscar.';campoManual('id').focus();return;}
  await editarPedidoManual(id, false);
 };
 document.getElementById('adicionarItemManual').onclick=()=>adicionarLinhaManual();
@@ -873,13 +873,14 @@ async function editarPedidoManual(id, permitirEdicao = true){
   campoManual('id').value=pedido.id_pedido;
   itensManual.replaceChildren();(pedido.itens||[]).forEach(i=>adicionarLinhaManual(i.id_produto,i.quantidade));
   calcularManual();definirModoManual(permitirEdicao ? 'alterar' : null);
-
+  avisoManual.textContent = permitirEdicao ? 'Edição liberada. Faça as alterações e clique em Salvar.' : 'Pedido encontrado. Clique em Alterar para liberar os campos, se permitido.';
   secaoCadastro.scrollIntoView({behavior:'smooth',block:'start'});
  }catch(e){
   if (/pedido n[aã]o encontrado/i.test(e.message)) {
    limparManual();
    campoManual('id').value = id;
    definirModoManual(null);
+   avisoManual.textContent = 'Pedido não encontrado. Clique em Inserir para cadastrar um novo pedido.';
    campoManual('id').focus();
    return;
   }
@@ -887,7 +888,7 @@ async function editarPedidoManual(id, permitirEdicao = true){
  }
 }
 formManual.onsubmit=async e=>{
- e.preventDefault();avisoManual.textContent='';
+ e.preventDefault();avisoManual.textContent='Salvando...';
  try{
   const id=campoManual('id').value;
   if (!modoManual) throw new Error('Clique em Inserir ou Alterar antes de salvar.');
@@ -902,8 +903,8 @@ formManual.onsubmit=async e=>{
   if(d.modalidade==='retirada')d.frete=0;
   const alterando = modoManual === 'alterar';
   const resp=await requisicao(alterando?`/pagamentos-admin/pedidos-cadastro/${id}`:'/pagamentos-admin/pedidos-cadastro',{method:alterando?'PUT':'POST',body:JSON.stringify(d)});
-  const pedidoId=resp.id_pedido;
-  limparManual();definirModoManual(null);
+  avisoManual.textContent=resp.mensagem;const pedidoId=resp.id_pedido;
+  limparManual();definirModoManual(null);avisoManual.textContent=resp.mensagem;
   await carregar();await procurar(pedidoId);
  }catch(erro){avisoManual.textContent=erro.message}
 };

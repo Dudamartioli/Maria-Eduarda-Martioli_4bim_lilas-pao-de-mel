@@ -91,6 +91,37 @@ O desenvolvimento envolveu compreender as necessidades da usuária, definir regr
 
 </details>
 
+## 🗄️ Banco de dados
+
+O banco de dados foi desenvolvido utilizando PostgreSQL,
+contemplando os relacionamentos exigidos na disciplina
+de Desenvolvimento Web 1.
+
+### Estrutura do banco de dados
+
+<p align="center">
+  <img src="lilas-diagramas/01-banco.svg" width="100%">
+</p>
+
+### Relacionamentos
+
+<p align="center">
+  <img src="lilas-diagramas/02-muitos-para-um.svg" width="49%">
+  <img src="lilas-diagramas/03-muitos-para-muitos.svg" width="49%">
+</p>
+
+<p align="center">
+  <img src="lilas-diagramas/04-um-para-um.svg" width="49%">
+  <img src="lilas-diagramas/05-independentes.svg" width="49%">
+</p>
+
+### Requisitos atendidos
+
+<p align="center">
+  <img src="lilas-diagramas/06-resumo.svg" width="100%">
+</p>
+
+
 
 <!-- ======================================== -->
 <!--        GALERIA DO PROJETO LILA'S        -->

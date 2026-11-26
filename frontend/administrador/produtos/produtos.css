@@ -1145,3 +1145,44 @@ table tbody button:active {
     grid-column: 1 / -1;
     text-align: center;
 }
+/* CORREÇÃO DO CONFLITO COM O CSS DE CATEGORIAS */
+
+html,
+body {
+    height: auto !important;
+    min-height: 100vh;
+    overflow: visible !important;
+}
+
+main#conteudo {
+    height: auto !important;
+    min-height: auto !important;
+    max-height: none !important;
+    flex: none !important;
+    overflow: visible !important;
+}
+
+.area-gerenciamento {
+    height: auto !important;
+    flex: none !important;
+    grid-template-rows: auto auto auto;
+    align-items: start;
+    gap: 25px;
+}
+
+.area-gerenciamento > .cartao {
+    height: auto !important;
+    min-height: max-content !important;
+    max-height: none !important;
+}
+
+.cartao-dados {
+    grid-auto-rows: auto;
+}
+
+.tabela-rolagem {
+    min-height: 200px;
+    max-height: 360px;
+    flex: none !important;
+    overflow: auto;
+}

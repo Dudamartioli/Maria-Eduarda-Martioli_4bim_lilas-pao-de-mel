@@ -178,7 +178,7 @@ function mostrarResumo(pedido) {
 async function procurar(id) {
 
     if (!id || Number(id) <= 0) {
-        await LilaAvisos.alerta("Informe um ID válido.");
+        botaoProcurar.focus();
         return;
     }
 
@@ -192,7 +192,7 @@ async function procurar(id) {
 
     } catch (erro) {
         if (/pedido n[aã]o encontrado/i.test(erro.message)) {
-            lista.replaceChildren(elemento("p", "Pedido não encontrado."));
+            return;
         } else {
             await LilaAvisos.alerta(erro.message);
         }
@@ -660,7 +660,7 @@ secaoCadastro.innerHTML=`<div class="cadastro-topo"><h2>🍯 Cadastrar ou altera
 </label><button type="button" id="buscarIdManual" class="buscar-id-manual">Buscar pedido pelo ID</button><label>Cliente<select name="id_usuario" required></select></label>
 <label>Modalidade<select name="modalidade"><option value="retirada">Retirada</option><option value="entrega">Entrega</option></select></label>
 <label>Data desejada<input name="data_desejada" type="date" required></label>
-<label>Horário previsto de retirada ou entrega *<input name="horario_desejado" type="time" min="08:00" max="20:00" step="60" required><small>Horário em que o cliente precisa do pedido (08h às 20h). Pode ser antecipado mediante combinação.</small></label>
+<label>Horário previsto de retirada ou entrega *<input name="horario_desejado" type="time" min="08:00" max="20:00" step="60" required></label>
 <label>Cidade<input name="cidade" maxlength="60"></label>
 <label>Bairro<input name="bairro" maxlength="100"></label>
 <label>Rua<input name="rua" maxlength="150"></label>
@@ -846,16 +846,16 @@ async function carregarOpcoesManuais(){
  d.usuarios.forEach(u=>sel.append(new Option(`${u.nome} (${u.email})`,u.id_usuario)));
 }
 function limparManual(){formManual.reset();campoManual('id').value='';itensManual.replaceChildren();adicionarLinhaManual();avisoManual.textContent='';campoManual('frete').value='0';calcularManual();}
-document.getElementById('inserirManual').onclick=()=>{limparManual();definirModoManual('inserir');avisoManual.textContent='Novo pedido: preencha os dados e clique em Salvar.';};
+document.getElementById('inserirManual').onclick=()=>{limparManual();definirModoManual('inserir');};
 document.getElementById('alterarManual').onclick=async()=>{
  const id=Number(campoManual('id').value);
- if(!Number.isSafeInteger(id)||id<1){avisoManual.textContent='Digite o ID e clique em Buscar antes de alterar.';campoManual('id').focus();return;}
+ if(!Number.isSafeInteger(id)||id<1){campoManual('id').focus();return;}
  await editarPedidoManual(id);
 };
 document.getElementById('cancelarManual').onclick=()=>{limparManual();definirModoManual(null);};
 document.getElementById('buscarIdManual').onclick=async()=>{
  const id=Number(campoManual('id').value);
- if(!Number.isSafeInteger(id)||id<1){avisoManual.textContent='Digite um ID válido para buscar.';campoManual('id').focus();return;}
+ if(!Number.isSafeInteger(id)||id<1){campoManual('id').focus();return;}
  await editarPedidoManual(id, false);
 };
 document.getElementById('adicionarItemManual').onclick=()=>adicionarLinhaManual();
@@ -873,12 +873,21 @@ async function editarPedidoManual(id, permitirEdicao = true){
   campoManual('id').value=pedido.id_pedido;
   itensManual.replaceChildren();(pedido.itens||[]).forEach(i=>adicionarLinhaManual(i.id_produto,i.quantidade));
   calcularManual();definirModoManual(permitirEdicao ? 'alterar' : null);
-  avisoManual.textContent = permitirEdicao ? 'Edição liberada. Faça as alterações e clique em Salvar.' : 'Pedido encontrado. Clique em Alterar para liberar os campos, se permitido.';
+
   secaoCadastro.scrollIntoView({behavior:'smooth',block:'start'});
- }catch(e){await LilaAvisos.alerta(e.message)}
+ }catch(e){
+  if (/pedido n[aã]o encontrado/i.test(e.message)) {
+   limparManual();
+   campoManual('id').value = id;
+   definirModoManual(null);
+   campoManual('id').focus();
+   return;
+  }
+  avisoManual.textContent = e.message;
+ }
 }
 formManual.onsubmit=async e=>{
- e.preventDefault();avisoManual.textContent='Salvando...';
+ e.preventDefault();avisoManual.textContent='';
  try{
   const id=campoManual('id').value;
   if (!modoManual) throw new Error('Clique em Inserir ou Alterar antes de salvar.');
@@ -893,8 +902,8 @@ formManual.onsubmit=async e=>{
   if(d.modalidade==='retirada')d.frete=0;
   const alterando = modoManual === 'alterar';
   const resp=await requisicao(alterando?`/pagamentos-admin/pedidos-cadastro/${id}`:'/pagamentos-admin/pedidos-cadastro',{method:alterando?'PUT':'POST',body:JSON.stringify(d)});
-  avisoManual.textContent=resp.mensagem;const pedidoId=resp.id_pedido;
-  limparManual();definirModoManual(null);avisoManual.textContent=resp.mensagem;
+  const pedidoId=resp.id_pedido;
+  limparManual();definirModoManual(null);
   await carregar();await procurar(pedidoId);
  }catch(erro){avisoManual.textContent=erro.message}
 };

@@ -50,7 +50,7 @@ router.get('/historico-clientes', async (req, res) => {
               COALESCE(SUM(it.unidades) FILTER (WHERE p.status = 'Concluído'),0)::int AS unidades,
               COUNT(p.id_pedido) FILTER (WHERE p.status NOT IN ('Concluído','Cancelado'))::int AS em_andamento
             FROM usuario u
-            LEFT JOIN pedido_encomenda p ON p.id_usuario=u.id_usuario
+            LEFT JOIN pedido_encomenda p ON p.id_usuario=u.id_usuario AND (p.pix_copia_cola IS NULL OR p.pagamento_finalizado_em IS NOT NULL OR p.status <> 'Aguardando pagamento' OR p.pagamento_status = 'Confirmado')
               AND ($1::int IS NULL OR EXTRACT(YEAR FROM p.criado_em)::int=$1)
             LEFT JOIN LATERAL (SELECT SUM(quantidade)::int AS unidades FROM item_encomenda
                                WHERE id_pedido=p.id_pedido) it ON TRUE
@@ -77,7 +77,7 @@ router.get('/historico-clientes/:id/pedidos', async (req, res) => {
                    COALESCE(SUM(i.quantidade),0)::int AS unidades
             FROM pedido_encomenda p
             LEFT JOIN item_encomenda i ON i.id_pedido=p.id_pedido
-            WHERE p.id_usuario=$1 AND ($2::int IS NULL OR EXTRACT(YEAR FROM p.criado_em)::int=$2)
+            WHERE p.id_usuario=$1 AND (p.pix_copia_cola IS NULL OR p.pagamento_finalizado_em IS NOT NULL OR p.status <> 'Aguardando pagamento' OR p.pagamento_status = 'Confirmado') AND ($2::int IS NULL OR EXTRACT(YEAR FROM p.criado_em)::int=$2)
             GROUP BY p.id_pedido ORDER BY p.criado_em DESC, p.id_pedido DESC`, [req.params.id,ano]);
         res.json({ sucesso: true, pedidos: resultado.rows });
     } catch (erro) {

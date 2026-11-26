@@ -8,7 +8,7 @@ const listar = async (req, res) => {
                     descricao_tipo.descricao_geral,
                     sabor.nome_sabor,
                     sabor.descricao AS descricao_sabor,
-                    categoria.nome_categoria
+                    categoria.nome_categoria, categoria.regra_producao
              FROM produto
              LEFT JOIN descricao_tipo
              ON descricao_tipo.nome_produto = produto.nome_produto

@@ -50,6 +50,7 @@ CREATE TABLE usuario (
 CREATE TABLE categoria (
     id_categoria SERIAL PRIMARY KEY,
     nome_categoria VARCHAR(60) NOT NULL UNIQUE,
+    regra_producao VARCHAR(12) NOT NULL DEFAULT 'encomenda' CHECK (regra_producao IN ('estoque', 'encomenda')),
     descricao VARCHAR(200)
 );
 
@@ -172,10 +173,10 @@ CREATE TABLE pagamento (
 -- CARGA INICIAL - CATEGORIAS
 -- ==========================================
 
-INSERT INTO categoria (nome_categoria, descricao)
+INSERT INTO categoria (nome_categoria, descricao, regra_producao)
 VALUES
-('Normal', 'Paes de mel de tamanho normal'),
-('Mini', 'Mini paes de mel para festas e eventos');
+('Normal', 'Paes de mel de tamanho normal', 'estoque'),
+('Mini', 'Mini paes de mel para festas e eventos', 'encomenda');
 
 
 -- ==========================================

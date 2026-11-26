@@ -47,54 +47,45 @@ router.patch(
             });
         }
 
+        const c = await pool.connect();
         try {
-
-            // Atualizar somente um pedido pertencente ao cliente.
-            // Não confirmar automaticamente o recebimento do Pix.
-            const resultado = await pool.query(`
-                UPDATE pedido_encomenda
-                SET pagamento_finalizado_em =
-                    COALESCE(pagamento_finalizado_em, NOW())
-                WHERE id_pedido = $1
-                  AND id_usuario = $2
-                  AND status = 'Aguardando pagamento'
-                  AND pagamento_status = 'Aguardando pagamento'
-                RETURNING id_pedido
-            `, [
-                id,
-                req.usuario.id_usuario
-            ]);
-
-            if (resultado.rowCount === 0) {
-
-                return res.status(409).json({
-                    sucesso: false,
-                    mensagem:
-                        "Não foi possível finalizar esta etapa. " +
-                        "Verifique se o pedido existe e está aguardando pagamento."
-                });
+            await c.query('BEGIN');
+            const r = await c.query(`SELECT *, data_desejada::text AS data_texto FROM pedido_encomenda
+                WHERE id_pedido=$1 AND id_usuario=$2 FOR UPDATE`, [id, req.usuario.id_usuario]);
+            const pedido = r.rows[0];
+            if (!pedido || pedido.status !== 'Aguardando pagamento' || pedido.pagamento_status !== 'Aguardando pagamento') {
+                await c.query('ROLLBACK');
+                return res.status(409).json({sucesso:false,mensagem:'Pedido indisponível para finalização.'});
             }
-
-            return res.json({
-                sucesso: true,
-                id_pedido: id,
-                mensagem:
-                    "Etapa de pagamento finalizada. " +
-                    "Aguardando confirmação da Lila's."
-            });
-
+            if (!pedido.pagamento_finalizado_em) {
+                const itens = (await c.query(`SELECT i.id_item,i.id_produto,i.quantidade,i.quantidade_reservada,
+                    p.estoque_pronto,p.disponivel,cat.regra_producao
+                    FROM item_encomenda i JOIN produto p ON p.id_produto=i.id_produto
+                    JOIN categoria cat ON cat.id_categoria=p.id_categoria
+                    WHERE i.id_pedido=$1 ORDER BY p.id_produto FOR UPDATE OF p,i`,[id])).rows;
+                if (!itens.length || itens.some(i=>!i.disponivel)) throw new Error('Produto indisponível. Entre em contato com a Lila\'s.');
+                const rapido = itens.reduce((n,i)=>n+Number(i.quantidade),0)<=20 && itens.every(i=>i.regra_producao==='estoque' && Number(i.estoque_pronto)+Number(i.quantidade_reservada)>=Number(i.quantidade));
+                const dias = rapido ? 1 : 7;
+                const hoje = new Intl.DateTimeFormat('en-CA',{timeZone:'America/Sao_Paulo',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());
+                const partes = Object.fromEntries(hoje.map(x=>[x.type,x.value]));
+                const minima = new Date(Date.UTC(+partes.year,+partes.month-1,+partes.day+dias)).toISOString().slice(0,10);
+                if (pedido.data_texto.slice(0,10)<minima) throw new Error('O estoque ou prazo mudou. Revise a data do pedido antes de finalizar. Se já pagou, fale com a Lila\'s.');
+                await require('../services/agenda').verificarAgenda(pedido.data_texto.slice(0,10),dias,c);
+                for (const i of itens) {
+                    const anterior = Number(i.quantidade_reservada);
+                    const reserva = rapido && pedido.data_texto.slice(0,10) < new Date(Date.UTC(+partes.year,+partes.month-1,+partes.day+7)).toISOString().slice(0,10) ? Number(i.quantidade) : 0;
+                    await c.query('UPDATE produto SET estoque_pronto=estoque_pronto+$1 WHERE id_produto=$2',[anterior-reserva,i.id_produto]);
+                    await c.query('UPDATE item_encomenda SET quantidade_reservada=$1 WHERE id_item=$2',[reserva,i.id_item]);
+                }
+                await c.query('UPDATE pedido_encomenda SET pagamento_finalizado_em=NOW() WHERE id_pedido=$1',[id]);
+            }
+            await c.query('COMMIT');
+            return res.json({sucesso:true,id_pedido:id,mensagem:'Etapa de pagamento finalizada. Aguardando confirmação da Lila\'s.'});
         } catch (erro) {
-
-            console.error(
-                "Erro ao finalizar pagamento:",
-                erro
-            );
-
-            return res.status(500).json({
-                sucesso: false,
-                mensagem: "Erro ao finalizar o pagamento."
-            });
-        }
+            await c.query('ROLLBACK');
+            console.error('Erro ao finalizar pagamento:',erro);
+            return res.status(409).json({sucesso:false,mensagem:erro.code ? 'Não foi possível finalizar o pagamento.' : erro.message});
+        } finally { c.release(); }
     }
 );
 
@@ -612,7 +603,7 @@ router.get("/meus-pedidos", verificarAutenticacao, async (req, res) => {
                 COALESCE(SUM(i.quantidade), 0)::integer AS unidades
             FROM pedido_encomenda p
             LEFT JOIN item_encomenda i ON i.id_pedido = p.id_pedido
-            WHERE p.id_usuario = $1
+            WHERE p.id_usuario = $1 AND (p.pix_copia_cola IS NULL OR p.pagamento_finalizado_em IS NOT NULL OR p.status <> 'Aguardando pagamento' OR p.pagamento_status = 'Confirmado')
             GROUP BY p.id_pedido
             ORDER BY p.id_pedido DESC
         `, [req.usuario.id_usuario]);

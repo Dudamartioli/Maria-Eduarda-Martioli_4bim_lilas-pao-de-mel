@@ -720,8 +720,7 @@ function atualizarCalendarioManual() {
 
         quantidadeTotal += quantidade;
 
-        if (!String(produto.nome_categoria)
-            .toLowerCase().includes("normal")) {
+        if (!(produto.regra_producao === "estoque")) {
             possuiMini = true;
         }
 

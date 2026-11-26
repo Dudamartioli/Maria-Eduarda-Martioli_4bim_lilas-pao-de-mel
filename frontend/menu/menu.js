@@ -29,7 +29,7 @@ async function fgrandes() {
 
         // Seleciona somente os pães de mel normais
         const produtos = dados.produtos.filter(function(produto) {
-            return produto.nome_produto.toLowerCase().includes("normal");
+            return produto.regra_producao === "estoque";
         });
 
         // Exibe os produtos grandes
@@ -55,7 +55,7 @@ async function fminis() {
 
         // Seleciona somente os mini pães de mel
         const produtos = dados.produtos.filter(function(produto) {
-            return produto.nome_produto.toLowerCase().includes("mini");
+            return produto.regra_producao === "encomenda";
         });
 
         // Exibe os produtos pequenos

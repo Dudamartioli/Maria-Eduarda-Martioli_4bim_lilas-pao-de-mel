@@ -145,9 +145,9 @@ if (dadosSessao.usuario.tipo_usuario === "admin") {
             const p = produtos.get(item.id_produto);
             if (!p || p.disponivel === false) throw new Error("Há produtos indisponíveis no carrinho.");
             itens.push({id_produto:item.id_produto, quantidade:item.quantidade});
-            if (!String(p.nome_categoria || "").toLowerCase().includes("normal")) contemMini = true;
+            if (!(p.regra_producao === "estoque")) contemMini = true;
             const disponivel = Math.max(0, Number(p.estoque_pronto || 0));
-            if (String(p.nome_categoria || "").toLowerCase().includes("normal") && disponivel < item.quantidade) {
+            if ((p.regra_producao === "estoque") && disponivel < item.quantidade) {
                 produtosSemEstoque.push({
                     produto: p.nome_produto,
                     sabor: p.nome_sabor || "Sem sabor informado",
@@ -164,7 +164,7 @@ if (dadosSessao.usuario.tipo_usuario === "admin") {
             const preco = document.createElement("span"); preco.textContent=valor(subtotal);
             linha.append(nome,preco); resumo.append(linha);
         }
-        definirMinimo(!contemMini && produtosSemEstoque.length === 0 ? 1 : 7);
+        definirMinimo(!contemMini && produtosSemEstoque.length === 0 && itens.reduce((s, i) => s + i.quantidade, 0) <= 20 ? 1 : 7);
         if (!contemMini && produtosSemEstoque.length > 0) {
             const aviso = document.createElement("div");
             aviso.className = "aviso-estoque";

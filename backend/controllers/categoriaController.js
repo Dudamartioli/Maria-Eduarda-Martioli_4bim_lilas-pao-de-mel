@@ -72,13 +72,13 @@ const procurar = async (req, res) => {
 
 const inserir = async (req, res) => {
 
-    const { nome_categoria, descricao } = req.body;
+    const { nome_categoria, descricao, regra_producao } = req.body;
 
-    if (!nome_categoria || !nome_categoria.trim()) {
+    if (!nome_categoria || !nome_categoria.trim() || !["estoque", "encomenda"].includes(regra_producao)) {
 
         return res.status(400).json({
             sucesso: false,
-            mensagem: "Informe o nome da categoria."
+            mensagem: "Informe o nome e a regra de produção da categoria."
         });
     }
 
@@ -86,10 +86,10 @@ const inserir = async (req, res) => {
 
         const resultado = await pool.query(
             `INSERT INTO categoria
-             (nome_categoria, descricao)
-             VALUES ($1, $2)
+             (nome_categoria, descricao, regra_producao)
+             VALUES ($1, $2, $3)
              RETURNING *`,
-            [nome_categoria.trim(), descricao || null]
+            [nome_categoria.trim(), descricao || null, regra_producao]
         );
 
         res.status(201).json({
@@ -123,13 +123,13 @@ const inserir = async (req, res) => {
 
 const alterar = async (req, res) => {
 
-    const { nome_categoria, descricao } = req.body;
+    const { nome_categoria, descricao, regra_producao } = req.body;
 
-    if (!nome_categoria || !nome_categoria.trim()) {
+    if (!nome_categoria || !nome_categoria.trim() || !["estoque", "encomenda"].includes(regra_producao)) {
 
         return res.status(400).json({
             sucesso: false,
-            mensagem: "Informe o nome da categoria."
+            mensagem: "Informe o nome e a regra de produção da categoria."
         });
     }
 
@@ -138,13 +138,13 @@ const alterar = async (req, res) => {
         const resultado = await pool.query(
             `UPDATE categoria
              SET nome_categoria = $1,
-                 descricao = $2
+                 descricao = $2, regra_producao = $4
              WHERE id_categoria = $3
              RETURNING *`,
             [
                 nome_categoria.trim(),
                 descricao || null,
-                req.params.id
+                req.params.id, regra_producao
             ]
         );
 

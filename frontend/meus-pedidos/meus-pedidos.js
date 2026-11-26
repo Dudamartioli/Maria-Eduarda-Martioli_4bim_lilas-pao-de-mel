@@ -269,22 +269,6 @@ function desenharPedido(p) {
         );
     }
 
-    // Permite retornar ao checkout quando aplicável.
-    if (
-        situacao === "aguardando pagamento" &&
-        !p.pagamento_finalizado_em
-    ) {
-
-        acoes.append(
-            criarLink(
-                "Voltar ao checkout",
-                "../checkout/checkout.html",
-                "secundario"
-            )
-        );
-    }
-
-
     /* =================================================
        MONTAGEM DO CARTÃO
        ================================================= */

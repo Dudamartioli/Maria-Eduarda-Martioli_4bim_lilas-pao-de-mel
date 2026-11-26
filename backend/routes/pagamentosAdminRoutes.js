@@ -26,7 +26,7 @@ router.get('/pedidos-cadastro/opcoes', async (req, res) => {
         p.estoque_pronto,
         p.disponivel,
         s.nome_sabor,
-        c.nome_categoria
+        c.nome_categoria, c.regra_producao
     FROM produto p
     LEFT JOIN sabor s ON s.id_sabor = p.id_sabor
     JOIN categoria c ON c.id_categoria = p.id_categoria
@@ -126,7 +126,7 @@ if (indisponiveis.length > 0) {
         SELECT
             p.id_produto,
             p.estoque_pronto,
-            cat.nome_categoria
+            cat.nome_categoria, cat.regra_producao
         FROM produto p
         JOIN categoria cat
             ON cat.id_categoria = p.id_categoria
@@ -144,8 +144,7 @@ if (indisponiveis.length > 0) {
 
     const contemMini = linhas.some(item => {
         const produto = detalhesMapa.get(item.produto);
-        return !String(produto.nome_categoria)
-            .toLowerCase().includes("normal");
+        return !(produto.regra_producao === "estoque");
     });
 
     const faltaEstoque = linhas.some(item => {
@@ -190,8 +189,7 @@ if (indisponiveis.length > 0) {
     }
     for(const x of linhas) {
       const produto = detalhesMapa.get(x.produto);
-      const reserva = String(produto.nome_categoria).toLowerCase().includes('normal')
-        ? Math.min(x.quantidade, Number(produto.estoque_pronto)) : 0;
+      const reserva = pedidoRapido && data < dataMinimaAdmin(7) ? x.quantidade : 0;
       await c.query('INSERT INTO item_encomenda (id_pedido,id_produto,quantidade,preco_unitario,subtotal,quantidade_reservada) VALUES ($1,$2,$3,$4,$5,$6)',[pedidoId,x.produto,x.quantidade,x.preco,x.subtotal,reserva]);
       if (reserva > 0) await c.query('UPDATE produto SET estoque_pronto=estoque_pronto-$1 WHERE id_produto=$2',[reserva,x.produto]);
     }
@@ -207,7 +205,7 @@ router.get("/pedidos", async (req, res) => {
   try {
     const r =
       await pool.query(`SELECT p.*, u.nome AS cliente_nome, u.telefone AS cliente_telefone
-   FROM pedido_encomenda p JOIN usuario u ON u.id_usuario=p.id_usuario ORDER BY p.id_pedido DESC`);
+   FROM pedido_encomenda p JOIN usuario u ON u.id_usuario=p.id_usuario WHERE (p.pix_copia_cola IS NULL OR p.pagamento_finalizado_em IS NOT NULL OR p.status <> 'Aguardando pagamento' OR p.pagamento_status = 'Confirmado') ORDER BY p.id_pedido DESC`);
     res.json({ sucesso: true, pedidos: r.rows });
   } catch (e) {
     falha(res, e);
@@ -222,7 +220,7 @@ router.patch("/pedidos/:id/confirmar-pix", async (req, res) => {
     await c.query("BEGIN");
     const r = await c.query(
       `UPDATE pedido_encomenda SET status='Confirmado', pagamento_status='Confirmado', confirmado_em=NOW()
-   WHERE id_pedido=$1 AND status = 'Aguardando pagamento'
+   WHERE id_pedido=$1 AND (pix_copia_cola IS NULL OR pagamento_finalizado_em IS NOT NULL OR status <> 'Aguardando pagamento' OR pagamento_status = 'Confirmado') AND status = 'Aguardando pagamento'
      AND pagamento_status IN ('Pendente', 'Aguardando pagamento') RETURNING id_pedido,cupom_codigo`,
       [id],
     );
@@ -303,7 +301,7 @@ router.get("/pedidos/:id", async (req, res) => {
             FROM pedido_encomenda p
             JOIN usuario u
                 ON u.id_usuario = p.id_usuario
-            WHERE p.id_pedido = $1
+            WHERE p.id_pedido = $1 AND (p.pix_copia_cola IS NULL OR p.pagamento_finalizado_em IS NOT NULL OR p.status <> 'Aguardando pagamento' OR p.pagamento_status = 'Confirmado')
         `, [id]);
 
         if (resultado.rowCount === 0) {
@@ -378,7 +376,7 @@ router.patch("/pedidos/:id/status", async (req, res) => {
         const resultado = await conexao.query(`
             SELECT status, pagamento_status
             FROM pedido_encomenda
-            WHERE id_pedido = $1
+            WHERE id_pedido = $1 AND (pix_copia_cola IS NULL OR pagamento_finalizado_em IS NOT NULL OR status <> 'Aguardando pagamento' OR pagamento_status = 'Confirmado')
             FOR UPDATE
         `, [id]);
 
@@ -475,7 +473,7 @@ router.patch("/pedidos/:id/cancelar", async (req, res) => {
         const resultado = await conexao.query(`
             SELECT *
             FROM pedido_encomenda
-            WHERE id_pedido = $1
+            WHERE id_pedido = $1 AND (pix_copia_cola IS NULL OR pagamento_finalizado_em IS NOT NULL OR status <> 'Aguardando pagamento' OR pagamento_status = 'Confirmado')
             FOR UPDATE
         `, [id]);
 

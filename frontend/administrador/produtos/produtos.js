@@ -389,7 +389,7 @@ async function listar() {
                         currency: "BRL"
                     }
                 ),
-                produto.nome_categoria?.toLowerCase().includes("mini")
+                produto.regra_producao !== "estoque"
                     ? "Sob encomenda"
                     : `${Number(produto.estoque_pronto ?? 0)} un.`,
                 produto.disponivel

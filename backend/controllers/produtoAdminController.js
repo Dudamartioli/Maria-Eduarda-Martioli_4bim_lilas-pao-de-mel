@@ -25,7 +25,7 @@ const listar = async (req, res) => {
         // Lista todos, inclusive os indisponíveis
         const resultado = await pool.query(
             `SELECT produto.*, descricao_tipo.descricao_geral,
-                    categoria.nome_categoria,
+                    categoria.nome_categoria, categoria.regra_producao,
                     sabor.nome_sabor
              FROM produto
              LEFT JOIN descricao_tipo

@@ -213,7 +213,7 @@ exports.solicitar = async (req, res) => {
                 p.id_produto,
                 p.preco,
                 p.estoque_pronto,
-                c.nome_categoria
+                c.nome_categoria, c.regra_producao
             FROM produto p
             JOIN categoria c
                 ON c.id_categoria = p.id_categoria
@@ -243,9 +243,7 @@ exports.solicitar = async (req, res) => {
         // =================================================
 
         const contemMini = itens.some(i =>
-            !String(
-                mapa.get(i.id_produto).nome_categoria
-            ).toLowerCase().includes("normal")
+            !(mapa.get(i.id_produto).regra_producao === "estoque")
         );
 
         const faltaEstoque = itens.some(i =>
@@ -256,7 +254,8 @@ exports.solicitar = async (req, res) => {
 
         // Pedido rápido: somente produtos normais
         // e com estoque pronto suficiente.
-        const pedidoRapido = !contemMini && !faltaEstoque;
+        const totalUnidades = itens.reduce((total, item) => total + item.quantidade, 0);
+        const pedidoRapido = totalUnidades <= 20 && !contemMini && !faltaEstoque;
 
         const diasMinimos = pedidoRapido ? 1 : 7;
 
@@ -543,11 +542,8 @@ exports.solicitar = async (req, res) => {
                 Math.round(preco * 100) *
                 item.quantidade / 100;
 
-            // Reservar o estoque pronto do sabor, mesmo em encomendas.
-            const produto = mapa.get(item.id_produto);
-            const quantidadeReservada = String(produto.nome_categoria).toLowerCase().includes("normal")
-                ? Math.min(item.quantidade, Number(produto.estoque_pronto))
-                : 0;
+            // O Pix é um rascunho: reservar somente na finalização.
+            const quantidadeReservada = 0;
 
             await conexao.query(`
                 INSERT INTO item_encomenda

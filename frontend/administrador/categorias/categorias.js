@@ -9,6 +9,7 @@ const URL_API = window.location.origin;
 // Elementos do formulário
 const campoId = document.getElementById("id_categoria");
 const campoNome = document.getElementById("nome_categoria");
+const campoRegra = document.getElementById("regra_producao");
 const campoDescricao = document.getElementById("descricao");
 
 // Elementos da página
@@ -57,6 +58,7 @@ function bloquearAtributos(bloquear) {
 
     campoNome.disabled = bloquear;
     campoDescricao.disabled = bloquear;
+    campoRegra.disabled = bloquear;
 }
 
 // ==========================================
@@ -82,6 +84,7 @@ function limparCampos() {
     campoId.value = "";
     campoNome.value = "";
     campoDescricao.value = "";
+    campoRegra.value = "encomenda";
 
     categoriaSelecionada = null;
 }
@@ -95,6 +98,7 @@ function preencherCampos(categoria) {
     campoId.value = categoria.id_categoria;
     campoNome.value = categoria.nome_categoria;
     campoDescricao.value = categoria.descricao || "";
+    campoRegra.value = categoria.regra_producao;
 
     categoriaSelecionada = categoria.id_categoria;
 
@@ -157,7 +161,7 @@ async function listar() {
             const linha = document.createElement("tr");
             const celula = document.createElement("td");
 
-            celula.colSpan = 3;
+            celula.colSpan = 4;
             celula.textContent = "Nenhuma categoria cadastrada.";
 
             linha.appendChild(celula);
@@ -188,6 +192,9 @@ async function listar() {
             linha.appendChild(celulaId);
             linha.appendChild(celulaNome);
             linha.appendChild(celulaDescricao);
+            const regra = document.createElement("td");
+            regra.textContent = categoria.regra_producao === "estoque" ? "Estoque pronto" : "Sob encomenda";
+            linha.appendChild(regra);
 
             // Ao clicar, preenche o formulário
             linha.onclick = function() {
@@ -245,6 +252,7 @@ async function procure() {
 
             campoNome.value = "";
             campoDescricao.value = "";
+    campoRegra.value = "encomenda";
             categoriaSelecionada = null;
 
             destacarCategoria();
@@ -333,7 +341,7 @@ async function salvar() {
     // Dados que serão enviados ao backend
     const categoria = {
         nome_categoria: campoNome.value.trim(),
-        descricao: campoDescricao.value.trim()
+        descricao: campoDescricao.value.trim(), regra_producao: campoRegra.value
     };
 
     // Valida o nome nas operações de inserção e alteração

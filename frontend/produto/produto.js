@@ -178,7 +178,7 @@ function atualizarDetalhesSabor() {
         ? (produto.descricao_sabor?.trim() ||
         "Este sabor ainda não possui descrição cadastrada.")
         : "";    if (!produto) { estoque.textContent = ""; return; }
-    const normal = String(produto.nome_categoria || "").toLowerCase().includes("normal");
+    const normal = (produto.regra_producao === "estoque");
     if (!normal) {
         estoque.textContent = "Produzido sob encomenda. Peça com pelo menos 7 dias de antecedência.";
     } else {
